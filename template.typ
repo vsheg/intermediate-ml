@@ -1,8 +1,13 @@
 #import "@preview/drafting:0.2.0": margin-note, set-page-properties
 
-#let note(content) = {
-  set text(size: 9pt, fill: luma(20%))
-  margin-note(side: right, stroke: none, content)
+#let note(title: [], content) = {
+  set text(size: 0.9em, fill: luma(20%))
+
+  if (title != []) {
+    title = strong(title + [.])
+  }
+
+  margin-note(side: right, stroke: none, title + content)
 }
 
 #let draft-pattern = {
@@ -20,9 +25,9 @@
   }
 
   set page(
-    width: 600pt,
-    height: 800pt,
-    margin: (y: 0.5cm, left: 0.5cm, right: 200pt),
+    width: 18cm,
+    height: 24cm,
+    margin: (y: 0.5cm, left: 0.5cm, right: 8cm),
     background: back,
   )
 
@@ -30,10 +35,10 @@
   set-page-properties()
 
   // font
-  set text(size: 11pt, hyphenate: true)
+  set text(size: 9pt, hyphenate: true)
 
   // math equations
-  set math.equation(numbering: "(1)")
+  // set math.equation(numbering: "(1)")
 
   // headings
   show heading.where(level: 1): it => box(height: 2em, it)
