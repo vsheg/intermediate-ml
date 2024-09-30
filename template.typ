@@ -3,9 +3,7 @@
 #let note(title: [], content) = {
   set text(size: 0.9em, fill: luma(20%))
 
-  if (title != []) {
-    title = strong(title + [.])
-  }
+  title = strong(title)
 
   margin-note(side: right, stroke: none, title + content)
 }
