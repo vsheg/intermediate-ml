@@ -1,8 +1,42 @@
 # Intermidiate ML
 
-> This is a work-in-progress draft. Content is under construction.
+> This is a work-in-progress draft of an intermediate machine learning course. Content is currently under development.
 
-## Nonlinear models
+## Formalisms
+
+- Conditional Expectation
+- Risk Minimization
+- Optimization
+- Likelihood
+- Regularization
+- Exponential Family
+- Information Theory
+- Singular Value Decomposition (SVD)
+
+## Linear Models
+
+- Ordinary Least Squares (OLS)
+- Gauss-Markov Theorem
+- Weighted Least Squares (WLS)
+- Partial Least Squares (PLS)
+- Loss Functions with Asymmetry
+- Generalized Linear Models (GLM)
+- Generalized Additive Models (GAM)
+
+## Non-linear Models
 
 - [Nonlinear Least Squares](03-nonlinear/01-nonlinear-ls.pdf)
-- [Principal Component Analysis](05-exploratory/01-pca.pdf)
+- Support Vector Machines (SVMs)
+
+## Ensemble Methods
+
+- Decision Trees
+- Bagging and Stacking
+- Classical Boosting
+- Gradient Boosting
+
+## Exploratory Methods
+ 
+- [Principal Component Analysis (PCA)](05-exploratory/01-pca.pdf)
+- Density Estimation
+- Clustering
