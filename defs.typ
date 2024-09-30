@@ -11,3 +11,8 @@
 #let accent-color = eastern
 
 #let hg(content) = text(fill: accent-color, $#content$)
+
+#let RSS = "RSS"
+#let Var = "Var"
+
+#let dmat(a, b, c) = $mat(#a, thin, thin;thin, #b, thin;thin, thin, #c)$
