@@ -5,3 +5,4 @@
 ## Nonlinear models
 
 - [Nonlinear Least Squares](03-nonlinear/01-nonlinear-ls.pdf)
+- [Principal Component Analysis](05-exploratory/01-pca.pdf)
