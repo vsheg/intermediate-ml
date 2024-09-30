@@ -17,7 +17,7 @@
 
 - Ordinary Least Squares (OLS)
 - Gauss-Markov Theorem
-- [Weighted Least Squares (WLS)](02-linear/weighted-ls.pdf)
+- [Weighted Least Squares (WLS)](02-linear/03-weighted-ls.pdf)
 - Partial Least Squares (PLS)
 - Loss Functions with Asymmetry
 - Generalized Linear Models (GLM)
