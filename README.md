@@ -17,7 +17,7 @@
 
 - Ordinary Least Squares (OLS)
 - Gauss-Markov Theorem
-- Weighted Least Squares (WLS)
+- [Weighted Least Squares (WLS)](02-linear/weighted-ls.pdf)
 - Partial Least Squares (PLS)
 - Loss Functions with Asymmetry
 - Generalized Linear Models (GLM)
@@ -26,7 +26,7 @@
 ## Non-linear Models
 
 - [Nonlinear Least Squares](03-nonlinear/01-nonlinear-ls.pdf)
-- Support Vector Machines (SVMs)
+- Support Vector Machine (SVM)
 
 ## Ensemble Methods
 
