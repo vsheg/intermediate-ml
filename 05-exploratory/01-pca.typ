@@ -22,7 +22,7 @@
 ]
 
 #note(
-  title: [_Nota bene_],
+  title: [NB],
 )[
   In the example above:
 
@@ -69,7 +69,7 @@
   $
 
 #note(
-  title: [Сrumbs on the table],
+  title: [Сrumbs on the table.],
 )[
   Now, the third coordinate equals the table height $h = 1$:
 
@@ -86,7 +86,7 @@
 ]
 
 #note(
-  title: [Approximate solution],
+  title: [Approximate solution.],
 )[
   In the example above, we could find $B$ as the pseudoinverse $B = A^+ = (A^Tr A)^(-1) A^Tr$,
   but:
@@ -162,7 +162,7 @@ $ A B approx I. $
 == Geometric Interpretation
 
 #note(
-  title: [Basis Transition Matrix],
+  title: [Basis Transition Matrix.],
 )[
   If in vector space $V$, there are two bases: the old one $cal(O): bold(omega)_1, ..., bold(omega)_n$ and
   the new one $cal(N): bold(nu)_1, ..., bold(nu)_n$, the vectors of the new basis can be
@@ -281,7 +281,6 @@ any number of different pairs of matrices:
 $ P B^Tr = P I B^Tr = ub((P^* R), P) ub((R^(-1) B^*^Tr), B^Tr) $
 
 #note[
-
   Earlier, we showed that $B$ could be chosen to store an orthonormal basis, but this wasn't
   strictly necessary.
 
