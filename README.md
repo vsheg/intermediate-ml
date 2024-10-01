@@ -1,4 +1,4 @@
-# Intermidiate ML
+# Intermediate ML
 
 > This is a work-in-progress draft of an intermediate machine learning course. Content is currently under development.
 
