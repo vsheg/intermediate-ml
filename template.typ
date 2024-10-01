@@ -1,4 +1,5 @@
 #import "@preview/drafting:0.2.0": margin-note, set-page-properties
+#import "defs.typ": accent-color
 
 #let note(title: [], content) = {
   set text(size: 0.9em, fill: luma(20%))
@@ -9,7 +10,7 @@
 }
 
 #let draft-pattern = {
-  let element = text(size: 2em, fill: red.opacify(-95%))[*DRAFT*]
+  let element = text(size: 2em, fill: gray.opacify(-95%))[*DRAFT*]
   let pat = pattern(size: (90pt, 40pt), element)
   rotate(25deg, rect(width: 150%, height: 150%, fill: pat))
 }
@@ -41,12 +42,12 @@
   // headings
   show heading.where(level: 1): it => box(height: 2em, it)
   show heading.where(level: 2): it => box(height: 1em, smallcaps(it))
-  show heading.where(level: 3): it => text(weight: "bold", it.body)
+  show heading.where(level: 3): it => text(weight: "bold", style: "italic", it.body)
 
   // Styling
   show strong: it => {
-    set text(weight: "semibold")
-    highlight(fill: yellow.lighten(95%), it)
+    set text(weight: "semibold", fill: luma(30%))
+    highlight(fill: accent-color.lighten(90%), it)
   }
 
   // header
