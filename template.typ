@@ -23,9 +23,9 @@
   }
 
   set page(
-    width: 18cm,
+    width: 600pt,
     height: 24cm,
-    margin: (y: 0.5cm, left: 0.5cm, right: 8cm),
+    margin: (y: 0.5cm, left: 0.5cm, right: 200pt),
     background: back,
   )
 
@@ -33,14 +33,21 @@
   set-page-properties()
 
   // font
-  set text(size: 9pt, hyphenate: true)
+  set text(size: 9pt, hyphenate: true, font: "New Computer Modern")
 
   // math equations
   // set math.equation(numbering: "(1)")
 
   // headings
   show heading.where(level: 1): it => box(height: 2em, it)
-  show heading.where(level: 2): it => box(height: 1em, it)
+  show heading.where(level: 2): it => box(height: 1em, smallcaps(it))
+  show heading.where(level: 3): it => text(weight: "bold", it.body)
+
+  // Styling
+  show strong: it => {
+    set text(weight: "semibold")
+    highlight(fill: yellow.lighten(95%), it)
+  }
 
   // header
   {
