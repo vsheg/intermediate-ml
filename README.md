@@ -10,7 +10,7 @@
 - Likelihood
 - Regularization
 - Exponential Family
-- Information Theory
+- [Information Theory](01-formalisms/07-information.pdf)
 - Singular Value Decomposition (SVD)
 
 ## Linear Models

@@ -43,22 +43,22 @@ little value. In contrast, the information that there will be no sunrise tomorro
 a significant amount of information. Thus, *the lower the probability, the more
 information is conveyed*:
 
-$ I equiv I(p) wide "and" wide p arrow.t <=> I arrow.b. $
+$ I(A) = I(Pr[A]) wide "and" wide p arrow.t <=> I arrow.b. $
 
 The appropriate formula that satisfies these conditions is:
 
 $
-  I(f(A)) = log 1/p, quad f = Pr(A).
+  I(f(A)) = log 1/Pr[A], quad f(A) = Pr(A).
 $
 
-$ I(A B) = log 1 / p_A + log 1 / p_B $
+$ I(A B) = log 1 / Pr[A] + log 1 / Pr[B] $
 
 === Inverse probability.
 The inverse probability $1/p$ represents the *expected number of trials* needed to achieve
 *one occurrence* of an event with probability $p$. For example, if $p = 0.01$, the event
 occurs, on average, once every 100 trials.
 
-=== Number of bits to distinguish $N$ outcomes.
+=== Information content.
 #note[
   In $k$-valued logic, each $k$-valued digit (0, 1, ..., $k-1$) represents information:
   - In binary logic, each digit is a bit (0 or 1).
