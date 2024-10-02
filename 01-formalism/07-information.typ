@@ -113,3 +113,14 @@ For a random variable $X$ taking a specific value $x$ with probability $Pr[X = x
 self-information is:
 
 $ I_X (x) := lg_2 1 / Pr[X = x]. $
+
+== Odds ratio
+
+The *odds* of an event $A$ is defined as the difference in self-information (also known as
+surprisal) between the event $A$ and its complement $macron(A)$:
+
+$
+  "Odd" A :&= I(A) - I(macron(A)) \
+           &= log Pr[A] / (1 - Pr[A]).
+$
+
