@@ -93,3 +93,23 @@ Thus, the exact number of bits needed to distinguish all outcomes is:
 $
   I = log_2 N = log_2 1 / p.
 $
+
+== Shannon's self-information
+
+Self-information, introduced by Claude Shannon, quantifies the amount of information or "surprise"
+associated with the occurrence of an event. The key properties of Shannon's
+self-information are:
+
+- An event with a probability of 100% is unsurprising and thus carries no information.
+- Events that are less probable yield more information when they occur.
+- For two independent events, the total information is the sum of their individual
+  self-informations.
+
+The self-information for an event $A$ is defined as:
+
+$ I(A) := lg_2 1 / Pr[A]. $
+
+For a random variable $X$ taking a specific value $x$ with probability $Pr[X = x]$, the
+self-information is:
+
+$ I_X (x) := lg_2 1 / Pr[X = x]. $
