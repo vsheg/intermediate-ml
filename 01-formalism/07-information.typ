@@ -124,3 +124,31 @@ $
            &= log Pr[A] / (1 - Pr[A]).
 $
 
+== Shannon entropy
+#note(
+  title: [Boltzmann distribution],
+)[
+  maximizes thermodynamic probability $W$ and provides the *probability for each state*, so
+  the Boltzmann formula defines a *probability distribution*:
+
+  $ n_i / N = e^(-beta E_i) / (sum_i e^(-beta E_i)). $
+
+  Shannon's information entropy can be applied to this probability distribution:
+
+  $ p_i := e^(-beta E_i) / Z, quad Z := sum_i e^(-beta E_i), $
+
+  $ H &= sum_i p_i dot ln p_i \
+    &= sum_i e^(-beta E_i) / Z dot (-beta E_i - ln Z) \
+    &= - beta sum_i ub(e^(-beta E_i) / Z, p_i) dot E_i - ln Z dot ub(sum_i e^(-beta E_i)/Z, =1) \
+    &= - beta bra E ket - ln Z $
+
+  As a result, we get statistical entropy expressed via the partition function:
+
+  $ S_"stat" = k_B dot H $
+
+  The amount of information needed to encode the probability distribution by energy levels
+  can be calculated via Shannon's formula. This amount of information directly corresponds
+  to the statistical thermodynamic entropy with $k_B$ units, which translates bits into
+  energy per temperature units.
+]
+

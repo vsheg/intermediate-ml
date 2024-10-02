@@ -19,4 +19,7 @@
 #let Cov = "Cov"
 #let Cor = "Cor"
 
+#let bra = sym.angle.l
+#let ket = sym.angle.r
+
 #let dmat(a, b, c) = $mat(#a, thin, thin;thin, #b, thin;thin, thin, #c)$
