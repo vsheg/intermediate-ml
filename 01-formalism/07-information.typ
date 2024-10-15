@@ -6,7 +6,7 @@
 
 = Information Theory
 
-== Hartley Information
+== Hartley function
 
 === Bits.
 When there are multiple possible outcomes, we can distinguish between them if we have the
@@ -94,7 +94,7 @@ $
   I = log_2 N = log_2 1 / p.
 $
 
-== Shannon's self-information
+== Shannon self-information
 
 Self-information, introduced by Claude Shannon, quantifies the amount of information or "surprise"
 associated with the occurrence of an event. The key properties of Shannon's
@@ -120,7 +120,7 @@ The *odds* of an event $A$ is defined as the difference in self-information (als
 surprisal) between the event $A$ and its complement $macron(A)$:
 
 $
-  "Odd" A :&= I(A) - I(macron(A)) \
+  "Odds" A :&= I(A) - I(macron(A)) \
            &= log Pr[A] / (1 - Pr[A]).
 $
 
@@ -152,3 +152,43 @@ $
   energy per temperature units.
 ]
 
+=== Information associated with a probability distribution.
+Information corresponds to the amount of uncertainty: the more uncertain (less probable)
+an outcome is, the more information it carries.
+
+As for a single outcome $omega in Omega$, we can define the information associated with
+the probability distribution ${ Pr[omega] | omega in Omega }$. Let it be the expected
+value of the self-information:
+
+$
+  H[Pr, Omega] :&= sum_(omega in Omega) Pr[omega] dot I(omega) \
+                &= sum_(omega in Omega) Pr[omega] dot log_2 1 / Pr[omega].
+$
+
+This quantity is known as the Shannon entropy, it can be interpreted as the average amount
+of information produced by the probability distribution.
+
+As a random variable $X$ induces its own probability distribution ${ Pr[X = x] | x in supp(X) }$,
+the entropy can be defined specifically for the random variable:
+
+$
+  H(X) :&= sum_(x in supp(X)) Pr[X = x] dot I(X = x) \
+        &= sum_(x in supp(X)) Pr[X = x] dot log_2 1 / Pr[X = x],
+$
+
+which is equivalent to the distribution of the events ${ [X = x] | x in supp(X)}$.
+
+=== Practical interpretation.
+#note(
+  title: [Fair dice],
+)[
+  induces the uniform distribution over the set of possible outcomes $p_1 = ... = p_6 = 1/6$.
+
+  We need exactly $I = log_2 6 approx 2.58$ bits to encode each outcome. All outcomes are
+  equally probable, so we need the same $I$ bits of information to encode any outcome on
+  average.
+
+  On the other hand, when we roll a fair dice, we receive $log_2 6$ bits of information from
+  any outcome, and on average we receive the _entropy_ $H$ amount of information:
+  $ H = sum_(i = 1)^6 1/6 dot log_2 1/6 = log_2 1/6 approx 2.58 "bits". $
+]

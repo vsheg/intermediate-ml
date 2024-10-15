@@ -18,6 +18,7 @@
 #let Var = "Var"
 #let Cov = "Cov"
 #let Cor = "Cor"
+#let supp = "supp"
 
 #let bra = sym.angle.l
 #let ket = sym.angle.r
