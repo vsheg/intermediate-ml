@@ -192,3 +192,28 @@ which is equivalent to the distribution of the events ${ [X = x] | x in supp(X)}
   any outcome, and on average we receive the _entropy_ $H$ amount of information:
   $ H = sum_(i = 1)^6 1/6 dot log_2 1/6 = log_2 1/6 approx 2.58 "bits". $
 ]
+
+== Conditional entropy
+
+Entropy $H$ can be generalized to the conditional case. Suppose that we have random
+variables $X$ and $Y$, with their (marginal) distributions $Pr[X = x]$ and $Pr[Y = y]$ and
+their joint distribution
+$Pr[X = x, Y = y]$.
+
+=== Specific conditional entropy
+can be trivially defined by replacing the probability $Pr[X = x]$ with the conditional
+probability $Pr[X = x|Y = y]$:
+
+$
+  H(X|Y = y) :&= sum_(x in supp X) Pr[X = x|Y = y] dot log 1 / Pr[X = x|Y = y].
+$
+
+=== Conditional entropy
+(non specific) is can be defined as the expected value of the specific conditional entropy
+over all possible values of $y in supp Y$:
+
+$
+  H(X|Y) :&= Ex_Y [H(X|Y = y)] \
+          &= sum_(y in supp Y) Pr[Y = y] dot H(X|Y = y)
+$
+
