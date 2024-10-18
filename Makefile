@@ -1,4 +1,4 @@
 all: compile
 
 compile:
-	find . -name "*.typ" -exec typst compile {} --root . \;
+	find . -path "./*/*" -name "*.typ" -exec typst compile {} --root . \;
