@@ -1,6 +1,8 @@
-on: push
+on:
+  push:
+  workflow_dispatch:
 jobs:
-  render:
+  compile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
