@@ -6,6 +6,95 @@
 
 = Information Theory
 
+== Messages
+
+=== Communication.
+Information theory was originally developed to provide a theoretical framework for
+addressing an engineering problem of communication. Formally, consider a scenario where a
+sender wants to transmit a message, denoted as $omega$, to a receiver. In information
+theory, the semantic content of messages is irrelevant; the focus is solely on the
+engineering aspects of transmission. Here, the message is treated as a sequence of _symbols_.
+
+=== Symbols.
+Symbols are distinct, identifiable entities that form the alphabet used to represent a
+message. For instance, the digits from 0 to 9 can be used to represent any integer number
+(the message). Similarly, nodding or shaking one's head can be considered symbols
+representing the messages "yes" and "no." For hearing-impaired individuals, hand gestures
+are used as symbols to communicate, with each gesture representing a specific symbol.
+
+=== Encoding.
+The simplest symbolic system capable of transmitting information must have at least two
+distinct symbols, such as "0" and "1." Using this simple formal language, we can encode
+basic messages.
+
+#example[A message about whether it will rain tomorrow can be encoded with just two symbols:
+  $ 0 = ["It will not rain tomorrow"], quad 1 = ["It will rain tomorrow"]. $
+]
+
+#example[The outcome of a coin flip can be encoded similarly:
+  $ 0 = ["The coin landed on tails"], quad 1 = ["The coin landed on heads"]. $
+]
+
+Messages can be represented by the codes used for their encoding. More complex messages
+can be encoded as sequences of symbols.
+
+#example[For four possible messages:
+
+  $
+    Omega = { quad \
+      & omega_1 = ["It will not rain tomorrow, and the coin landed on heads"], \
+      & omega_2 = ["It will not rain tomorrow, and the coin landed on tails"], \
+      & omega_3 = ["It will rain tomorrow, and the coin landed on tails"], \
+      & omega_4 = ["It will rain tomorrow, and the coin landed on heads"] \
+    }, quad &
+  $
+
+  The following encoding can be used:
+
+  $
+    00 = omega_1, quad 01 = omega_2, quad 10 = omega_3, quad 11 = omega_4.
+  $
+]
+
+These binary sequences carry _information_. Importantly, there is no way to transmit this
+information in a more compact form; we need at least a sequence of length 2 binary symbols
+to encode the weather and coin states. Thus, this code is _optimal_ and cannot be further
+compressed.
+
+=== Uncertainty.
+A particular message $omega^*$ can be considered successfully transmitted if and only if
+the receiver can identify this specific message $omega^*$ from the set of all possible
+messages $omega \in Omega$. The larger the set $Omega$ is, the harder it is to select $omega^*$ from
+the set of all possible messages. Therefore, the larger $Omega$, the greater the _uncertainty_ associated
+with determining the transmitted message. Uncertainty is directly related to the number of
+possible messages.
+
+=== Bits.
+Various encoding schemes can be used to transmit the same message. To abstract away from
+the details of specific encodings and focus on the information content itself, we
+introduce the concept of _bits_. A bit is the minimum amount of information required to
+eliminate uncertainty between two possibilities. The sender must transmit at least 1 bit
+so that the receiver can distinguish the sent message $omega^*$ from a set of two possible
+messages $Omega = \{ omega_0, omega_1 \}$.
+
+If the set of all possible messages contains $N > 2$ messages, each bit of information can
+be used to eliminate half of the remaining possibilities.
+
+$ Omega = \{ omega_1, omega_2, omega_3, omega_4 \} $
+
+$ 0 = [omega^* "is in the first half of" Omega], quad 1 = [omega^* "is in the second half of" Omega]. $
+
+- The first bit divides the set into two halves:
+$ Omega = \{ wide ob(omega_1\, omega_2, 0), wide ob(omega_3\, omega_4, 1) wide \} $
+- The second bit further divides the set:
+$ Omega = \{ wide ob(ub(omega_1, 00)\, ub(omega_2, 01), 0), wide ob(ub(omega_3, 10)\, ub(omega_4, 11), 1) wide \} $
+
+=== Information.
+The amount of bits required to identify a specific message $omega$ is called the _information content_ $I(omega)$.
+The sender sends $I(omega)$ bits of information by transmitting the message $omega$, and
+the receiver receives $I(omega)$ bits of information when decoding the message to identify $omega$ from
+the set $Omega$.
+
 == Hartley function
 
 === Bits.
