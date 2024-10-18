@@ -7,4 +7,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: typst-community/setup-typst@v3
-      - run: make compile
+      - run: find . -path "./*/*" -name "*.typ" -exec typst compile {} --root . \;
+      - run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add */*.pdf
+          git commit -m "Add compiled PDF"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
