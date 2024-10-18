@@ -3,10 +3,16 @@
 
 #let note(title: [], content) = {
   set text(size: 0.9em, fill: luma(20%))
-
   title = strong(title)
-
   margin-note(side: right, stroke: none, title + content)
+}
+
+#let example(content) = {
+  set text(fill: luma(20%), size: 0.9em)
+  align(center, rect(width: 90%, stroke: (thickness: 0.1pt, dash: "dashed"))[
+    #set align(left)
+    *Example*. #content
+  ])
 }
 
 #let draft-pattern = {
@@ -23,10 +29,13 @@
     back = draft-pattern
   }
 
+  let full-width = 600pt
+  let margin = 10pt
+
   set page(
-    width: 600pt,
+    width: full-width + 2 * margin,
     height: 24cm,
-    margin: (y: 0.5cm, left: 0.5cm, right: 200pt),
+    margin: (y: margin, left: margin, right: 2 / 5 * full-width),
     background: back,
   )
 
@@ -45,10 +54,10 @@
   show heading.where(level: 3): it => text(weight: "bold", style: "italic", it.body)
 
   // Styling
-  show strong: it => {
-    set text(weight: "semibold", fill: luma(30%))
-    highlight(fill: accent-color.lighten(90%), it)
-  }
+  // show strong: it => {
+  //   set text(weight: "semibold", fill: luma(30%))
+  //   highlight(fill: accent-color.lighten(90%), it)
+  // }
 
   // header
   {

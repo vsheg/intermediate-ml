@@ -7,6 +7,7 @@
 #let xb = math.bold("x")
 #let tb = math.bold(math.theta)
 #let ub = math.underbrace
+#let ob = math.overbrace
 #let Tr = math.sans("T ")
 #let accent-color = eastern
 
