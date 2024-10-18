@@ -10,14 +10,14 @@
 - Likelihood
 - Regularization
 - Exponential Family
-- [Information Theory](01-formalism/07-information.pdf)
+- [Information Theory](https://github.com/vsheg/intermediate-ml/blob/pdf/01-formalism/07-information.pdf)
 - Singular Value Decomposition (SVD)
 
 ## Linear Models
 
 - Ordinary Least Squares (OLS)
 - Gauss-Markov Theorem
-- [Weighted Least Squares (WLS)](02-linear/03-weighted-ls.pdf)
+- [Weighted Least Squares (WLS)](https://github.com/vsheg/intermediate-ml/blob/pdf/02-linear/03-weighted-ls.pdf)
 - Partial Least Squares (PLS)
 - Loss Functions with Asymmetry
 - Generalized Linear Models (GLM)
@@ -25,7 +25,7 @@
 
 ## Non-linear Models
 
-- [Nonlinear Least Squares](03-nonlinear/01-nonlinear-ls.pdf)
+- [Nonlinear Least Squares](https://github.com/vsheg/intermediate-ml/blob/pdf/03-nonlinear/01-nonlinear-ls.pdf)
 - Support Vector Machine (SVM)
 
 ## Ensemble Methods
@@ -37,6 +37,6 @@
 
 ## Exploratory Methods
  
-- [Principal Component Analysis (PCA)](05-exploratory/01-pca.pdf)
+- [Principal Component Analysis (PCA)](https://github.com/vsheg/intermediate-ml/blob/pdf/05-exploratory/01-pca.pdf)
 - Density Estimation
 - Clustering
