@@ -16,7 +16,7 @@
 }
 
 #let draft-pattern = {
-  let element = text(size: 2em, fill: gray.opacify(-95%))[*DRAFT*]
+  let element = text(size: 2em, fill: gray.opacify(-90%))[*DRAFT*]
   let pat = pattern(size: (90pt, 40pt), element)
   rotate(25deg, rect(width: 150%, height: 150%, fill: pat))
 }
