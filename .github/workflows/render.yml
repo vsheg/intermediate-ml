@@ -1,18 +1,25 @@
 on:
   push:
+    paths:
+      - '**.typ'
   workflow_dispatch:
 jobs:
   compile:
     runs-on: ubuntu-latest
     steps:
+      
       - uses: actions/checkout@v4
+      
       - uses: typst-community/setup-typst@v3
+      
       - run: make compile
+      
       - run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add */*.pdf
-          git commit -m "Add compiled PDF"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          mkdir -p output
+          find . -name '*.pdf' -exec cp {} output/ \;
+
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: pdf
+          publish_dir: ./output
