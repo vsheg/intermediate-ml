@@ -38,5 +38,5 @@
 ## Exploratory Methods
  
 - [Principal Component Analysis (PCA)](https://vsheg.github.io/intermediate-ml/05-exploratory/01-pca.pdf)
-- Density Estimation
+- [Density Estimation](https://vsheg.github.io/intermediate-ml/05-exploratory/02-density.pdf)
 - Clustering

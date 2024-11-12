@@ -16,12 +16,50 @@
 #let RSS = "RSS"
 #let Pr = math.bb("P")
 #let Ex = math.bb("E")
-#let Var = "Var"
-#let Cov = "Cov"
-#let Cor = "Cor"
-#let supp = "supp"
+#let Var = math.op("Var")
+#let Cov = math.op("Cov")
+#let Cor = math.op("Cor")
+#let supp = math.op("supp")
 
 #let bra = sym.angle.l
 #let ket = sym.angle.r
 
 #let dmat(a, b, c) = $mat(#a, thin, thin;thin, #b, thin;thin, thin, #c)$
+
+// PLOTS
+#import "@preview/cetz:0.3.1"
+#import "@preview/cetz-plot:0.1.0"
+#import "@preview/subpar:0.1.1"
+
+#let discrete-plot(ys: (), x-label: $x$, y-label: $y$, width: 2cm, x-ticks: (), y-ticks: ()) = {
+  let n = ys.len()
+
+  cetz.canvas(length: width, {
+    import cetz.draw: *
+    import cetz-plot: *
+
+    let x = 0
+    plot.plot(
+      size: (1, 1),
+      y-max: 1,
+      x-max: 1 + 1 / n,
+      x-tick-step: none,
+      y-tick-step: 1,
+      x-label: x-label,
+      y-label: y-label,
+      {
+        for i in range(n) {
+          x += 1 / n
+          plot.annotate(line((x, 0), (x, ys.at(i)), stroke: accent-color))
+          plot.annotate(content(
+            (x + 0.2, ys.at(i) + 0.1),
+            angle: 60deg,
+            anchor: "mid-east",
+            x-ticks.at(i, default: []),
+          ))
+          plot.add(((x, ys.at(i)),), mark: "o", mark-size: 0.1, hypograph: true)
+        }
+      },
+    )
+  })
+}
