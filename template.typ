@@ -30,12 +30,12 @@
     back = draft-pattern
   }
 
-  let full-width = 600pt
+  let full-width = 700pt
   let margin = 10pt
 
   set page(
     width: full-width + 2 * margin,
-    height: 24cm,
+    height: auto,
     margin: (y: margin, left: margin, right: 2 / 5 * full-width),
     background: back,
   )

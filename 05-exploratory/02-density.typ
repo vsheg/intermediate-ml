@@ -21,7 +21,7 @@ A random variable $xi$ is said to have a normal distribution with mean $mu$ and 
 $sigma^2$ if its probability density function (pdf) is given by
 
 $
-  f(xi) (x) = 1 / (sigma sqrt(2 pi)) exp{ -1/2 ((x - mu) / sigma)^2 }
+  f_xi (x) = 1 / (sigma sqrt(2 pi)) exp{ -1/2 ((x - mu) / sigma)^2 }
 $
 
 where $mu$ is the mean and $sigma^2$ is the variance of the distribution. More compactly,
@@ -31,7 +31,7 @@ $
   xi tilde cal(N)(mu, sigma^2)
 $
 
-=== Uncorrected multivariate normal distribution
+=== Uncorrelated multivariate normal distribution
 A random vector $bold(xi) = vec(xi_1, dots.v, xi_k)$ is said to have an uncorrelated
 multivariate normal distribution with mean $bold(mu) = vec(mu_1, dots.v, mu_k)$ and
 variances $sigma_1^2, dots, sigma_k^2$ if the pdf of every random component of $bold(xi)$
@@ -52,10 +52,8 @@ $
 $
 
 === Covariance matrix
-#note[
-  Diagonal matrices
+#note[Diagonal matrices $Lambda$ are useful because operations with them are simple.
   $ Lambda = dmat(lambda_1, dots.down, lambda_k) $
-  are useful because operations with them are simple:
 
   + Multiplying a vector $bold(v)$ by a diagonal matrix scales each component of the vector by
     the corresponding diagonal element.
@@ -66,8 +64,7 @@ $
   + Diagonal matrices commute with each other under multiplication:
     $ Lambda_1 Lambda_2 = Lambda_2 Lambda_1 $
   + The eigenvalues of a diagonal matrix are the diagonal elements themselves, and the
-    eigenvectors are the standard basis vectors.
-]
+    eigenvectors are the standard basis vectors.]
 All variance parameters $sigma_1^2, dots, sigma_k^2$ can be combined into a covariance
 matrix $Sigma$. The covariance matrix is a symmetric positive definite matrix that
 describes the covariance between the components of $bold(xi)$.
@@ -84,4 +81,36 @@ The pdf of the multivariate normal distribution can be written in terms of the c
 
 $
   f_bold(xi) (x_1, ..., x_k) = exp{ -1/2 (bold(x) - bold(mu))^Tr Sigma^(-1) (bold(x) - bold(mu)) } / sqrt((2 pi)^k det Sigma)
-$
+$<multivariate-normal-distribution>
+
+The covariance matrix $Sigma$ above is a diagonal matrix, but in general, it's a symmetric
+positive definite matrix that describes the covariance between the components of $bold(xi)$:
+
+$ Sigma := mat(
+  Cov[xi_1, xi_1], dots, Cov[xi_1, xi_k];dots.v, dots.down, dots.v;Cov[xi_k, xi_1], dots, Cov[xi_k, xi_k]
+). $
+
+If we substitute the non-diagonal covariance matrix $Sigma$ into the pdf, we get the
+general form of the multivariate normal distribution.
+
+Technically, each component of $Sigma$ is the covariance between the corresponding
+components
+#note[
+  For a sample $X = {x_1, ..., x_ell} subset RR$, the variance is the average of the squared
+  differences from the mean:
+  $ Var[X] := 1 / ell sum_(i=1)^ell (x_i - macron(x))^2. $
+
+  Given another sample $Y = {y_1, ..., y_ell} subset RR$, the _co_-variance between two
+  samples is characterized by how much they vary together:
+  $
+    Cov[X, Y] := 1 / ell sum_(i=1)^ell (x_i - macron(x)) dot (y_i - macron(y)).
+  $
+
+  Both per sample variance and two samples covariance can be combined into a covariance
+  matrix.
+  $
+    Sigma = mat(Cov[x, x], Cov[x, y];Cov[y, x], Cov[y, y]) = mat(Var[x], Cov[x, y];Cov[y, x], Var[y]).
+  $
+  It will be shown below that this is equivalent to the covariance matrix for a sample of 2D
+  vectors $bold(v)_i = vec(x_i, y_i) in RR^2$.
+]
