@@ -21,12 +21,10 @@ jobs:
       
       - run: make compile
       
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
           path: '.'
       
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
