@@ -114,3 +114,53 @@ components
   It will be shown below that this is equivalent to the covariance matrix for a sample of 2D
   vectors $bold(v)_i = vec(x_i, y_i) in RR^2$.
 ]
+#note[
+  To characterize _co_-variance of multiple samples
+  $
+    X_1 & = {x_(1,1), ..., x_(1,ell)}, quad
+    ..., quad
+    X_k & = {x_(k,1), ..., x_(k,ell)}
+  $
+  all together, we combine them into one sample of $k$-dimentional data:
+  $ V = {bold(v)_1, ..., bold(v)_ell}, quad bold(v)_i = vec(x_(1,i), dots.v, x_(k,i)). $
+
+  The covariance between any two samples $X_t$ and $X_q$ is
+  $ Cov[X_t, X_q] := 1 / ell sum_(i=1)^ell (x_(t,i) - macron(x)_t) dot (x_(q,i) - macron(x)_q). $
+
+  Generally, for a sample of vectors $bold(v)_1, ..., bold(v)_ell in RR^k$:
+  $
+    Sigma :&= 1/ell sum_(i=1)^ell (bold(v)_i - macron(bold(v))) (bold(v)_i - macron(bold(v)))^Tr \
+           &= 1/ell sum_(i=1)^ell Cov[bold(v)_i, bold(v)_i] \
+           &= Ex[(bold(v) - macron(bold(v))) (bold(v) - macron(bold(v)))^Tr].
+  $
+  which resambles the variance but in multiple dimensions.
+]
+$ Sigma_(i,j) := Cov[xi_i, xi_j] = Ex[(xi_i - mu_i) (xi_j - mu_j)]. $
+
+The term $det Sigma$ is the generalized variance.
+
+=== Mahalanobis distance
+The distance between a point $bold(x)$ and the distribution $cal(N)(bold(mu), Sigma)$ can
+be measured using the Mahalanobis distance.
+#note[
+  Quadratic form $Q(bold(x))$ is a scalar function of a vector $bold(x)$ that can be
+  expressed as as weighted sum of the squares of the components of $bold(x)$:
+
+  $ Q(bold(x)) = sum_(i,j) w_(i,j) x_i x_j. $
+
+  These weights can be gathered into a matrix $W$, and the quadratic form can be written as
+  a matrix product:
+
+  $ Q(bold(x)) = bold(x)^Tr W bold(x). $
+]
+
+The premise is that the covariance matrix $Sigma$ captures the correlations between the
+components of $bold(xi)$. The Mahalanobis distance is a measure of how many standard
+deviations away a point $bold(x)$ is from the mean $bold(mu)$, taking into account the
+correlations between the components of $bold(xi)$.
+
+We can define a quadratic
+$
+  Q(bold(x)) :&= (bold(x) - bold(mu))^Tr Sigma^(-1) (bold(x) - bold(mu)) \
+              &= sum_(i,j) (x_i - mu_i) (Cov[xi_i, xi_j])^(-1) (x_j - mu_j).
+$
