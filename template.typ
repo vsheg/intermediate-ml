@@ -1,5 +1,6 @@
+#import "@preview/physica:0.9.3": *
 #import "@preview/drafting:0.2.0": margin-note, set-page-properties
-#import "defs.typ": accent-color
+#import "defs.typ": *
 
 #let note(title: [], content) = {
   set text(size: 0.9em, fill: luma(20%))
@@ -30,13 +31,14 @@
     back = draft-pattern
   }
 
-  let full-width = 700pt
-  let margin = 10pt
+  let full-width = 195mm
+  let full-heigh = 265mm
+  let margin = 1cm
 
   set page(
-    width: full-width + 2 * margin,
-    height: auto,
-    margin: (y: margin, left: margin, right: 2 / 5 * full-width),
+    width: full-width,
+    height: full-heigh,
+    margin: (y: margin, left: margin, right: 1 / 3 * full-width),
     background: back,
   )
 
@@ -44,7 +46,8 @@
   set-page-properties()
 
   // font
-  set text(size: 9pt, hyphenate: true, font: "New Computer Modern")
+  let font-size = 9pt
+  set text(size: font-size, hyphenate: true, font: "New Computer Modern")
 
   // math equations
   set math.equation(numbering: "(1)")
@@ -62,23 +65,22 @@
   }
 
   // headings
-  show heading.where(level: 1): it => box(height: 2em, it)
-  show heading.where(level: 2): it => box(height: 1em, smallcaps(it))
-  show heading.where(level: 3): it => text(weight: "bold", style: "italic", it.body + [:])
+  show heading: set text(fill: accent-color)
 
-  // Styling
-  // show strong: it => {
-  //   set text(weight: "semibold", fill: luma(30%))
-  //   highlight(fill: accent-color.lighten(90%), it)
-  // }
+  show heading.where(level: 1): it => {
+    set text(size: font-size * 1.1)
+    set block(below: font-size * 1.5)
+    smallcaps(it)
+  }
 
-  // header
-  {
-    set text(style: "italic")
-    grid(
-      columns: 2,
-      column-gutter: 1fr,
-    )[Vsevolod Shegolev][Updated: #datetime.today().display()]
+  show heading.where(level: 2): it => {
+    set text(size: font-size * 1)
+    set block(above: font-size * 1.5, below: font-size)
+    it
+  }
+
+  show heading.where(level: 3): it => {
+    text(it.body) + [:]
   }
 
   doc
