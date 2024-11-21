@@ -10,6 +10,7 @@
 #let ob = math.overbrace
 #let Tr = math.sans("T ")
 #let accent-color = eastern
+#let ghost-color = rgb(50%, 50%, 50%, 5%)
 
 #let hg(content) = text(fill: accent-color, $#content$)
 

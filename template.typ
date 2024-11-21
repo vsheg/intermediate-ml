@@ -3,18 +3,24 @@
 #import "defs.typ": *
 
 #let note(title: [], content) = {
-  set text(size: 0.9em, fill: luma(20%))
+  set math.equation(numbering: none)
+  set text(size: 0.8em, fill: luma(20%))
+
   title = strong(title)
   margin-note(side: right, stroke: none, title + content)
 }
 
 #let example(title: [], content) = {
+  set math.equation(numbering: none)
   set text(fill: luma(20%), size: 0.9em)
+
   title = if title != [] { strong(title) }
-  align(center, rect(width: 90%, stroke: (thickness: 0.1pt, dash: "dashed"))[
-    #set align(left)
-    *Example*: #title #content
-  ])
+
+  align(center, rect(width: 100%, fill: ghost-color, radius: 0.5em, {
+    set align(left)
+    title
+    content
+  }))
 }
 
 #let draft-pattern = {
@@ -38,7 +44,7 @@
   set page(
     width: full-width,
     height: full-heigh,
-    margin: (y: margin, left: margin, right: 1 / 3 * full-width),
+    margin: (y: margin, left: margin, right: 1 / 4 * full-width),
     background: back,
   )
 
@@ -68,21 +74,23 @@
   show heading: set text(fill: accent-color)
 
   show heading.where(level: 1): it => {
-    set text(size: font-size * 1.1)
+    set text(size: font-size * 1.2)
     set block(below: font-size * 1.5)
     smallcaps(it)
   }
 
   show heading.where(level: 2): it => {
-    set text(size: font-size * 1)
+    set text(size: font-size * 1.1)
     set block(above: font-size * 1.5, below: font-size)
     it
   }
 
   show heading.where(level: 3): it => {
-    text(it.body) + [:]
+    set text(size: font-size)
+    text(style: "italic", it.body) + [:]
   }
 
   doc
+  pagebreak(weak: true)
 }
 
