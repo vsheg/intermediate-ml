@@ -7,7 +7,7 @@
 - Conditional Expectation
 - Risk Minimization
 - Optimization
-- Likelihood
+- [MLE and MAP estimation](https://vsheg.github.io/intermediate-ml/01-formalism/04-mle-map.pdf)
 - Regularization
 - Exponential Family
 - [Information Theory](https://vsheg.github.io/intermediate-ml/01-formalism/07-information.pdf)

@@ -26,7 +26,7 @@
 #let draft-pattern = {
   let element = text(size: 2em, fill: gray.opacify(-90%))[*DRAFT*]
   let pat = pattern(size: (90pt, 40pt), element)
-  rotate(25deg, rect(width: 150%, height: 150%, fill: pat))
+  rotate(-25deg, rect(width: 150%, height: 150%, fill: pat))
 }
 
 #let template(is-draft: true, doc) = {
@@ -75,22 +75,19 @@
 
   show heading.where(level: 1): it => {
     set text(size: font-size * 1.2)
-    set block(below: font-size * 1.5)
-    smallcaps(it)
+    upper(it)
   }
 
   show heading.where(level: 2): it => {
-    set text(size: font-size * 1.1)
-    set block(above: font-size * 1.5, below: font-size)
-    it
+    set text(size: font-size * 1.2)
+    smallcaps(it)
   }
 
   show heading.where(level: 3): it => {
     set text(size: font-size)
-    text(style: "italic", it.body) + [:]
+    text(style: "italic", it.body) + [.]
   }
 
   doc
   pagebreak(weak: true)
 }
-

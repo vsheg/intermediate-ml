@@ -22,6 +22,15 @@
 #let Cor = math.op("Cor")
 #let supp = math.op("supp")
 
+#let Ind(..sink) = {
+  let args = sink.pos()
+  if args.len() == 0 {
+    return $[||]$
+  } else {
+    return $[|#args.at(0)|]$
+  }
+}
+
 #let bra = sym.angle.l
 #let ket = sym.angle.r
 
