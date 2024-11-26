@@ -2,6 +2,10 @@
 
 > This is a work-in-progress draft of an intermediate machine learning course. Content is currently under development.
 
+## Prerequisites
+- [Linear Algebra](https://vsheg.github.io/intermediate-ml/00-prerequisites/linear-algebra.pdf)
+- [Probability](https://vsheg.github.io/intermediate-ml/00-prerequisites/probability.pdf)
+
 ## Formalisms
 
 - Conditional Expectation
