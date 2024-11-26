@@ -12,6 +12,9 @@
 #let accent-color = eastern
 #let ghost-color = rgb(50%, 50%, 50%, 5%)
 
+#let All = sym.forall
+#let Exi = sym.exists
+
 #let hg(content) = text(fill: accent-color, $#content$)
 
 #let RSS = "RSS"

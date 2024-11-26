@@ -2,6 +2,20 @@
 #import "@preview/drafting:0.2.0": margin-note, set-page-properties
 #import "defs.typ": *
 
+// Default color palette
+#import "@preview/typpuccino:0.1.0": latte
+#let palette = latte
+#let colors = (palette.teal, palette.pink, palette.flamingo, palette.mauve, palette.green,)
+
+// Math annotation
+#import "@preview/mannot:0.1.0": *
+#show: mannot-init
+#let hg1 = mark.with(color: colors.at(0))
+#let hg2 = mark.with(color: colors.at(1))
+#let hg3 = mark.with(color: colors.at(2))
+#let hg4 = mark.with(color: colors.at(3))
+#let hg5 = mark.with(color: colors.at(4))
+
 #let note(title: [], content) = {
   set math.equation(numbering: none)
   set text(size: 0.8em, fill: luma(20%))
