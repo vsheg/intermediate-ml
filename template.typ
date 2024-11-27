@@ -16,6 +16,7 @@
 #let hg3 = mark.with(color: colors.at(2))
 #let hg4 = mark.with(color: colors.at(3))
 #let hg5 = mark.with(color: colors.at(4))
+#set math.cancel(stroke: black.transparentize(50%))
 
 #let note(title: [], content) = {
   set math.equation(numbering: none)
@@ -59,7 +60,7 @@
   set page(
     width: full-width,
     height: full-heigh,
-    margin: (y: margin, left: margin, right: 1 / 4 * full-width),
+    margin: (y: margin, left: margin, right: 0.3 * full-width),
     background: back,
   )
 
