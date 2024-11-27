@@ -15,6 +15,8 @@
 #let All = sym.forall
 #let Exi = sym.exists
 
+#import "@preview/quick-maths:0.2.0": shorthands
+
 #let hg(content) = text(fill: accent-color, $#content$)
 
 #let RSS = "RSS"
@@ -24,6 +26,8 @@
 #let Cov = math.op("Cov")
 #let Cor = math.op("Cor")
 #let supp = math.op("supp")
+#let pdf = math.op("pdf")
+#let cdf = math.op("cdf")
 
 #let Ind(..sink) = {
   let args = sink.pos()
@@ -38,6 +42,9 @@
 #let ket = sym.angle.r
 
 #let dmat(a, b, c) = $mat(#a, thin, thin;thin, #b, thin;thin, thin, #c)$
+
+// SHORTHANDS
+#let replacements = (($+-$, $plus.minus$), ($:>$, math.colon.eq),)
 
 // PLOTS
 #import "@preview/cetz:0.3.1"
