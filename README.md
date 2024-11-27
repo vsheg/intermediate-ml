@@ -12,7 +12,7 @@
 - Risk Minimization
 - Optimization
 - [MLE and MAP estimation](https://vsheg.github.io/intermediate-ml/01-formalism/04-mle-map.pdf)
-- Regularization
+- [Regularization](https://vsheg.github.io/intermediate-ml/01-formalism/regularization.pdf)
 - Exponential Family
 - [Information Theory](https://vsheg.github.io/intermediate-ml/01-formalism/07-information.pdf)
 - Singular Value Decomposition (SVD)
