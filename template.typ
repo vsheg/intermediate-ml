@@ -96,6 +96,7 @@
 
   show heading.where(level: 2): it => {
     set text(size: font-size * 1.2)
+    set block(below: 1.5em)
     smallcaps(it)
   }
 

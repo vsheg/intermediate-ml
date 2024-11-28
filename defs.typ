@@ -10,7 +10,7 @@
 #let ob = math.overbrace
 #let Tr = math.sans("T ")
 #let accent-color = eastern
-#let ghost-color = rgb(50%, 50%, 50%, 5%)
+#let ghost-color = rgb(50%, 50%, 50%, 50%)
 
 #let All = sym.forall
 #let Exi = sym.exists
