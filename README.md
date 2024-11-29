@@ -1,6 +1,6 @@
 # Intermediate ML
 
-> This is a work-in-progress draft of an intermediate machine learning course. Content is currently under development.
+> This is a work-in-progress draft of intermediate-level (B2) machine learning materials. Thanks to LLMs for the high quality; any errors are mine.
 
 ## Prerequisites
 - [Linear Algebra](https://vsheg.github.io/intermediate-ml/00-prerequisites/linear-algebra.pdf)
