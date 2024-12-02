@@ -42,9 +42,10 @@
 #let ket = sym.angle.r
 
 #let dmat(a, b, c) = $mat(#a, thin, thin;thin, #b, thin;thin, thin, #c)$
+#let frame(body) = rect(stroke: 0.3pt, inset: 7pt, body)
 
 // SHORTHANDS
-#let replacements = (($+-$, $plus.minus$), ($:>$, math.colon.eq),)
+#let replacements = (($+-$, $plus.minus$), ($:>$, $⧴$),)
 
 // PLOTS
 #import "@preview/cetz:0.3.1"

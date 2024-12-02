@@ -39,6 +39,13 @@
   }))
 }
 
+#let divider = {
+  line(
+    length: 100%,
+    stroke: (paint: ghost-color, thickness: 0.5pt, dash: "loosely-dashed"),
+  )
+}
+
 #let draft-pattern = {
   let element = text(size: 2em, fill: gray.opacify(-90%))[*DRAFT*]
   let pat = pattern(size: (90pt, 40pt), element)
