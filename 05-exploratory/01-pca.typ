@@ -8,7 +8,7 @@
 
 == Intro
 
-#note(
+#margin(
   title: [Сrumbs on the floor],
 )[
   Each data point is represented by three coordinates $x, y, z$, but $z$ is always $0$.
@@ -21,7 +21,7 @@
   $ ub(mat(1, 0, ?;0, 1, ?), A) vec(x, y, 0) = vec(x, y), quad ub(mat(1, 0;0, 1;0, 0), B) vec(x, y) = vec(x, y, 0) $
 ]
 
-#note(
+#margin(
   title: [NB],
 )[
   In the example above:
@@ -68,7 +68,7 @@
     R = sum_(bold(x) in X^ell) norm(hat(bold(f)) - bold(f))^2 = sum_(bold(x) in X^ell) norm(B A bold(f) - bold(f))^2 -> min_(A, B).
   $
 
-#note(
+#margin(
   title: [Сrumbs on the table.],
 )[
   Now, the third coordinate equals the table height $h = 1$:
@@ -85,7 +85,7 @@
   - The third equation cannot yield $1$ for all $x, y$ since it lacks a bias term.
 ]
 
-#note(
+#margin(
   title: [Approximate solution.],
 )[
   In the example above, we could find $B$ as the pseudoinverse $B = A^+ = (A^Tr A)^(-1) A^Tr$,
@@ -147,7 +147,7 @@ but in general, $A$ and $B$ are non-square and therefore non-invertible.
 === Pseudoinverse Matrix
 
 $A B = I$ holds if $B$ is the pseudoinverse of $A$:
-#note[
+#margin[
   $B A = A^+ A = (A^Tr A)^(-1) (A^Tr A) = I$
 ]
 $
@@ -161,7 +161,7 @@ $ A B approx I. $
 
 == Geometric Interpretation
 
-#note(
+#margin(
   title: [Basis Transition Matrix.],
 )[
   If in vector space $V$, there are two bases: the old one $cal(O): bold(omega)_1, ..., bold(omega)_n$ and
@@ -211,7 +211,7 @@ $ bold(f) approx B bold(p), $
 it acts similarly to a basis transition matrix from $bold(f)$ to $bold(p)$, storing the
 orthogonal basis of principal axes in the coordinates of the original space.
 
-#note[
+#margin[
   The choice of matrix $B$ is flexible, allowing us to impose additional constraints. For
   example, we can require that $B^T B$ be diagonal or even the identity matrix:
 
@@ -271,7 +271,7 @@ the extremum:
 
 ]
 
-#note[
+#margin[
   $S = P^Tr P$ is symmetric, i.e. $S^T = S$
 ]
 
@@ -280,7 +280,7 @@ any number of different pairs of matrices:
 
 $ P B^Tr = P I B^Tr = ub((P^* R), P) ub((R^(-1) B^*^Tr), B^Tr) $
 
-#note[
+#margin[
   Earlier, we showed that $B$ could be chosen to store an orthonormal basis, but this wasn't
   strictly necessary.
 

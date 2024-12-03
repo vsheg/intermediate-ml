@@ -22,7 +22,7 @@ $
 we can express the gradient and Hessian of the function in terms of the model's
 parameters:
 
-#note[
+#margin[
   gradient is the column vector:
   $ nabla f(bold(x)) := vec(pdv(f(xb), x_1), dots.v, pdv(f(xb), x_k)), $
   and $f'_j$ denotes $j$th component of the column
@@ -101,7 +101,7 @@ $
   Q' = D^Tr (bold(a) - bold(y)), quad Q'' = D^Tr D (bold(a) - bold(y))
 $
 
-#note[Newton --- Rafson method is a second-order optimization technique that provides fast
+#margin[Newton --- Rafson method is a second-order optimization technique that provides fast
   convergence. Newton–Gauss method is an approximate second-order method that uses a linear
   approximation of the optimized function at each step.]
 
@@ -113,7 +113,7 @@ $
   ub((bold(a) - bold(y)), bold(epsilon)), delta tb)
 $
 
-#note[The nonlinear optimization problem is reduced to a sequence of linear problems: at each
+#margin[The nonlinear optimization problem is reduced to a sequence of linear problems: at each
   iteration, a linear expansion of the function is made, matrices are calculated, and a
   (new) system of linear equations is solved.]
 
@@ -126,5 +126,5 @@ $
   tb - bold(epsilon))^2 -> min_bold(beta)
 $
 
-#note[The method is a second-order approximation method, providing fast convergence and slightly
+#margin[The method is a second-order approximation method, providing fast convergence and slightly
   inferior accuracy compared to the Newton–Raphson method.]

@@ -146,7 +146,7 @@ The inverse probability $1/p$ represents the *expected number of trials* needed 
 occurs, on average, once every 100 trials.
 
 === Information content
-#note[
+#margin[
   In $k$-valued logic, each $k$-valued digit (0, 1, ..., $k-1$) represents information:
   - In binary logic, each digit is a bit (0 or 1).
   - In ternary logic, each digit is a trit (0, 1, or 2).
@@ -211,7 +211,7 @@ $
 $
 
 == Shannon entropy
-#note(
+#margin(
   title: [Boltzmann distribution],
 )[
   maximizes thermodynamic probability $W$ and provides the *probability for each state*, so

@@ -72,7 +72,7 @@ general form of the multivariate normal distribution.
 
 Technically, each component of $Sigma$ is the covariance between the corresponding
 components
-#note[
+#margin[
   For a sample $X = {x_1, ..., x_ell} subset RR$, the variance is the average of the squared
   differences from the mean:
   $ Var[X] := 1 / ell sum_(i=1)^ell (x_i - macron(x))^2. $
@@ -91,7 +91,7 @@ components
   It will be shown below that this is equivalent to the covariance matrix for a sample of 2D
   vectors $bold(v)_i = vec(x_i, y_i) in RR^2$.
 ]
-#note[
+#margin[
   To characterize _co_-variance of multiple samples
   $
     X_1 & = {x_(1,1), ..., x_(1,ell)}, quad
@@ -119,7 +119,7 @@ The term $det Sigma$ is the generalized variance.
 === Mahalanobis distance
 The distance between a point $bold(x)$ and the distribution $cal(N)(bold(mu), Sigma)$ can
 be measured using the Mahalanobis distance.
-#note[
+#margin[
   Quadratic form $Q(bold(x))$ is a scalar function of a vector $bold(x)$ that can be
   expressed as as weighted sum of the squares of the components of $bold(x)$:
 

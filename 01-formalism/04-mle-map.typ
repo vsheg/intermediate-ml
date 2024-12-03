@@ -27,7 +27,7 @@ parameters $bold(theta)$
 === Likelihood function
 Let's write the joint distribution for all observed points as a product of independent
 distributions:
-#note[ $
+#margin[ $
     f(x,y|theta) &= f(x,y,theta) / f(theta) = (f(y|x,theta) \/ f(x, theta)) / f(theta) \
                  &= f(y|x,theta) / (f(theta) dot f(x,theta)) = f(y|x,theta) / cancel(f(x|theta))
   $ ]
@@ -58,7 +58,7 @@ $ a_hat(bold(theta)) (bold(x)') = ub(
 
 ) $
 
-#note[The prior distribution $f_X (bold(x)|bold(theta))$ is canceled out from the product above.
+#margin[The prior distribution $f_X (bold(x)|bold(theta))$ is canceled out from the product above.
 
   - The maximum likelihood method considers the prior distribution of $x$ unknown and
   unimportant (unlike in MAP), focusing solely on the conditional distribution $Pr[y|bold(x)^*,bold(theta)]$ which

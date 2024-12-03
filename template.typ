@@ -18,7 +18,7 @@
 #let hg5 = mark.with(color: colors.at(4))
 #set math.cancel(stroke: black.transparentize(50%))
 
-#let note(title: [], content) = {
+#let margin(title: [], content) = {
   set math.equation(numbering: none)
   set text(size: 0.8em, fill: luma(20%))
 
