@@ -1,28 +1,25 @@
-#import "@preview/physica:0.9.3": *
-#import "../defs.typ": *
 #import "../template.typ": *
-
 #show: template
 
-= Information Theory
+= Information theory
 
 == Messages
 
-=== Communication.
+=== Communication
 Information theory was originally developed to provide a theoretical framework for
 addressing an engineering problem of communication. Formally, consider a scenario where a
 sender wants to transmit a message, denoted as $omega$, to a receiver. In information
 theory, the semantic content of messages is irrelevant; the focus is solely on the
 engineering aspects of transmission. Here, the message is treated as a sequence of _symbols_.
 
-=== Symbols.
+=== Symbols
 Symbols are distinct, identifiable entities that form the alphabet used to represent a
 message. For instance, the digits from 0 to 9 can be used to represent any integer number
 (the message). Similarly, nodding or shaking one's head can be considered symbols
 representing the messages "yes" and "no." For hearing-impaired individuals, hand gestures
 are used as symbols to communicate, with each gesture representing a specific symbol.
 
-=== Encoding.
+=== Encoding
 The simplest symbolic system capable of transmitting information must have at least two
 distinct symbols, such as "0" and "1." Using this simple formal language, we can encode
 basic messages.
@@ -61,7 +58,8 @@ information in a more compact form; we need at least a sequence of length 2 bina
 to encode the weather and coin states. Thus, this code is _optimal_ and cannot be further
 compressed.
 
-=== Uncertainty.
+== Uncertainty
+
 A particular message $omega^*$ can be considered successfully transmitted if and only if
 the receiver can identify this specific message $omega^*$ from the set of all possible
 messages $omega \in Omega$. The larger the set $Omega$ is, the harder it is to select $omega^*$ from
@@ -97,7 +95,7 @@ the set $Omega$.
 
 == Hartley function
 
-=== Bits.
+=== Bits
 When there are multiple possible outcomes, we can distinguish between them if we have the
 necessary information. The minimal amount of information is 1 bit. *By definition*, each
 bit of information distinguishes between 2 possibilities. For example, 1 bit of
@@ -110,7 +108,7 @@ to 1 bit of information:
 
 $ macron(B) = {"Masha gave birth to a girl"} $
 
-=== Additivity.
+=== Additivity
 For two *independent and equally probable* events:
 
 $ B = {"Masha gave birth to a boy"}, quad G = {"Lena gave birth to a girl"} $
@@ -124,7 +122,7 @@ Since the logarithm satisfies this property, the possible choice is:
 
 $ log f(A B) = log f(A) + log f(B) $
 
-=== Probability.
+=== Probability
 The probability $p$ characterizes the frequency of an event. An event with a high
 probability provides a small amount of information. For instance, the probability of the
 sunrise is nearly one, so the information that there will be a sunrise tomorrow carries
@@ -142,12 +140,12 @@ $
 
 $ I(A B) = log 1 / Pr[A] + log 1 / Pr[B] $
 
-=== Inverse probability.
+=== Inverse probability
 The inverse probability $1/p$ represents the *expected number of trials* needed to achieve
 *one occurrence* of an event with probability $p$. For example, if $p = 0.01$, the event
 occurs, on average, once every 100 trials.
 
-=== Information content.
+=== Information content
 #note[
   In $k$-valued logic, each $k$-valued digit (0, 1, ..., $k-1$) represents information:
   - In binary logic, each digit is a bit (0 or 1).
@@ -183,7 +181,7 @@ $
   I = log_2 N = log_2 1 / p.
 $
 
-== Shannon self-information
+== Self-information
 
 Self-information, introduced by Claude Shannon, quantifies the amount of information or "surprise"
 associated with the occurrence of an event. The key properties of Shannon's
@@ -203,14 +201,13 @@ self-information is:
 
 $ I_X (x) := lg_2 1 / Pr[X = x]. $
 
-== Odds ratio
-
+=== Odds ratio
 The *odds* of an event $A$ is defined as the difference in self-information (also known as
 surprisal) between the event $A$ and its complement $macron(A)$:
 
 $
   "Odds" A :&= I(A) - I(macron(A)) \
-           &= log Pr[A] / (1 - Pr[A]).
+            &= log Pr[A] / (1 - Pr[A]).
 $
 
 == Shannon entropy
@@ -267,8 +264,7 @@ $
 
 which is equivalent to the distribution of the events ${ [X = x] | x in supp(X)}$.
 
-=== Practical interpretation.
-#note(
+#example(
   title: [Fair dice],
 )[
   induces the uniform distribution over the set of possible outcomes $p_1 = ... = p_6 = 1/6$.
@@ -282,8 +278,7 @@ which is equivalent to the distribution of the events ${ [X = x] | x in supp(X)}
   $ H = sum_(i = 1)^6 1/6 dot log_2 1/6 = log_2 1/6 approx 2.58 "bits". $
 ]
 
-== Conditional entropy
-
+=== Conditional entropy
 Entropy $H$ can be generalized to the conditional case. Suppose that we have random
 variables $X$ and $Y$, with their (marginal) distributions $Pr[X = x]$ and $Pr[Y = y]$ and
 their joint distribution
