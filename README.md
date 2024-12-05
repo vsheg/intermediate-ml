@@ -2,44 +2,43 @@
 
 > This is a work-in-progress draft of intermediate-level (B2) machine learning materials. Thanks to LLMs for the high quality; any errors are mine.
 
-## Prerequisites
-- [Linear Algebra](https://vsheg.github.io/intermediate-ml/00-prerequisites/linear-algebra.pdf)
 
 ## Formalisms
 
-- Conditional Expectation
-- Risk Minimization
+- Probability
+- Conditional expectation
+- Risk minimization
 - Optimization
-- [MLE and MAP estimation](https://vsheg.github.io/intermediate-ml/01-formalism/04-mle-map.pdf)
+- [MLE and MAP estimation](https://vsheg.github.io/intermediate-ml/01-formalism/mle-map.pdf)
 - [Regularization](https://vsheg.github.io/intermediate-ml/01-formalism/regularization.pdf)
-- Exponential Family
-- [Information Theory](https://vsheg.github.io/intermediate-ml/01-formalism/07-information.pdf)
-- Singular Value Decomposition (SVD)
+- Exponential family
+- [Linear algebra](https://vsheg.github.io/intermediate-ml/00-prerequisites/linear-algebra.pdf)
+- [Information theory](https://vsheg.github.io/intermediate-ml/01-formalism/information.pdf)
+- Singular value decomposition (SVD)
 
-## Linear Models
+## Linear models
 
-- Ordinary Least Squares (OLS)
-- Gauss-Markov Theorem
-- [Weighted Least Squares (WLS)](https://vsheg.github.io/intermediate-ml/02-linear/03-weighted-ls.pdf)
-- Partial Least Squares (PLS)
-- Loss Functions with Asymmetry
-- Generalized Linear Models (GLM)
-- Generalized Additive Models (GAM)
+- Ordinary least squares (OLS)
+- [Weighted Least Squares (WLS)](https://vsheg.github.io/intermediate-ml/02-linear/weighted-ls.pdf)
+- Partial least squares (PLS)
+- Generalized linear models (GLM)
+- Generalized additive models (GAM)
 
-## Non-linear Models
+## Non-linear models
 
-- [Nonlinear Least Squares](https://vsheg.github.io/intermediate-ml/03-nonlinear/01-nonlinear-ls.pdf)
-- Support Vector Machine (SVM)
+- [Nonlinear least squares](https://vsheg.github.io/intermediate-ml/03-nonlinear/nonlinear-ls.pdf)
+- Support vector machine (SVM)
+- Support vector regression (SVR)
 
-## Ensemble Methods
+## Ensemble methods
 
-- Decision Trees
-- Bagging and Stacking
-- Classical Boosting
-- Gradient Boosting
+- Decision trees
+- Bagging and stacking
+- Classical boosting
+- Gradient boosting
 
-## Exploratory Methods
+## Exploratory methods
  
-- [Principal Component Analysis (PCA)](https://vsheg.github.io/intermediate-ml/05-exploratory/01-pca.pdf)
-- [Density Estimation](https://vsheg.github.io/intermediate-ml/05-exploratory/02-density.pdf)
+- [Principal component analysis (PCA)](https://vsheg.github.io/intermediate-ml/05-exploratory/pca.pdf)
+- [Density estimation](https://vsheg.github.io/intermediate-ml/05-exploratory/density.pdf)
 - Clustering
