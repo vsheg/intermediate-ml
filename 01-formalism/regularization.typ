@@ -1,9 +1,7 @@
 #import "../template.typ": *
 #show: template
 
-= Regularization
-
-== Overview
+= General concept of regularization
 #margin[
   The regularization method traces back to A.N. Tikhonov's work in 1963, who proposed it for
   solving ill-posed problems where formal mathematical solutions are meaningless.
@@ -33,9 +31,9 @@ Through these controlled parameter constraints and reduced solution space, regul
 helps create simpler, more robust models by reducing their sensitivity to noise in the
 training data.
 
-== Regularization 2: probabilistic interpretation
+= Probabilistic interpretation of regularization
 
-=== Probabilistic framework
+== Probabilistic framework
 Consider a joint distribution of data $bold(x) in RR^k, y in RR$ and model's parameters $bold(theta) in RR$:
 
 $ bold(x), y, bold(theta) tilde.op X, Y, Theta. $
@@ -59,7 +57,7 @@ $ bold(x), y, bold(theta) tilde.op X, Y, Theta. $
   the hyperparameter vector $bold(gamma)$:
   $ f_Theta (bold(theta)) :> f_Theta (bold(theta)|bold(gamma)) ~ Theta(bold(gamma)) $
 
-=== Applying MAP
+== Applying MAP
 The joint distribution of data and parameters can be rewritten as a product of conditional
 pdfs:
 
@@ -97,7 +95,7 @@ Estimation).
   - $g(theta) := f(y = y^*|x = x^*, theta)$ is already a likelihood function of $theta$ given $x = x^*$ and $y = y^*$.
 ]
 
-=== Finding parameters
+== Finding parameters
 For specific training samples $y^*, bold(x)^*$ and predefined hyperparameters $bold(gamma)^*$,
 we write the joint likelihood of data and model parameters and maximize it:
 
@@ -129,7 +127,7 @@ $
   a_hat(bold(theta)) (bold(x)') = arg max_(y in supp Y) f_Y (y|bold(x) = bold(x)', bold(theta) = hat(bold(theta)))
 $
 
-=== Loss-function
+== Loss-function
 Probabilistic regularizer @eq-regularizer-general can be rewritten as the empirical risk
 where it becomes an additional loss function:
 
@@ -137,7 +135,7 @@ $
   R(bold(theta)) = ub(sum_(bold(x) in X^ell) cal(L)(bold(x)), "data fitting") + ub(lambda dot cal(L)_"reg"(bold(theta)), "parameters" \ "regularization ") -> min_(bold(theta))
 $
 
-== Regularization 3: $L_2$-norm (Tikhonov) regularization
+= $L_2$-norm regularization (Tikhonov regularization)
 
 On a privious step, we found the general form of the regularazer assuming prior
 distribution of parameters $f_Theta (bold(theta)|bold(gamma))$:
@@ -146,7 +144,7 @@ $
   R(bold(theta)) = sum_(bold(x) in X^ell) cal(L)(bold(x)) + lambda dot cal(L)_"reg" (bold(theta)) -> min_(bold(theta)).
 $
 
-=== Model:
+== Model:
 Here we make specific choices of the prior distributions parameters $f_Theta (bold(theta)|bold(gamma))$ and
 the data:
 + All parameters $bold(theta) :> bold(beta)$ are independent and linear, so the joint
@@ -171,7 +169,7 @@ the data:
   ]
   $ y(bold(x)) = beta^Tr bold(x) + epsilon(bold(x)), quad epsilon(bold(x)) ~ N(0, sigma). $
 
-=== Applying MAP
+== Applying MAP
 #margin[Here we denote pdf underscripts with letters corresponding to random variables]
 For any arbitrary model we can estimate the error term $hat(bold(epsilon))$ as difference
 between the predicted $hat(bold(y))$ and the actual $bold(y)$ responses. The posterior
@@ -192,7 +190,7 @@ $
   )
 $
 
-=== Independence
+== Independence
 We applied MAP and wrote the optimization problem, now continue with substituting the
 specific distributions:
 
@@ -237,7 +235,7 @@ In
 $L_1$ regularization, everything is similar, but the errors are described by the Laplace
 distribution.
 
-== Regularization 4: $L_1$-norm regularization
+= $L_1$-norm regularization
 $
   Q(bold(beta)) = norm(bold(y) - X bold(beta))_2^2 + lambda dot norm(bold(beta))_1 ->
   min_bold(beta)
@@ -267,9 +265,9 @@ $
   Q(bold(beta)) = sum_(bold(x) in X^ell) (hat(y)(bold(x)) - y(bold(x)))^2 + (2 sigma^2) / b
   sum_(j=1)^k abs(beta_j) -> min_(bold(beta))
 $
-==
-$L_0$ regularization
 
-== Ridge, LASSO, and Elastic Net regression
+= $L_0$ regularization
 
-== Geometric interpretation of regularization
+= Geometric interpretation of regularization
+
+= Ridge, LASSO, and Elastic Net regression
