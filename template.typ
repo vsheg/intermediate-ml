@@ -26,14 +26,15 @@
   margin-note(side: right, stroke: none, title + content)
 }
 
-#let example(title: [], content) = {
+#let note(title: [], content) = {
   set math.equation(numbering: none)
   set text(fill: luma(20%), size: 0.9em)
 
   title = if title != [] { strong(title) }
 
-  align(center, rect(width: 100%, fill: ghost-color, radius: 0.5em, {
+  align(center, rect(width: 100%, fill: ghost-color.transparentize(90%), radius: 0.5em, {
     set align(left)
+    set text(size: 0.9em)
     title
     content
   }))
@@ -96,25 +97,30 @@
   // headings
   show heading: set text(fill: accent-color)
 
+  let heading_counter = counter("heading_counter")
   show heading.where(level: 1): it => {
+    heading_counter.step()
+    if heading_counter.get().at(0) > 0 {
+      pagebreak(weak: true)
+    }
     set text(size: font-size * 1.2)
-    upper(it)
+    set block(below: 1em)
+    it
   }
 
   show heading.where(level: 2): it => {
-    set text(size: font-size * 1.2)
-    set block(below: 1.5em)
-    smallcaps(it)
+    set text(size: font-size)
+    v(font-size * 0.5)
+    it
   }
 
   show heading.where(level: 3): it => {
     set text(size: font-size)
-    text(style: "italic", it.body) + [.]
+    v(font-size * 0.5)
+    text(it.body) + [.]
   }
 
   // quick math shorthands
   show: shorthands.with(..replacements)
-
   doc
-  pagebreak(weak: true)
 }
