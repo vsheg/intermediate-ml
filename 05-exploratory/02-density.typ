@@ -3,7 +3,7 @@
 
 = Normal distribution
 
-=== Univariate
+== Univariate
 A random variable $xi$ is said to have a normal distribution with mean $mu$ and variance
 $sigma^2$ if its probability density function (pdf) is given by
 
@@ -18,7 +18,7 @@ $
   xi tilde cal(N)(mu, sigma^2)
 $
 
-=== Uncorrelated multivariate
+== Uncorrelated multivariate
 A random vector $bold(xi) = vec(xi_1, dots.v, xi_k)$ is said to have an uncorrelated
 multivariate normal distribution with mean $bold(mu) = vec(mu_1, dots.v, mu_k)$ and
 variances $sigma_1^2, dots, sigma_k^2$ if the pdf of every random component of $bold(xi)$
@@ -38,7 +38,7 @@ $
                              &= product_(i=1)^k 1 / (sigma_i sqrt(2 pi)) exp{ -1/2 ((x_i - mu_i) / sigma_i)^2 }
 $
 
-=== Covariance matrix
+== Covariance matrix
 All variance parameters $sigma_1^2, dots, sigma_k^2$ can be combined into a covariance
 matrix $Sigma$. The covariance matrix is a symmetric positive definite matrix that
 describes the covariance between the components of $bold(xi)$.
@@ -113,7 +113,7 @@ $ Sigma_(i,j) := Cov[xi_i, xi_j] = Ex[(xi_i - mu_i) (xi_j - mu_j)]. $
 
 The term $det Sigma$ is the generalized variance.
 
-=== Mahalanobis distance
+== Mahalanobis distance
 The distance between a point $bold(x)$ and the distribution $cal(N)(bold(mu), Sigma)$ can
 be measured using the Mahalanobis distance.
 #margin[

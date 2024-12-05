@@ -24,11 +24,10 @@ off-diagonal elements are often omitted.
 ]
 Diagonal matrices have several important properties:
 
-=== Linear independence
-The fundamental property of diagonal matrices is linear independence of their columns,
-which holds if and only if all diagonal elements are non-zero. This directly follows from
-the fact that any linear combination of columns equaling zero requires all coefficients to
-be zero.
+== Linear independence
+The fundamental property of diagonal matrices is linear independence of their columns, which 
+holds if and only if all diagonal elements are non-zero. This directly follows from the fact 
+that any linear combination of columns equaling zero requires all coefficients to be zero.
 #note[
   For any two distinct columns $i != j$ of a diagonal matrix $Lambda$, their dot product is
   zero since they have non-overlapping non-zero elements:
@@ -36,9 +35,9 @@ be zero.
   $ vec(dots.v, hg1(lambda_i), 0, dots.v)^Tr dot vec(dots.v, 0, hg2(lambda_j), dots.v) = 0 $
 ]
 
-=== Basis set
-For a diagonal matrix with non-zero diagonal elements, the columns form an orthogonal
-basis. Each column $bold(b)_i$ contains exactly one non-zero element $lambda_i$:
+== Basis set
+For a diagonal matrix with non-zero diagonal elements, the columns form an orthogonal basis. 
+Each column $bold(b)_i$ contains exactly one non-zero element $lambda_i$:
 
 $ cal(B): wide bold(b)_1 = vec(lambda_1, 0, dots.v, 0), quad bold(b)_2 = vec(0, lambda_2, dots.v, 0), quad ... , quad bold(b)_k = vec(0, 0, dots.v, lambda_k) $
 
@@ -52,11 +51,11 @@ $ cal(B): wide bold(b)_1 = vec(lambda_1, 0, dots.v, 0), quad bold(b)_2 = vec(0, 
 
 ]
 
-This orthogonal basis has a clear geometric interpretation --- each basis vector aligns
-with a coordinate axis and has magnitude $|lambda_i|$. When all $|lambda_i| = 1$, the
-basis becomes orthonormal.
+This orthogonal basis has a clear geometric interpretation --- each basis vector aligns with 
+a coordinate axis and has magnitude $|lambda_i|$. When all $|lambda_i| = 1$, the basis 
+becomes orthonormal.
 
-=== Scaling
+== Scaling
 A diagonal matrix $Lambda$ performs scaling transformations by independently scaling each
 coordinate by its corresponding diagonal element:
 
@@ -70,7 +69,7 @@ This represents stretching or compressing the space along each coordinate axis b
   $
 ]
 
-=== Inverse matrix
+== Inverse matrix
 For a diagonal matrix, its inverse is obtained by taking the reciprocal of each diagonal
 element, provided all diagonal elements are non-zero.
 $ diag(lambda_1, ..., lambda_k)^(-1) = diag(1/lambda_1, dots, 1/lambda_k) $
@@ -85,7 +84,7 @@ $ diag(lambda_1, ..., lambda_k)^(-1) = diag(1/lambda_1, dots, 1/lambda_k) $
   $
 ]
 
-=== Commutativity
+== Commutativity
 #margin[
   Moreover, diagonal matrices form a commutative group under multiplication.
 ]
@@ -109,7 +108,7 @@ Therefore, any order of multiplication of diagonal matrices results in the same 
 matrix:
 $ Lambda equiv Lambda_1 Lambda_2 ... Lambda_k = Lambda_k ... Lambda_2 Lambda_1 $
 
-=== Eigenvalues and eigenvectors
+== Eigenvalues and eigenvectors
 For a diagonal matrix, the eigenvalues are precisely its diagonal elements, while the
 eigenvectors are the standard basis vectors of the space.
 

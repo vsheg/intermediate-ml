@@ -7,7 +7,7 @@
 = Weighted Least Squares (WLS)
 
 == Intro
-#note(
+#margin(
   title: [Heteroscedasticity],
 )[
   can be eliminated by applying weighted LS.
@@ -48,38 +48,34 @@
     bold(y)' = X' bold(beta) + bold(epsilon)', quad Var[epsilon'(bold(x))] = sigma^2
   $
 ]
+The *Weighted Least Squares (WLS)* method extends ordinary least squares by incorporating
+observation-specific weights. The basic model structure remains similar to OLS:
 
-- The *Weighted Least Squares (WLS)* method is an extension of the ordinary least squares
-  (OLS) technique. The model is formulated the same way as in OLS:
+$
+  hat(y)(bold(x)) = bold(x)^Tr hat(bold(beta)) + epsilon(bold(x))
+$
 
-  $
-    hat(y)(bold(x)) = bold(x)^Tr hat(bold(beta)) + epsilon(bold(x))
-  $
-
-  where $bold(x)$ is the vector of features, $bold(beta)$ is the vector of parameters, $y(bold(x))$ is
-  the target variable, and $epsilon(bold(x))$ is the error term.
+where $bold(x)$ is the vector of features, $bold(beta)$ is the vector of parameters, $y(bold(x))$ is
+the target variable, and $epsilon(bold(x))$ is the error term.
 
 - Each observation $bold(x)$ has associated weights $w(bold(x))$ that reflect the importance
   of that particular observation.
 
 - This method minimizes the weighted sum of squared residuals:
 
-  $
-    RSS = sum_(bold(x) in X^ell) w(bold(x)) dot (y(bold(x)) - hat(y)(bold(x)))^2 -> min_bold(beta).
-  $
+$
+  RSS = sum_(bold(x) in X^ell) w(bold(x)) dot (y(bold(x)) - hat(y)(bold(x)))^2 -> min_bold(beta).
+$
 
 - The solution to this minimization problem is given by:
 
-  $
-    bold(beta)^* = ub((X^Tr W X)^(-1) X^Tr W, X^+_W) bold(y),
-  $
+$
+  bold(beta)^* = ub((X^Tr W X)^(-1) X^Tr W, X^+_W) bold(y),
+$
 
-  where $W$ is the diagonal matrix of weights, and $X^+_W$ is the weighted pseudo-inverse.
+where $W$ is the diagonal matrix of weights, and $X^+_W$ is the weighted pseudo-inverse.
 
-== Formalism
-
-=== Weight matrix
-
+== Weight matrix
 For a weighted
 
 $
@@ -89,13 +85,12 @@ $
 let's introduce the weight matrix:
 
 $
-  W :&= diag(w(bold(x)_1), ..., w(bold(x)_ell)) \
+  W :&= diag(w(bold(x)_1), ..., w(bold(x)_ell))
      &= dmat(w(bold(x)_1), dots.down, w(bold(x)_ell))
 $
 
-=== Matrix form
-
-#note(
+== Matrix form
+#margin(
   title: [Quadratic form],
 )[
   is a function of the form:
@@ -111,15 +106,13 @@ $
     Q(bold(x)) = bold(x)^T A bold(x).
   $
 ]
-
 Thus, we can rewrite the RSS in matrix form as a quadratic form:
 
 $
   RSS = (bold(y) - X bold(beta))^Tr W (bold(y) - X bold(beta)).
 $
 
-=== Transformation to standard LS problem
-
+== Back to standard LS
 The weighted LS problem can be easily reformulated as a standard LS problem by replacing
 the original variables with transformed ones:
 
@@ -133,8 +126,7 @@ $
   bold(y)' = X' bold(beta) + bold(epsilon)'
 $
 
-=== Analytical solution
-
+== Analytical solution
 Now, let's solve for $bold(beta)$ in the transformed model. Since $W$ and $W^{1/2}$ are
 diagonal matrices, transposing them results in the same matrix:
 

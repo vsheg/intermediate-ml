@@ -6,8 +6,7 @@
 
 = Principal Component Analysis (PCA)
 
-== Intro
-
+== Problem
 #margin(
   title: [Сrumbs on the floor],
 )[
@@ -20,7 +19,6 @@
 
   $ ub(mat(1, 0, ?;0, 1, ?), A) vec(x, y, 0) = vec(x, y), quad ub(mat(1, 0;0, 1;0, 0), B) vec(x, y) = vec(x, y, 0) $
 ]
-
 #margin(
   title: [NB],
 )[
@@ -31,7 +29,6 @@
   - Since $A$ and $B$ are non-square, they are non-invertible, so $A = B^(-1)$ does *not*
     hold.
 ]
-
 - Principal Component Analysis (PCA) is a feature transformation method that converts the
   original features $bold(f)$ into a new set of transformed features $bold(p)$, ensuring
   their linear independence:
@@ -96,10 +93,7 @@
     allows us to impose additional constraints on the transformations.
 ]
 
-== Formalism
-
-=== Linear Maps
-
+== Linear Maps
 Matrices $A$ (dimension reducer) and $B$ (dimension adder) are linear maps that work
 oppositely: $A$ reduces the dimension of the original features $bold(f)$ to the dimension
 of the principal components $bold(p)$, and $B$ restores, as closely as possible, the
@@ -116,8 +110,7 @@ $
   hat(bold(f)) = B bold(p).
 $
 
-=== Matrix Formulation
-
+== Matrix Formulation
 The feature matrix $F$ and the principal component matrix $P$ are formed by stacking the
 row vectors $bold(f)^Tr = (f_1, ..., f_k)$ and $bold(p)^Tr = (p_1, ..., p_m)$:
 
@@ -144,8 +137,7 @@ $
 The approximation $hat(F)$ equals $F$ exactly if $A B = I$. Ideally, $A$ would equal $B^(-1)$,
 but in general, $A$ and $B$ are non-square and therefore non-invertible.
 
-=== Pseudoinverse Matrix
-
+== Pseudoinverse matrix
 $A B = I$ holds if $B$ is the pseudoinverse of $A$:
 #margin[
   $B A = A^+ A = (A^Tr A)^(-1) (A^Tr A) = I$
@@ -160,7 +152,6 @@ approximate:
 $ A B approx I. $
 
 == Geometric Interpretation
-
 #margin(
   title: [Basis Transition Matrix.],
 )[
@@ -189,7 +180,6 @@ $ A B approx I. $
 
   $ {bold(v)}_cal(O) = A {bold(v)}_cal(N), quad {bold(v)}_cal(N) = A^(-1) {bold(v)}_cal(O) $
 ]
-
 Matrices $A$ and $B$ resemble transition matrices between bases:
 
 - $A$ transforms vectors from the original basis of features $f_1, ..., f_k$ into a new
@@ -230,10 +220,8 @@ This implies that $B$ stores not just orthogonal vectors but an *orthonormal* ba
 principal components.
 
 == Risk Minimization
-
-The objective of PCA is to minimize the restoration error.
-
-In this notation, the empirical risk depends on $A$ and $B$:
+The objective of PCA is to minimize the restoration error. In this notation, the empirical
+risk depends on $A$ and $B$:
 
 $
   R :&= norm(hat(F) - F)^2 \
