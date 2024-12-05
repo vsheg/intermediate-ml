@@ -111,12 +111,6 @@
   show heading.where(level: 2): it => {
     set text(size: font-size)
     v(font-size * 0.5)
-    it
-  }
-
-  show heading.where(level: 3): it => {
-    set text(size: font-size)
-    v(font-size * 0.5)
     text(it.body) + [.]
   }
 
