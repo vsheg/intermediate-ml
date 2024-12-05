@@ -4,7 +4,6 @@
 
 ## Prerequisites
 - [Linear Algebra](https://vsheg.github.io/intermediate-ml/00-prerequisites/linear-algebra.pdf)
-- [Probability](https://vsheg.github.io/intermediate-ml/00-prerequisites/probability.pdf)
 
 ## Formalisms
 

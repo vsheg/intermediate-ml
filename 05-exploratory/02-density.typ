@@ -1,22 +1,9 @@
-#import "@preview/physica:0.9.3": *
-#import "../defs.typ": *
 #import "../template.typ": *
-
 #show: template
 
-= Density estimation
+= Normal distribution
 
-Density estimation is a fundamental problem in statistics and machine learning. It is used
-to estimate the probability density function (pdf) of a random variable from a sample of
-data. The goal is to find a function that best fits the data and can be used to generate
-new samples.
-
-== Parametric density estimation
-
-Parametric density estimation assumes that the data comes from a known distribution with a
-fixed number of parameters. The most common parametric models are the normal distribution.
-
-=== Univariate normal distribution
+=== Univariate
 A random variable $xi$ is said to have a normal distribution with mean $mu$ and variance
 $sigma^2$ if its probability density function (pdf) is given by
 
@@ -31,7 +18,7 @@ $
   xi tilde cal(N)(mu, sigma^2)
 $
 
-=== Uncorrelated multivariate normal distribution
+=== Uncorrelated multivariate
 A random vector $bold(xi) = vec(xi_1, dots.v, xi_k)$ is said to have an uncorrelated
 multivariate normal distribution with mean $bold(mu) = vec(mu_1, dots.v, mu_k)$ and
 variances $sigma_1^2, dots, sigma_k^2$ if the pdf of every random component of $bold(xi)$
@@ -52,19 +39,6 @@ $
 $
 
 === Covariance matrix
-#note[Diagonal matrices $Lambda$ are useful because operations with them are simple.
-  $ Lambda = dmat(lambda_1, dots.down, lambda_k) $
-
-  + Multiplying a vector $bold(v)$ by a diagonal matrix scales each component of the vector by
-    the corresponding diagonal element.
-    $ Lambda bold(v) = vec(lambda_1 v_1, dots.v, lambda_k v_k) $
-  + The inverse of a diagonal matrix is simply the reciprocal of each diagonal element,
-    provided none of the diagonal elements are zero.
-    $ Lambda^(-1) = diag(1/lambda_1, dots, 1/lambda_k) $
-  + Diagonal matrices commute with each other under multiplication:
-    $ Lambda_1 Lambda_2 = Lambda_2 Lambda_1 $
-  + The eigenvalues of a diagonal matrix are the diagonal elements themselves, and the
-    eigenvectors are the standard basis vectors.]
 All variance parameters $sigma_1^2, dots, sigma_k^2$ can be combined into a covariance
 matrix $Sigma$. The covariance matrix is a symmetric positive definite matrix that
 describes the covariance between the components of $bold(xi)$.
@@ -95,7 +69,7 @@ general form of the multivariate normal distribution.
 
 Technically, each component of $Sigma$ is the covariance between the corresponding
 components
-#note[
+#margin[
   For a sample $X = {x_1, ..., x_ell} subset RR$, the variance is the average of the squared
   differences from the mean:
   $ Var[X] := 1 / ell sum_(i=1)^ell (x_i - macron(x))^2. $
@@ -114,7 +88,7 @@ components
   It will be shown below that this is equivalent to the covariance matrix for a sample of 2D
   vectors $bold(v)_i = vec(x_i, y_i) in RR^2$.
 ]
-#note[
+#margin[
   To characterize _co_-variance of multiple samples
   $
     X_1 & = {x_(1,1), ..., x_(1,ell)}, quad
@@ -142,7 +116,7 @@ The term $det Sigma$ is the generalized variance.
 === Mahalanobis distance
 The distance between a point $bold(x)$ and the distribution $cal(N)(bold(mu), Sigma)$ can
 be measured using the Mahalanobis distance.
-#note[
+#margin[
   Quadratic form $Q(bold(x))$ is a scalar function of a vector $bold(x)$ that can be
   expressed as as weighted sum of the squares of the components of $bold(x)$:
 
@@ -159,8 +133,9 @@ components of $bold(xi)$. The Mahalanobis distance is a measure of how many stan
 deviations away a point $bold(x)$ is from the mean $bold(mu)$, taking into account the
 correlations between the components of $bold(xi)$.
 
-We can define a quadratic
+We can define a quadratic form
 $
   Q(bold(x)) :&= (bold(x) - bold(mu))^Tr Sigma^(-1) (bold(x) - bold(mu)) \
               &= sum_(i,j) (x_i - mu_i) (Cov[xi_i, xi_j])^(-1) (x_j - mu_j).
 $
+it can be interpreted
