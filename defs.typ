@@ -28,6 +28,8 @@
 #let supp = math.op("supp")
 #let pdf = math.op("pdf")
 #let cdf = math.op("cdf")
+#let Exp = math.op("Exp")
+#let logit = math.op("logit")
 
 #let Ind(..sink) = {
   let args = sink.pos()

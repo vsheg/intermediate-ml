@@ -21,7 +21,7 @@
 - Ordinary least squares (OLS)
 - [Weighted Least Squares (WLS)](https://vsheg.github.io/intermediate-ml/02-linear/weighted-ls.pdf)
 - Partial least squares (PLS)
-- Generalized linear models (GLM)
+- [Generalized linear models (GLM)](https://vsheg.github.io/intermediate-ml/02-linear/glm.pdf)
 - Generalized additive models (GAM)
 
 ## Non-linear models

@@ -22,7 +22,7 @@
   set math.equation(numbering: none)
   set text(size: 0.8em, fill: luma(20%))
 
-  title = strong(title)
+  if title != [] { title = strong(title) + [.] }
   margin-note(side: right, stroke: none, title + content)
 }
 
@@ -30,7 +30,7 @@
   set math.equation(numbering: none)
   set text(fill: luma(20%), size: 0.9em)
 
-  title = if title != [] { strong(title) }
+  title = if title != [] { strong(title) + [.] }
 
   align(center, rect(width: 100%, fill: ghost-color.transparentize(90%), radius: 0.5em, {
     set align(left)
@@ -93,6 +93,9 @@
       it
     }
   }
+
+  // text
+  show "i.e.": set text(style: "italic")
 
   // headings
   show heading: set text(fill: accent-color)
