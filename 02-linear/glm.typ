@@ -1,3 +1,5 @@
+#import "../template.typ": *
+#show: template
 = GLM: Cross-entropy and log-loss
 
 == Model
