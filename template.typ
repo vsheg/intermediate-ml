@@ -96,6 +96,10 @@
 
   // text
   show "i.e.": set text(style: "italic")
+  show "e.g.": set text(style: "italic")
+  show "etc.": set text(style: "italic")
+  show "cf.": set text(style: "italic")
+  show "vs.": set text(style: "italic")
 
   // headings
   show heading: set text(fill: accent-color)
