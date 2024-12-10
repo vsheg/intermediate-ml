@@ -77,6 +77,96 @@ $
 $<eq-exp-family-modeling-1d>
 
 If $f_Y (y|x, theta)$ can be expressed as $f_Y (y|theta(x))$, then $y ~ Exp(theta(x))$.
+
+= Exponential family 2: Canonical form ($n$D)
+
+== Vector parameter $bold(theta) in RR^m$
+The scalar parameter $theta in RR$ combines with sufficient statistics $T(xi) in RR$ to
+produce a scalar value $theta dot T(xi) in RR$ within the exponential function $e^(theta dot T(xi))$.
+
+Generalizing $theta$ to a vector $bold(theta) in RR^n$ requires only that the inner
+product
+$bra bold(theta), T (xi) ket$ exists, where $T (xi) in RR^m$ maps the random variable $Xi$
+into the same space $RR^m$ where $bold(theta)$ resides:
+
+$ e^(theta dot T(xi)) :> e^(bra bold(theta), T(xi) ket). $
+
+== Random vector $bold(xi) in RR^k$
+The generalization from scalar random variable $Xi$ to random vector $bold(xi) in RR^k$ follows
+naturally through sufficient statistics $T: RR^k -> RR^m$ that ensures the inner product
+$bra bold(theta), T(bold(xi)) ket$ exists.
+#margin[
+  While dimensions of $bold(xi)$ and $bold(theta)$ need not match, the sufficient statistics $T$
+  must create a valid inner product $bra bold(theta), T(bold(xi)) ket$.
+]
+
+== Canonical form
+A random vector $bold(xi) in RR^k$ follows the exponential family distribution with
+parameter
+$bold(theta) in RR^m$ when its pdf takes the form:
+#margin[
+  These equivalent canonical forms relate through $A(bold(theta)) = log Z(bold(theta))$ and
+  $C(bold(xi)) = log h(bold(xi))$.
+]
+
+$
+  f(bold(xi)|bold(theta))
+    &:= 1/Z(bold(theta)) dot h(bold(xi)) dot e^(bra bold(theta), T(bold(xi)) ket) \
+    &:= exp lr({ bra bold(theta), T(bold(xi)) ket - A(bold(theta)) + C(bold(xi)) }, size: #200%).
+$<eq-exp-family>
+
+The remaining terms generalize naturally:
+
+- Partition function:
+  $ Z(bold(theta)) := integral_supp(bold(x)) h(bold(xi)) dot e^(bra bold(theta), T(bold(xi)) ket) dd(bold(xi)), $
+  where $dd(bold(xi)) = dd(xi_1) ... dd(xi_k)$ represents the differential volume element.
+
+- Log partition function:
+  $ A(bold(theta)) := log Z(bold(theta)). $
+
+- Shape function and its logarithm must be defined for vector argument:
+$ h(xi) :> h(bold(xi)), wide C(xi) :> C(bold(xi)). $
+
+== Modeling scalar response $y in RR$
+Given a joint distribution of $k$-dimensional inputs $bold(x)$ and scalar responses $y$,
+we can model their relationship analogous to @eq-exp-family-modeling-1d:
+#margin[
+  Note that $y$ is a scalar random variable, with only the parameters being vectors:
+  $y ~ Exp(bold(theta))$.
+]
+
+$ f_(X, Y) (bold(x), y|bold(theta)) = f_Y (y|bold(x), bold(theta)) $
+
+For training data $(bold(x)^*, y^*) in (X, Y)^ell$, we estimate $bold(theta)$ by
+maximizing:
+
+$
+  ell(bold(theta)) = sum_((bold(x)^*, y^*) in (X, Y)^ell) log f_Y (y = y^*|bold(x) = bold(x)^*, bold(theta)) -> max_bold(theta).
+$
+
+For prediction on new data $bold(x')$, we calculate the conditional expectation:
+
+$ hat(y)(bold(x')) = Ex[y|bold(x) = bold(x'), bold(theta) = bold(theta)^*]. $
+
+== Modeling all responses $bold(y) in RR^ell$
+A straightforward approach collects all responses $y(bold(x))$ for $bold(x) in X^ell$ into
+a column vector $bold(y) = row(y(bold(x)_1), ..., y(bold(x_ell)))^Tr in RR^ell$. The
+notation
+$bold(y) ~ Exp(bold(theta))$ indicates each training example $y in bold(y)$ shares a
+common parameter $bold(theta)$.
+
+== Modeling a single vector response $bold(y) in RR^m$
+For vector-valued responses, each $bold(y)$ represents multiple outputs for a single input
+$bold(x) in RR^k$. The joint distribution follows:
+
+$ f_(X, Y) (bold(x), bold(y)|bold(theta)) = f_Y (bold(y)|bold(x), bold(theta)) $
+
+Different responses $bold(y)$ can be modeled with a shared vector $bold(theta)$ or
+individual parameters:
+
+$ bold(y)_1, ..., bold(y)_ell ~ Exp(bold(theta)_1), ..., Exp(bold(theta)_ell). $
+
+= Exponential family 3:
 = GLM: Cross-entropy and log-loss
 
 == Model
