@@ -15,6 +15,8 @@
 #let All = sym.forall
 #let Exi = sym.exists
 
+#let row(..args) = $(#args.pos().join("  "))$
+
 #import "@preview/quick-maths:0.2.0": shorthands
 
 #let hg(content) = text(fill: accent-color, $#content$)
