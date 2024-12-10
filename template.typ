@@ -110,13 +110,13 @@
     if heading_counter.get().at(0) > 0 {
       pagebreak(weak: true)
     }
-    set text(size: font-size * 1.2)
+    set text(size: font-size * 1.1)
     set block(below: 1em)
     it
   }
 
   show heading.where(level: 2): it => {
-    set text(size: font-size)
+    set text(size: font-size * 0.9)
     v(font-size * 0.5)
     text(it.body) + [.]
   }
