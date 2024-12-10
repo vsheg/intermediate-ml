@@ -101,6 +101,12 @@
   show "cf.": set text(style: "italic")
   show "vs.": set text(style: "italic")
 
+  // lists
+  set list(marker: (
+    text(font: "Menlo", size: 1.5em, baseline: -0.2em, "✴", fill: accent-color),
+    text(size: 0.6em, baseline: +0.2em, "➤", fill: ghost-color),
+  ))
+
   // headings
   show heading: set text(fill: accent-color)
 
