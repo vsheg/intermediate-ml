@@ -49,7 +49,7 @@
 #let frame(body) = rect(stroke: 0.3pt, inset: 7pt, body)
 
 // SHORTHANDS
-#let replacements = (($+-$, $plus.minus$), ($:>$, $⧴$),)
+#let replacements = (($+-$, $plus.minus$), ($:>$, $#h(0.5em) ⧴ #h(0.5em) $),)
 
 // PLOTS
 #import "@preview/cetz:0.3.1"
