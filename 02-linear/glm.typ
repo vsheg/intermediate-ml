@@ -60,8 +60,8 @@ the terms $log h(x^*)$ are constant and can be ignored.
 
 == Modeling
 While 1D exponential family can be used to model 1D densities, relationships between two
-variables can still be modeled. If we assume that $y$ has an exponential family
-distribution $y ~ Exp(theta)$, and joint distribution is in the form of $f_(X,Y)(x, y|theta)$:
+variables $x$ and $y$ still can be modeled. If we assume that $y$ has an exponential
+family distribution $y ~ Exp(theta)$, and joint distribution is in the form of $f_(X,Y)(x, y|theta)$:
 #margin(
   title: [Assumptions],
 )[
@@ -73,8 +73,10 @@ distribution $y ~ Exp(theta)$, and joint distribution is in the form of $f_(X,Y)
 
 $
   f_(X,Y)(x, y|theta) &= (f_(X,Y,Theta)(x, y, theta)) / (f_Theta (theta)) = (f_Y (y|x, theta) dot f_(X, Theta)(x, theta)) / (f_Theta (theta)) \
-                      &= (f_Y (y|x, theta) dot f_X (x) dot cancel(f_Theta (theta))) / cancel(f_Theta (theta)) = f_Y (y|x, theta) ~ Exp(theta),
-$
+                      &= (f_Y (y|x, theta) dot f_X (x) dot cancel(f_Theta (theta))) / cancel(f_Theta (theta)) = f_Y (y|x, theta).
+$<eq-exp-family-modeling-1d>
+
+If $f_Y (y|x, theta)$ can be expressed as $f_Y (y|theta(x))$, then $y ~ Exp(theta(x))$.
 = GLM: Cross-entropy and log-loss
 
 == Model
