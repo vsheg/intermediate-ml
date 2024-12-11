@@ -83,6 +83,10 @@ If $f_Y (y|x, theta)$ can be expressed as $f_Y (y|theta(x))$, then $y ~ Exp(thet
 == Vector parameter $bold(theta) in RR^m$
 The scalar parameter $theta in RR$ combines with sufficient statistics $T(xi) in RR$ to
 produce a scalar value $theta dot T(xi) in RR$ within the exponential function $e^(theta dot T(xi))$.
+#margin[
+  Parameters $bold(theta)$ are linear, i.e. they linearly transform the random vector $bold(xi)$ (or
+  its sufficient statistics $T(bold(xi))$) to produce the scalar value.
+]
 
 Generalizing $theta$ to a vector $bold(theta) in RR^n$ requires only that the inner
 product
@@ -151,9 +155,13 @@ $ hat(y)(bold(x')) = Ex[y|bold(x) = bold(x'), bold(theta) = bold(theta)^*]. $
 == Modeling all responses $bold(y) in RR^ell$
 A straightforward approach collects all responses $y(bold(x))$ for $bold(x) in X^ell$ into
 a column vector $bold(y) = row(y(bold(x)_1), ..., y(bold(x_ell)))^Tr in RR^ell$. The
-notation
-$bold(y) ~ Exp(bold(theta))$ indicates each training example $y in bold(y)$ shares a
-common parameter $bold(theta)$.
+notation $bold(y) ~ Exp(bold(theta))$ indicates each training example $y in bold(y)$ shares
+a common parameter $bold(theta)$.
+
+#margin[
+  Vector $bold(y)$ can be represented as a vector of all answers $y(bold(x))$: $ bold(y) =
+  vec(y_1, dots.v, y_m) = vec(y(bold(x)_1), dots.v, y(bold(x)_m)). $
+]
 
 == Modeling a single vector response $bold(y) in RR^m$
 For vector-valued responses, each $bold(y)$ represents multiple outputs for a single input
