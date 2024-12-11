@@ -32,6 +32,7 @@
 #let cdf = math.op("cdf")
 #let Exp = math.op("Exp")
 #let logit = math.op("logit")
+#let odd = math.op("odd")
 
 #let Ind(..sink) = {
   let args = sink.pos()

@@ -174,7 +174,98 @@ individual parameters:
 
 $ bold(y)_1, ..., bold(y)_ell ~ Exp(bold(theta)_1), ..., Exp(bold(theta)_ell). $
 
-= Exponential family 3:
+= Exponential family: Bernoulli distribution
+
+== Classical definition
+Suppose we have a scenario with two outcomes: "success" and "failure," represented by a
+binary random variable $xi in {0, 1}$. The probability of "success" $Pr[xi = 1]$ is
+defined by a parameter $p in (0..1)$.
+
+In short, $xi ~ cal(B)(p)$ means that $xi$ follows the Bernoulli distribution with
+parameter $p$. The probability mass function (pmf) is:
+$ p(xi) &= cases(p &"if" xi = 1, 1-p &"if" xi = 0) \
+      &= p^xi (1-p)^(1-xi). $
+
+The Bernoulli distribution is perhaps the simplest member of the exponential family.
+
+== Problem statement
+To express the Bernoulli distribution, we need to explicitly identify all components of
+the exponential family's pdf/pmf: parameter $theta$, sufficient statistics $T(xi)$,
+partition function $Z(theta)$, and shape function $h(xi)$.
+
+== Canonical form
+Starting by taking the logarithm of the classical definition:
+
+$
+  log p(xi) &= log p^xi (1-p)^(1-xi) \
+            &= xi dot log p + (1-xi) dot log(1-p) \
+            &= xi dot log p/(1-p) + log(1-p).
+$
+
+Undoing the logarithm, we get:
+#margin[
+  Our goal is to demonstrate that this us equivalent to the canonical form @eq-exp-family:
+  $ f(xi|theta) = 1/Z(theta) dot h(xi) dot e^(theta dot T(xi)) $
+]
+
+$
+  p(xi) &= exp{ xi dot log p/(1-p) + log(1-p) } \
+        &= e^(xi dot log p/(1-p)) dot e^(log(1-p)) = e^(xi dot log p/(1-p)) dot (1-p).
+$
+
+By comparing this with the canonical pmf @eq-exp-family, we can easily identify:
+
+$ T(xi) = xi, wide theta = log p/(1-p), wide 1/Z(theta) dot h(xi) = 1-p. $
+
+== Logit function
+#margin[
+  The term "logit" is a variation of "logarithm" as it comprises the logarithm function. You
+  can think of it as a portmanteau of "logarithm" and "unit."
+]
+The parameter of the exponential family distribution $Exp(theta)$ depends on the parameter
+of the classical Bernoulli distribution $cal(B)(p)$. This connection is established by the _logit function_:
+#margin[
+  The relation of the probability of an event $A$ to the probability of the complementary
+  event is called the odds ratio:
+  $ odd A := Pr[A] / Pr[macron(A)] = Pr[A] / (1 - Pr[A]). $
+  The logit function is the logarithm of the odds ratio:
+  $ logit p := log p/(1-p) = log Pr[«"success"»] / Pr[«"failure"»], $
+  so it computes the ratio of the probability of success to the probability of failure.
+]
+
+$ logit p := log p/(1-p). $
+
+In other words, the canonical parameter can be easily calculated as $theta = logit p$.
+Technically, the logit function maps the probability $p in (0..1)$ to the arbitrary real
+number $theta in RR$ as the logarithm of $p/(1-p)$ can be any real number.
+
+== Sigmoid function
+Likewise, the classical probability $p in (0..1)$ can be easily calculated from the
+canonical parameter $theta in RR$ by applying an inverse function to the logit function:
+
+$ p = logit^(-1) theta = sigma(theta). $
+
+The commonly known sigmoid function $sigma(x) = 1/(1 + e^(-x))$ is the inverse of the
+logit function.
+#margin(
+  title: [Inverse of logit],
+)[
+  The inverse of the logit function is the sigmoid function:
+  $ theta = ln p/(1-p) $
+  $ e^theta (1-p) = p $ $ p = e^theta/(1+e^theta) = 1/(1+e^(-theta)) =: sigma(theta) $
+]
+
+== Partition function
+The pre-exponential term $1/Z(theta) dot h(xi)$ is equal to $1-p$, as we have shown. By
+applying
+$p = sigma(theta)$, we can see that the pre-exponential term depends only on the canonical
+parameter $theta$, not on the input $xi$, so
+
+$ h(xi) = 1, wide 1/Z(theta) = 1-sigma(theta). $
+
+== Final form
+The Bernoulli distribution in canonical exponential family form is:
+$ f(xi|theta) = (1-sigma(theta)) dot e^(theta dot xi). $
 = GLM: Cross-entropy and log-loss
 
 == Model
