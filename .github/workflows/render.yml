@@ -15,9 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
-      - uses: Homebrew/actions/setup-homebrew@master
-
-      - run: brew install font-menlo-for-powerline
+      - name: Install Menlo font
+        run: |
+          mkdir -p ~/.fonts
+          wget -O ~/.fonts/Menlo-Regular.ttf https://github.com/hbin/top-programming-fonts/raw/refs/heads/master/Menlo-Regular.ttf
+          fc-cache -f -v
 
       - uses: actions/checkout@v4
       
