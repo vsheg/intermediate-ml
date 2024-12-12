@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
+      - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+      - run: brew install font-menlo-for-powerline
+
       - uses: actions/checkout@v4
       
       - uses: typst-community/setup-typst@v3
