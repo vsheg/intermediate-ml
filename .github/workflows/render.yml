@@ -15,9 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
-      - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-      - run: export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+      - uses: Homebrew/actions/setup-homebrew@master
 
       - run: brew install font-menlo-for-powerline
 
