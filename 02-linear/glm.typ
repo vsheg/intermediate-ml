@@ -266,6 +266,81 @@ $ h(xi) = 1, wide 1/Z(theta) = 1-sigma(theta). $
 == Final form
 The Bernoulli distribution in canonical exponential family form is:
 $ f(xi|theta) = (1-sigma(theta)) dot e^(theta dot xi). $
+
+= Exponential family: Normal distribution
+
+== Standard normal distribution
+In the trivial case, the standard normal distribution $cal(N)(mu=0, sigma=1)$ can be
+expressed as an exponential family distribution $Exp(theta)$:
+
+$ f(xi|theta = -1\/2) = 1 / sqrt(2 pi) dot e^(-xi^2 \/ 2), $
+
+#margin(title: [Note])[
+  The choice of $theta$, $T(xi)$, $Z(theta)$, and $h(xi)$ is not unique.
+]
+where the coefficient before $xi^2$ is the canonical parameter $theta = -1/2$, the
+sufficient statistics are $T(xi) = xi^2$, and the pre-exponential term is $1/sqrt(2 pi) = 1/Z(theta) dot h(xi)$.
+
+== Non-standard normal distribution
+Interestingly, the non-standard normal distribution $cal(N)(mu, sigma)$ cannot be easily
+fitted into the exponential family. The pdf of the non-standard normal distribution is:
+
+$
+  f(xi|mu, sigma) &= 1 / (sigma sqrt(2 pi)) exp {-(xi - mu)^2 / (2 sigma^2)} \
+                  &= 1 / (sigma sqrt(2 pi)) exp {-1/(2 sigma^2) dot xi^2 + mu / sigma^2 dot xi - mu^2 / (2 sigma^2)} \
+                  &= ub(1 / (sigma sqrt(2 pi)) exp {- mu^2 / (2 sigma^2)}, h(xi)\/Z(bold(theta))) dot ub(
+    exp {-1/(2 sigma^2) dot xi^2 + mu / sigma^2 dot xi},
+    bra bold(theta) \, T(xi) ket,
+
+  ).
+$
+
+- The sufficient statistics and canonical parameter are both 2D vectors:
+  $ T(xi) = vec(xi, xi^2), wide bold(theta) equiv vec(theta_1, theta_2) = vec(mu\/sigma^2, -1\/(2 sigma^2)) $
+
+#margin(
+  title: [Note],
+)[
+  Since $sigma^2 > 0$, the canonical parameter $theta_2 = -1\/(2 sigma^2) < 0$ must be
+  negative; this constrains the parameter space.
+]
+
+- The parameters of the original distribution $mu$ and $sigma$ can be expressed as:
+  $ sigma = sqrt(-1/(2 theta_2)) = 1 / sqrt(-2 theta_2) > 0, wide mu = theta_1 dot sigma^2 = -theta_1 / (2 theta_2). $
+
+#margin[
+  - $-log Z$ comes from $log 1/Z$, also $h(xi) = 1$
+  - You can check the last by substituting $theta_1 = mu/sigma^2$ and $theta_2 = -1/(2 sigma^2)$ back
+    into the pdf.
+]
+- The partition function $Z(theta_1 = mu\/sigma^2, theta_2 = -1\/(2 sigma^2))$
+  depends on two parameters, and the shape function $h(xi) = 1$ is a constant, so the
+  pre-exponential term is:
+
+  $
+    - ln Z(theta_1, theta_2) &= -ln sigma - ln sqrt(2 pi) - mu^2 / (2 sigma^2) \
+                             &= ln sqrt(-2 theta_2) - ln sqrt(2 pi) + theta_1^2 / (4 theta_2) \
+                             &= theta_1^2 / (4 theta_2) + ln sqrt((-theta_2) / pi).
+  $
+
+Finally, the canonical form of the non-standard normal distribution is:
+
+$
+  f(xi|theta_1, theta_2) = exp {theta_1 dot xi - theta_2 dot xi^2 +theta_1^2 / (4 theta_2) + ln sqrt((-theta_2) / pi)}.
+$
+
+== Multivariate normal distribution
+Further generalization is relatively straightforward; the pdf of the multivariate normal
+distribution $cal(N)(bold(mu), bold(Sigma))$ is:
+
+$ f(bold(xi)|bold(mu), bold(Sigma)) = 1 / (sqrt((2 pi)^k det bold(Sigma))) exp {-1/2 (bold(xi) - bold(mu))^T bold(Sigma)^(-1) (bold(xi) - bold(mu))}, $
+
+where $bold(xi) in RR^k$ is a random vector, $bold(mu) in RR^k$ is the mean vector, and $bold(Sigma) in RR^(k times k)$ is
+the covariance matrix, the sufficient statistics, canonical parameters and pre-exponential
+term are:
+
+$ T(bold(xi)) = vec(bold(xi), bold(xi) bold(xi)^T), quad bold(theta)_1 = Sigma^(-1) bold(mu), quad bold(theta)_2 = -1/2 Sigma^(-1), quad Z(bold(theta)) = sqrt((2 pi)^k det Sigma) exp {1/2 bold(mu)^T Sigma^(-1) bold(mu)}. $
+
 = GLM: Cross-entropy and log-loss
 
 == Model
