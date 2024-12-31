@@ -1,7 +1,7 @@
 #import "../template.typ": *
 #show: template
 
-= Exponential Family 1: Canonical form (1D)
+= Exponential Family: Canonical form (1D)
 
 == Canonical form 1
 The exponential family represents a parametric class of probability distributions defined
@@ -78,7 +78,7 @@ $<eq-exp-family-modeling-1d>
 
 If $f_Y (y|x, theta)$ can be expressed as $f_Y (y|theta(x))$, then $y ~ Exp(theta(x))$.
 
-= Exponential family 2: Canonical form ($n$D)
+= Exponential family: Canonical form ($n$D)
 
 == Vector parameter $bold(theta) in RR^m$
 The scalar parameter $theta in RR$ combines with sufficient statistics $T(xi) in RR$ to
