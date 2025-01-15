@@ -341,6 +341,60 @@ term are:
 
 $ T(bold(xi)) = vec(bold(xi), bold(xi) bold(xi)^T), quad bold(theta)_1 = Sigma^(-1) bold(mu), quad bold(theta)_2 = -1/2 Sigma^(-1), quad Z(bold(theta)) = sqrt((2 pi)^k det Sigma) exp {1/2 bold(mu)^T Sigma^(-1) bold(mu)}. $
 
+= Exponential family: Laplace distribution
+
+== Classical definition
+The Laplace distribution arises naturally as the difference between two independent,
+identically distributed exponential variables. For this reason, it is also called the
+double exponential distribution.
+
+The distribution has two parameters: $mu$ is the location parameter (mean), and $b$ is the
+scale parameter. Its pdf is similar to the normal distribution but has an absolute value
+in the exponent instead of a square:
+
+$ f(y|mu, b) = 1/(2b) e^(-|y-mu| \/ b). $
+
+This distribution is useful for modeling data with sharp peaks and heavy tails compared to
+the normal distribution.
+
+// TODO: add plots of normal and Laplace distributions
+
+== Special case
+When $mu = 0$, the Laplace distribution can be expressed in exponential family form:
+
+$
+  f(y|b) &= 1/(2b) dot e^(-|y|\/b) \
+         &= ub(1/(2b), 1\/Z(theta)) dot e^(ob((1\/b) dot (-|y|), theta dot T(y))) \
+$
+
+The canonical parameter becomes $theta = 1\/b$, the sufficient statistics $T(y) = -|y|$,
+and the partition function $Z(theta) = 2\/theta$.
+
+== General case
+For $mu != 0$, the Laplace distribution cannot be written as an exponential family
+distribution because $fn(y, mu;|y - mu|)$ cannot be represented as sufficient statistics $T(y)$,
+which by definition must be independent of distribution parameters.
+
+The classical Laplace distribution parameters behave differently. The parameter $b$ directly
+relates to the canonical parameter through $theta = 1/b$ in the exponential family form.
+However, the parameter $mu$ does not correspond to any canonical parameter, making it
+impossible to express the doubly-parameterized Laplace distribution in exponential family
+form.
+
+== Trick 1: Shifting by $mu$
+By shifting the distribution by $mu$ and introducing a new variable $t := y - mu$, the
+distribution of $t$ follows the exponential family form:
+
+$ f(t|theta) = theta/2 dot e^(-|t| dot theta), quad t := y - mu. $
+
+Thus, while the general Laplace distribution itself lies outside the exponential family,
+the distribution of the shifted variable belongs to it.
+
+== Trick 2: Fixing $mu$
+Alternatively, fixing $mu$ to any constant value allows defining sufficient statistics $T(y) := -|y - mu|$,
+which expresses the Laplace distribution in exponential family form:
+
+$ f(y|theta) = theta/2 dot e^(T(y) dot theta), quad T(y) := -|y - mu|. $
 = GLM: Cross-entropy and log-loss
 
 == Model
