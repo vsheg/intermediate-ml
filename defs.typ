@@ -34,6 +34,12 @@
 #let logit = math.op("logit")
 #let odd = math.op("odd")
 
+#let fn(args, operations) = {
+  args.join(",")
+  $|->$
+  operations.join(",")
+}
+
 #let Ind(..sink) = {
   let args = sink.pos()
   if args.len() == 0 {
