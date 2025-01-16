@@ -395,6 +395,83 @@ Alternatively, fixing $mu$ to any constant value allows defining sufficient stat
 which expresses the Laplace distribution in exponential family form:
 
 $ f(y|theta) = theta/2 dot e^(T(y) dot theta), quad T(y) := -|y - mu|. $
+= Exponential family: Poisson distribution
+
+== Classical definition
+The Poisson distribution models the number of events occurring within a fixed interval of
+time (or space). The distribution has a single parameter $lambda > 0$ representing the
+average rate of event occurrences.
+
+The pmf of the Poisson distribution is:
+
+$ f(k|lambda) = e^(-lambda) dot lambda^k / k!, $ <eq-poisson-classical>
+
+#margin[$NN_0 := {0} union NN$ is the set of non-negative integers.]
+
+where $k in NN_0$ represents the number of events occurring in the interval. This pmf can
+be rewritten in exponential family form.
+
+== Solution
+To express @eq-poisson-classical as a one-dimensional exponential family distribution:
+
+$ f(k|theta) = h(k) dot exp(theta dot k - A(theta)), $
+
+we combine all parameter-dependent terms ($lambda^k$ and $e^(-lambda)$) from
+@eq-poisson-classical into a single exponent, and gather all parameter-independent terms ($k!$)
+into the pre-exponential term:
+
+$ f(k|lambda) &= e^(-lambda) dot lambda^k / k! \
+            &= 1 / k! dot exp { -lambda + ln lambda^k } \
+            &= 1 / k! dot exp { k dot ln lambda - lambda }. $<eq-poisson-to-exp>
+
+#margin[
+  The relationship between classical parameter $lambda$ and canonical parameter $theta$ is
+  given by
+  $lambda = e^theta$ or equivalently $theta = ln lambda$
+]
+
+#margin[
+  The log partition function $A(theta) = e^theta$ follows from @eq-poisson-to-exp and the
+  relationship
+  $lambda = e^theta$ (see the previous note).
+]
+
+Comparing terms with the canonical form yields the canonical parameter $theta = ln lambda$,
+the log partition function $A(theta) = e^theta$, and the scaling function $h(k) = 1 / k!$.
+
+== Mean parameter
+The expectation follows directly from the derivative of the log partition function:
+
+$ mu = A'(theta) = e^theta, $
+
+obtained through the formalism of the exponential family.
+
+== Classical approach
+The same result emerges by directly calculating the expectation using the classical pmf:
+
+#margin[
+  The exponential function expands as a Taylor series:
+  $ e^x = sum_(t = 0)^oo x^t / t! = 1 + x + x^2 / 2! + ... $
+]
+
+#margin[
+  The summation index changes twice: first to factor out $lambda$ from $lambda^k$, and then
+  through the substitution $t := k-1$.
+]
+
+$
+  Ex[K|lambda]
+  :&= sum_(k = 0)^oo k dot f(k|lambda) \
+   &= sum_(k = 0)^oo k dot e^(-lambda) dot lambda^k / k! \
+   &= e^(-lambda) dot lambda dot sum_(k = 1)^oo lambda^(k-1) / (k-1)! \
+   &= e^(-lambda) dot lambda dot sum_(t = 0)^oo lambda^(t) / t! \
+   &= e^(-lambda) dot lambda dot e^lambda = lambda.
+$
+
+As shown, since $lambda = e^theta$, the mean parameter $mu = e^theta = lambda$. This
+demonstrates that the mean parameter of the exponential form directly corresponds to the
+classical expectation.
+
 = GLM: Cross-entropy and log-loss
 
 == Model
