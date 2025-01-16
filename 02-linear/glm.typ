@@ -10,8 +10,8 @@ by their probability density function (pdf) or probability mass function (pmf):
 $ f(xi|theta) := 1/Z(theta) dot h(xi) dot e^(theta dot xi), $<eq-exp-family-1d>
 
 where $xi in RR$ represents a value of random variable $Xi$, $theta in RR$ is a parameter, $Z(theta) in RR$ represents
-a normalization constant, and $h(xi) in RR$ controls the distribution shape. In short
-notation, $Y tilde Exp(theta).$
+a parameter-dependent normalization constant, and $h(xi) in RR$ is a parameter-independent
+scaling function, also called the _carrier measure_. In short notation, $Y tilde Exp(theta).$
 #margin[
   This family encompasses many common probability distributions. Any distribution whose pdf
   can be expressed in the form of @eq-exp-family-1d belongs to the exponential family.
@@ -45,7 +45,7 @@ $
 $
 
 where $A(theta) := log Z(theta)$ is the log-partition (cumulant) function, and $C(xi) := log h(xi)$
-controls the shape of the distribution. Both forms are canonical as they are equivalent.
+scales the distribution. Both forms are canonical as they are equivalent.
 
 == Fitting parameter $theta$
 For a data points $x^* ~ Exp(theta)$, we can estimate $theta$ by standard approaches, e.g.
@@ -128,7 +128,7 @@ The remaining terms generalize naturally:
 - Log partition function:
   $ A(bold(theta)) := log Z(bold(theta)). $
 
-- Shape function and its logarithm must be defined for vector argument:
+- Carrier measure and its logarithm must be defined for vector argument:
 $ h(xi) :> h(bold(xi)), wide C(xi) :> C(bold(xi)). $
 
 == Modeling scalar response $y in RR$
@@ -190,8 +190,8 @@ The Bernoulli distribution is perhaps the simplest member of the exponential fam
 
 == Problem statement
 To express the Bernoulli distribution, we need to explicitly identify all components of
-the exponential family's pdf/pmf: parameter $theta$, sufficient statistics $T(xi)$,
-partition function $Z(theta)$, and shape function $h(xi)$.
+the exponential family's pdf/pmf: parameter $theta$, sufficient statistic $T(xi)$,
+partition function $Z(theta)$, and scaling function $h(xi)$.
 
 == Canonical form
 Starting by taking the logarithm of the classical definition:
@@ -314,7 +314,7 @@ $
     into the pdf.
 ]
 - The partition function $Z(theta_1 = mu\/sigma^2, theta_2 = -1\/(2 sigma^2))$
-  depends on two parameters, and the shape function $h(xi) = 1$ is a constant, so the
+  depends on two parameters, and the scaling function $h(xi) = 1$ is a constant, so the
   pre-exponential term is:
 
   $
