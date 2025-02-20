@@ -33,9 +33,8 @@ jobs:
       - uses: actions/configure-pages@v5
 
       - uses: actions/jekyll-build-pages@v1 # convert README.md to index.html
-        with:
-          source: README.md
-          destination: index.html
+
+      - run: cp _site/index.html index.html # copy index.html to root
 
       - uses: actions/upload-pages-artifact@v3
         with:
