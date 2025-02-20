@@ -395,6 +395,37 @@ Alternatively, fixing $mu$ to any constant value allows defining sufficient stat
 which expresses the Laplace distribution in exponential family form:
 
 $ f(y|theta) = theta/2 dot e^(T(y) dot theta), quad T(y) := -|y - mu|. $
+
+= Exponential family: expectation and mean parameter
+
+== Expectation of sufficient statistic $T(y)$
+Consider an exponential family distribution:
+
+$ Y tilde f(y | bold(theta)) = exp{ bold(theta) dot T(y) - A(bold(theta)) + C(y) } $
+
+Starting with the probability normalization condition:
+
+$ integral f(y | bold(theta)) dd(y) = 1 $
+
+Taking the gradient of both sides:
+
+$ grad integral f(y | bold(theta)) dd(y) = 0 $
+
+Switching the order of the gradient and integral operators:
+
+$ integral grad exp{ bold(theta) dot T(y) - A(bold(theta)) + C(y) } dd(y) = 0 $
+
+Computing the gradient of the exponential function:
+
+$ integral ub(exp[bold(theta) dot T(y) - A(bold(theta)) + C(y)], f(y | bold(theta))) dot [T(y) - grad A(bold(theta))] dd(y) = 0 $
+
+Rearranging terms:
+
+$ ub(integral f(y | bold(theta)) dot T(y) dd(y), Ex[T(Y)]) = grad A(bold(theta)) dot ub(integral f(y | bold(theta)) dd(y), 1) $
+
+Therefore, the expectation of the sufficient statistic $T(y)$ is:
+
+$ Ex[T(Y)] = integral f(y | bold(theta)) dot T(y) dd(y) = grad A(bold(theta)) $
 = Exponential family: Poisson distribution
 
 == Classical definition
