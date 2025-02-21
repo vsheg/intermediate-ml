@@ -174,7 +174,7 @@ individual parameters:
 
 $ bold(y)_1, ..., bold(y)_ell ~ Exp(bold(theta)_1), ..., Exp(bold(theta)_ell). $
 
-= Exponential family: Bernoulli distribution
+= Exponential family: Bernoulli distribution <sec-exp-family-bernoulli>
 
 == Classical definition
 Suppose we have a scenario with two outcomes: "success" and "failure," represented by a
@@ -426,6 +426,41 @@ $ ub(integral f(y | bold(theta)) dot T(y) dd(y), Ex[T(Y)]) = grad A(bold(theta))
 Therefore, the expectation of the sufficient statistic $T(y)$ is:
 
 $ Ex[T(Y)] = integral f(y | bold(theta)) dot T(y) dd(y) = grad A(bold(theta)) $
+
+== Expectation of Bernoulli distribution
+The pmf of a Bernoulli random variable $xi ~ cal(B)(p)$ is:
+
+$ p(xi|theta) = p^xi (1-p)^(1-xi) = (1 - sigma(theta)) dot e^(theta dot xi) ~ Exp(theta) $
+
+The corresponding expectation can be calculated via differentiation:
+
+// TODO: add margin with classical Bernoulli distribution expectation calculation
+
+// TODO: add to quick notes
+#margin(
+  title: [Derivative of $sigma(theta)$],
+  [
+
+    $
+      sigma'(theta) &= (1 / (1 + e^(-theta)))' \
+                    &= - (1 + e^(-theta))^(-2) dot (1 + e^(-theta))' \
+                    &= + (e^(-theta)) / (1 + e^(-theta))^(2) \
+                    &= (e^(-theta) + 1 - 1) / (1 + e^(-theta))^(2) \
+                    &= (1 + e^(-theta)) / (1 + e^(-theta))^(2) - 1 / (1 + e^(-theta))^(2) \
+                    &= 1 / (1 + e^(-theta)) (1 - 1 / (1 + e^(-theta))) \
+                    &= sigma(theta) dot (1 - sigma(theta)).
+    $
+  ],
+)
+
+$
+  Ex[xi] &= grad A(theta) = grad {ln 1/Z(theta)} = - pdv(, theta) ln Z(theta) \
+         &= -pdv(, theta) ln (1 - sigma(theta)) = - 1/(1 - sigma(theta)) dot pdv(, theta) {1 - sigma(theta)} \
+         &= - 1/(1 - sigma(theta)) dot {0 - sigma(theta) dot (1 - sigma(theta))} = sigma(theta).
+$
+
+As shown in @sec-exp-family-bernoulli, the classical parameter $p equiv sigma(theta)$.
+
 = Exponential family: Poisson distribution
 
 == Classical definition
