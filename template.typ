@@ -109,6 +109,7 @@
 
   // headings
   show heading: set text(fill: accent-color)
+  set heading(numbering: "1")
 
   let heading_counter = counter("heading_counter")
   show heading.where(level: 1): it => {
@@ -129,5 +130,8 @@
 
   // quick math shorthands
   show: shorthands.with(..replacements)
+
+  outline(depth: 1)
+
   doc
 }
