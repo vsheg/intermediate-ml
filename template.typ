@@ -1,5 +1,5 @@
 #import "@preview/physica:0.9.3": *
-#import "@preview/drafting:0.2.0": margin-note, set-page-properties
+#import "@preview/drafting:0.2.2": margin-note, set-page-properties
 #import "@preview/quick-maths:0.2.0": shorthands
 #import "defs.typ": *
 
