@@ -11,7 +11,7 @@
 - [Regularization](https://vsheg.github.io/intermediate-ml/01-formalism/regularization.pdf)
 - [Exponential family](https://vsheg.github.io/intermediate-ml/01-formalism/exp-family.pdf)
 - [Information theory](https://vsheg.github.io/intermediate-ml/01-formalism/information.pdf)
-- [Linear algebra](https://vsheg.github.io/intermediate-ml/00-prerequisites/linear-algebra.pdf)
+- [Linear algebra](https://vsheg.github.io/intermediate-ml/01-formalism/linear-algebra.typ)
 - Singular value decomposition (SVD)
 
 ## Linear and quasi-linear models
