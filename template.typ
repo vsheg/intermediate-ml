@@ -130,8 +130,5 @@
 
   // quick math shorthands
   show: shorthands.with(..replacements)
-
-  outline(depth: 1)
-
   doc
 }
