@@ -27,7 +27,7 @@
 
 - [Nonlinear least squares](https://vsheg.github.io/intermediate-ml/03-nonlinear/nonlinear-ls.pdf)
 - Support vector classification and regression
-- Quantile regression
+- [Quantile regression](https://vsheg.github.io/intermediate-ml/03-nonlinear/quantile.pdf)
 
 ## Ensemble methods
 
