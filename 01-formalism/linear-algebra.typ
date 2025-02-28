@@ -32,7 +32,7 @@ that any linear combination of columns equaling zero requires all coefficients t
   For any two distinct columns $i != j$ of a diagonal matrix $Lambda$, their dot product is
   zero since they have non-overlapping non-zero elements:
 
-  $ vec(dots.v, hg1(lambda_i), 0, dots.v)^Tr dot vec(dots.v, 0, hg2(lambda_j), dots.v) = 0 $
+  $ vec(dots.v, focus(lambda_i), 0, dots.v)^Tr dot vec(dots.v, 0, focus(lambda_j), dots.v) = 0 $
 ]
 
 == Basis set
@@ -80,6 +80,8 @@ $ diag(lambda_1, ..., lambda_k)^(-1) = diag(1/lambda_1, dots, 1/lambda_k) $
   $
     #Lambda-full mat(1/lambda_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, 1/lambda_k) = mat(
       lambda_1 dot 1/lambda_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, lambda_k dot 1/lambda_k
+
+
     ) = I
   $
 ]
