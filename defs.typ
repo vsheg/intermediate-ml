@@ -32,6 +32,9 @@
 #let logit = math.op("logit")
 #let odd = math.op("odd")
 
+#let pdf = $cal(f)$
+#let pmf = $cal(p)$
+
 #let fn(args, operations) = {
   args.join(",")
   $|->$
