@@ -160,7 +160,7 @@ $ A B approx I. $
   represented as linear combinations of the old basis vectors:
 
   $ cases(
-    bold(nu)_1 = hg(alpha_(1,1)) bold(omega)_1 + ... + hg(alpha_(1,n)) bold(omega)_n,
+    bold(nu)_1 = focus(alpha_(1,1)) bold(omega)_1 + ... + focus(alpha_(1,n)) bold(omega)_n,
     dots.v,
     bold(nu)_n = alpha_(n,1) bold(omega)_1 + ... + alpha_(n,n) bold(omega)_n,
 
@@ -171,12 +171,12 @@ $ A B approx I. $
   (by columns!):
 
   $ A = mat(
-    hg(alpha_(1,1)), ..., alpha_(n,1);dots.v, dots.down, dots.v;hg(alpha_(1,n)), ..., alpha_(n,n)
+    focus(alpha_(1,1)), ..., alpha_(n,1);dots.v, dots.down, dots.v;focus(alpha_(1,n)), ..., alpha_(n,n)
   ) $
 
   This matrix transforms coordinates between bases:
 
-  $ {bold(nu)_1}_cal(O) = vec(hg(alpha_(1,1)), dots.v, hg(alpha_(1,n)))_cal(O) = A vec(1, 0, dots.v)_cal(N) = A{bold(nu)_1}_cal(N) $
+  $ {bold(nu)_1}_cal(O) = vec(focus(alpha_(1,1)), dots.v, focus(alpha_(1,n)))_cal(O) = A vec(1, 0, dots.v)_cal(N) = A{bold(nu)_1}_cal(N) $
 
   $ {bold(v)}_cal(O) = A {bold(v)}_cal(N), quad {bold(v)}_cal(N) = A^(-1) {bold(v)}_cal(O) $
 ]
