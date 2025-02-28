@@ -9,13 +9,6 @@
 #let colors = (palette.teal, palette.pink, palette.flamingo, palette.mauve, palette.green,)
 
 // Math annotation
-#import "@preview/mannot:0.1.0": *
-#show: mannot-init
-#let hg1 = mark.with(color: colors.at(0))
-#let hg2 = mark.with(color: colors.at(1))
-#let hg3 = mark.with(color: colors.at(2))
-#let hg4 = mark.with(color: colors.at(3))
-#let hg5 = mark.with(color: colors.at(4))
 #set math.cancel(stroke: black.transparentize(50%))
 
 #let margin(title: [], content) = {

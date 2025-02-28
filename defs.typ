@@ -19,8 +19,6 @@
 
 #import "@preview/quick-maths:0.2.0": shorthands
 
-#let hg(content) = text(fill: accent-color, $#content$)
-
 #let RSS = "RSS"
 #let Pr = math.bb("P")
 #let Ex = math.bb("E")
