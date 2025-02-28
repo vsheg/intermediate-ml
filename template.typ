@@ -46,6 +46,12 @@
   rotate(-25deg, rect(width: 150%, height: 150%, fill: pat))
 }
 
+#let comment(content) = text(fill: ghost-color, size: 0.8em, $   &$ + content)
+
+#let focus(content) = {
+  text(fill: accent-color, content)
+}
+
 #let template(is-draft: true, doc) = {
   // page setup
   let back = none
