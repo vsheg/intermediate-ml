@@ -36,6 +36,7 @@
 
 #let pdf = $cal(f)$
 #let pmf = $cal(p)$
+#let cdf = $cal(F)$
 
 #let fn(args, operations) = {
   args.join(",")
