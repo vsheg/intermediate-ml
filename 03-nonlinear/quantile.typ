@@ -40,11 +40,6 @@ $ cal(R)(a) &:= Ex_((bold(x), y) ~ pdf(bold(x), y)) [cal(L)_q (a(bold(x)), y)] \
 Let's first consider the simplest case, we will look for $a^*$ in a family of all constant
 models $a^* in {a | a = const}$:
 
-#let comment(content) = text(fill: ghost-color, size: 0.8em, $   &$ + content)
-#let focus(content) = {
-  text(fill: accent-color, content)
-}
-
 $
   cal(R)(a) &= integral cal(L)_q (focus(epsilon = y - a)) dd(F(bold(x), y)) comment(a(bold(x)) -> a = const) \
             &= integral cal(L)_q (epsilon = y - a) focus(dd(F(y))) comment("as" a "is not a function of" bold(x)) \
