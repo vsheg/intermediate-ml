@@ -32,6 +32,8 @@
 #let logit = math.op("logit")
 #let odd = math.op("odd")
 
+#let scr(it) = text(features: ("ss01",), box($cal(it)$))
+
 #let pdf = $cal(f)$
 #let pmf = $cal(p)$
 
