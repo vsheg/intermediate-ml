@@ -52,6 +52,11 @@
   text(fill: accent-color, content)
 }
 
+#let compare(..contents) = {
+  let n = contents.pos().len()
+  grid(columns: n, column-gutter: 1em, ..contents)
+}
+
 #let template(is-draft: true, doc) = {
   // page setup
   let back = none
