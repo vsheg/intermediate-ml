@@ -31,11 +31,14 @@ select the smallest $y$ if it exists in the set; otherwise, we take the limit of
 approaches the set.
 
 #margin[
-  $QQ_(1\/4) [Y], QQ_(1\/2) [Y], QQ_(3\/4) [Y]$ are 1st, 2nd (median), and 3rd quantiles
+  Some important quantiles:
+  - $QQ_0 [Y] = min Y$ is the minimum value
+  - $QQ_(1\/4) [Y]$ is the 1st quartile ($Q_1$)
+  - $QQ_(1\/2) [Y]$ is the median or 2nd quartile ($Q_2$)
+  - $QQ_(3\/4) [Y]$ is the 3rd quartile ($Q_3$)
+  - $QQ_1 [Y] = max Y$ is the maximum value
 
-  The expected value and $1\/2$-quantile (median) provide different measures of central
-  tendency:
-  $Ex[Y] = macron(y)$ vs. $QQ_(1\/2)[Y] = "med" Y$
+  Percentiles are also quantiles, e.g. $QQ_(0.95) [Y]$ is the 95th percentile.
 ]
 
 // TODO: add example of quantile to illustrate infimum
@@ -60,7 +63,7 @@ We specifically denote probability $p$ as $q$ to emphasize its connection to qua
   Technically, $QQ_q [Y]$ is a function of $q$, and it is usually denoted as $Q_Y (p)$,
   similar to PDF $pdf_Y (y)$ and CDF $cdf_Y (y)$.
 
-  However, the notation $QQ_q [Y]$ is used to emphasize the connection between quantiles $QQ_q [Y]$ and
+  However, the notation $QQ_q [Y]$ is used here to emphasize the analogy between quantiles $QQ_q [Y]$ and
   expectation $Ex[Y]$.
 ]
 
@@ -84,25 +87,44 @@ that the probability of $Y$ being less than or equal to $QQ_q [Y|X]$ given $X$ i
 
 $ Pr[ thick Y <= QQ_q [Y|X] thick | thick X thick] = q. $ <eq-quantile-probability-conditional>
 
-== Expectation $Ex[Y|X]$ and quantile $QQ_q [Y|X]$
-In ordinary least squares (LS) regression, we predict the expected value of a random
-variable:
-$ hat(y)(bold(x)^*) equiv Ex[Y|X = bold(x)^*] equiv a(bold(x)^*). $
+= Quantile $QQ_q [Y|X]$ vs. expectation $Ex[Y|X]$
 
-In quantile regression, we predict the $q$-quantile of a random variable:
-$ hat(y)_q (bold(x)^*) equiv QQ_q [Y|X=bold(x)^*] equiv a(bold(x)^*), $
+== Median $QQ_(1\/2) [Y]$
+For $q = 1\/2$, the quantile $QQ_(1\/2) [Y]$ corresponds to the value $y^*$ such that
+$Pr[Y <= y^*] = 1\/2$; i.e., the value $y^*$ cuts the distribution of $Y$ in half. This is
+what the median ($y^* = "med" Y$) of a random variable $Y$ is.
 
-where $q$ is a hyperparameter.
+Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two different measures of central
+tendency of a random variable $Y$:
+
+#compare(
+  [
+    - In ordinary least squares (LS), we predict the expected value of a random variable:
+    $
+      hat(y)(bold(x)) = Ex[Y|X = bold(x)].
+    $
+  ],
+  [
+    - We can also build a regression model that predicts the conditional median:
+    $ hat(y)_"med" (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
+  ],
+)
+
+==
+
+However, median regression is not limited to $q = 1\/2$; we can construct a regression
+model for any conditional quantile $QQ_q [Y|X]$ where
+$q$ is a hyperparameter.
 
 == Prediction $hat(y)_q$ and error term $hat(epsilon)_q$
-In LS regression, the prediction $hat(y)(bold(x)^*)$ is singular; there are no two
-expectations
-$Ex[Y|X=bold(x)^*]$ for the same random variable and parameter. The corresponding error
-term (residual) $epsilon(bold(x)^*) = y(bold(x)^*) - hat(y)(bold(x)^*)$ is also singular.
+In LS regression, the prediction
+$hat(y)(bold(x))$ is singular; there are no two expectations $Ex[Y|X=bold(x)]$ for the
+same random variable and parameter. The corresponding error term (residual) $epsilon(bold(x)) = y(bold(x)) - hat(y)(bold(x))$ is
+also singular.
 
-Alternatively, in quantile regression, the prediction $hat(y)_q (bold(x)^*)$ is
-parameterized by $q$; there are many (potentially infinite) predictions $QQ_q [Y|X=bold(x)^*]$ for
-the same random variable and parameter.
+Alternatively, in quantile regression, the prediction $hat(y)_q (bold(x))$ is
+parameterized by $q$; there are many (potentially infinite) predictions $QQ_q
+[Y|X=bold(x)]$ for the same random variable and parameter.
 
 // TODO: add plot of quantiles of a random variable
 
@@ -187,6 +209,18 @@ Minimizing the check loss $cal(L)_q (epsilon)$ for a regression model $hat(y)(bo
 equivalent to finding the $q$-quantile of the random variable $Y$. Therefore, the
 algorithm $a^*$ derived from solving the minimization problem $cal(R) = Ex[cal(L)_q] -> min$
 effectively predicts the $q$-quantile of $Y$.
+
+#margin[
+  Some implications of minimizing @eq-check-loss:
+
+  #show math.equation: math.display
+
+  - $Ex[Y] = arg min_bold(theta) sum_(bold(x) in X^ell) {y(bold(x)) - hat(y)(bold(x)|bold(theta))}^2$
+
+  - $"med" Y = arg min_bold(theta) sum_(bold(x) in X^ell) abs(y(bold(x)) - hat(y)(bold(x)|bold(theta)))$
+
+  - $QQ_q [Y] = arg min_bold(theta) sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - hat(y)(bold(x)|bold(theta)))$
+]
 
 == Quantile parameter $q$
 By using the check loss $cal(L)_q (epsilon)$, we can train a regression model $hat(y)_q (bold(x))$
