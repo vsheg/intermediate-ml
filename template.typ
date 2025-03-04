@@ -105,9 +105,6 @@
   show "cf.": set text(style: "italic")
   show "vs.": set text(style: "italic")
   set par(justify: true)
-  show strong: it => {
-    highlight(it.body)
-  }
 
   // lists
   set list(marker: (
