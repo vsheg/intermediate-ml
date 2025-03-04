@@ -415,3 +415,7 @@ This loss function can be used to train a general regression model.
   coefficients remain invariant, but their contribution to $y' = log(y)$ becomes less
   obvious. For skewed data where OLS fails, quantile regression coefficients differ
   significantly from OLS but may still be interpretable.
+
+= Example: AIDS dataset
+
+#figure(image("aids.svg"))
