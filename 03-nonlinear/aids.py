@@ -4,7 +4,6 @@ import pandas as pd
 import seaborn as sns
 from sksurv.datasets import load_aids
 from sklearn.linear_model import QuantileRegressor
-import scienceplots
 import matplotlib.pyplot as plt
 
 # %%
@@ -32,8 +31,8 @@ df_coeffs = df_coeffs.loc[features_important.index].reset_index(names="feature")
 df_coeffs = df_coeffs.melt("feature", var_name="quantile", value_name="coefficient")
 
 # %%
-plt.style.use("default")
-plt.style.use("no-latex")
+plt.rcParams["font.family"] = "CMU Serif"
+plt.rcParams["font.size"] = 9
 plot = sns.relplot(
     data=df_coeffs,
     x="quantile",
@@ -41,9 +40,9 @@ plot = sns.relplot(
     col="feature",
     col_wrap=2,
     kind="line",
-    height=2,
+    height=3 / 2,
     aspect=4 / 3,
 )
 
 # %%
-plot.savefig("aids.svg")
+plot.savefig("aids.svg", transparent=True)
