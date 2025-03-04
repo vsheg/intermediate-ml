@@ -22,7 +22,7 @@
 #let RSS = "RSS"
 #let Pr = math.bb("P")
 #let Ex = math.bb("E")
-#let Var = math.op("Var")
+#let Var = math.bb("D")
 #let Cov = math.op("Cov")
 #let Cor = math.op("Cor")
 #let supp = math.op("supp")
@@ -31,6 +31,7 @@
 #let Exp = math.op("Exp")
 #let logit = math.op("logit")
 #let odd = math.op("odd")
+#let fun = math.op($(dot)$)
 
 #let scr(it) = text(features: ("ss01",), box($cal(it)$))
 
