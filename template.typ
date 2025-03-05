@@ -136,4 +136,6 @@
   // quick math shorthands
   show: shorthands.with(..replacements)
   doc
+
+  bibliography("assets/citations.bib")
 }

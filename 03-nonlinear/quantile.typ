@@ -319,6 +319,14 @@ and the check loss in @eq-check-loss is actually $cal(L)_q (epsilon) equiv cal(L
 
 = Quantile regression
 
+#margin[
+  Quantile regression was introduced by Roger Koenker and Gilbert Bassett in
+  @koenker1978regression.
+
+  For a short overview and examples see @koenker2001quantile and @Koenker2005quantile for
+  details.
+]
+
 == Probabilistic model
 Suppose the distribution of the data $(bold(x), y)$ is modeled as a joint distribution $pdf(bold(x), y)$.
 Our goal is to predict the quantile $QQ_q [Y] = fun(bold(x))$ for a given $bold(x)$, i.e.,
