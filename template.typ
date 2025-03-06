@@ -1,60 +1,20 @@
 #import "@preview/physica:0.9.3": *
-#import "@preview/drafting:0.2.2": margin-note, set-page-properties
+#import "@preview/drafting:0.2.2": (
+  margin-note,
+  set-page-properties,
+  set-margin-note-defaults,
+)
 #import "@preview/quick-maths:0.2.0": shorthands
 #import "defs.typ": *
 
-// Default color palette
-#import "@preview/typpuccino:0.1.0": latte
-#let palette = latte
-#let colors = (palette.teal, palette.pink, palette.flamingo, palette.mauve, palette.green,)
-
-// Math annotation
-#set math.cancel(stroke: black.transparentize(50%))
-
-#let margin(title: [], content) = {
-  set math.equation(numbering: none)
-  set text(size: 0.8em, fill: luma(20%))
-
-  if title != [] { title = strong(title) + [.] }
-  margin-note(side: right, stroke: none, title + content)
-}
-
-#let note(title: [], content) = {
-  set math.equation(numbering: none)
-  set text(fill: luma(20%), size: 0.9em)
-
-  title = if title != [] { strong(title) + [.] }
-
-  align(center, rect(width: 100%, fill: ghost-color.transparentize(90%), radius: 0.5em, {
-    set align(left)
-    set text(size: 0.9em)
-    title
-    content
-  }))
-}
-
-#let divider = {
-  line(
-    length: 100%,
-    stroke: (paint: ghost-color, thickness: 0.5pt, dash: "loosely-dashed"),
-  )
-}
+//////////////
+// TEMPLATE //
+//////////////
 
 #let draft-pattern = {
   let element = text(size: 2em, fill: gray.opacify(-90%))[*DRAFT*]
-  let pat = pattern(size: (90pt, 40pt), element)
-  rotate(-25deg, rect(width: 150%, height: 150%, fill: pat))
-}
-
-#let comment(content) = text(fill: ghost-color, size: 0.8em, $   &$ + content)
-
-#let focus(content) = {
-  text(fill: accent-color, content)
-}
-
-#let compare(..contents) = {
-  let n = contents.pos().len()
-  grid(columns: n, column-gutter: 1em, ..contents)
+  let pattern = tiling(size: (90pt, 40pt), element)
+  rotate(-25deg, rect(width: 150%, height: 150%, fill: pattern))
 }
 
 #let template(is-draft: true, doc) = {
@@ -65,14 +25,16 @@
     back = draft-pattern
   }
 
-  let full-width = 195mm
-  let full-heigh = 265mm
-  let margin = 1cm
+  let content-width = 180mm
+  let content-heigh = 250mm
+  let margin-size = 10mm
+  let full-width = content-width + 2 * margin-size
+  let full-heigh = content-heigh + 2 * margin-size
 
   set page(
     width: full-width,
     height: full-heigh,
-    margin: (y: margin, left: margin, right: 0.3 * full-width),
+    margin: (y: margin-size, left: margin-size, right: 0.33 * content-width),
     background: back,
   )
 
@@ -81,7 +43,12 @@
 
   // font
   let font-size = 9pt
-  set text(size: font-size, hyphenate: true, font: "New Computer Modern")
+  set text(
+    size: font-size,
+    hyphenate: true,
+    font: "New Computer Modern",
+    costs: (hyphenation: 10%),
+  )
 
   // math equations
   set math.equation(numbering: "(1)")
@@ -115,8 +82,8 @@
   // headings
   show heading: set text(fill: accent-color)
   set heading(numbering: "1")
-
   let heading_counter = counter("heading_counter")
+
   show heading.where(level: 1): it => {
     heading_counter.step()
     if heading_counter.get().at(0) > 0 {
@@ -129,13 +96,75 @@
 
   show heading.where(level: 2): it => {
     set text(size: font-size * 0.9)
-    v(font-size * 0.5)
     text(it.body) + [.]
+  }
+
+  show ref: it => {
+    let cite = ref
+    let el = it.element
+    if el == none {
+      footnote(it)
+    } else {
+      it
+    }
   }
 
   // quick math shorthands
   show: shorthands.with(..replacements)
   doc
-
-  bibliography("assets/citations.bib")
+  bibliography(title: [References], style: "ieee", "assets/citations.bib")
 }
+
+///////////////////////
+// STYLING FUNCTIONS //
+///////////////////////
+
+// Math annotation
+#set math.cancel(stroke: black.transparentize(50%))
+
+#let margin(title: [], content) = {
+  set math.equation(numbering: none)
+  set text(size: 0.8em, fill: luma(20%))
+
+  if title != [] { title = strong(title) + [. ] }
+
+  v(0pt, weak: true)
+  margin-note(side: right, stroke: none, title + content)
+}
+
+#let note(title: [], content) = {
+  set math.equation(numbering: none)
+  set text(fill: luma(20%), size: 0.9em)
+
+  title = if title != [] { strong(title) + [.] }
+
+  align(center, rect(width: 100%, fill: ghost-color.transparentize(90%), radius: 0.5em, {
+    set align(left)
+    set text(size: 0.9em)
+    title
+    content
+  }))
+}
+
+#let divider = {
+  line(
+    length: 100%,
+    stroke: (paint: ghost-color, thickness: 0.5pt, dash: "loosely-dashed"),
+  )
+}
+
+#let comment(content) = text(fill: ghost-color, size: 0.8em, $   &$ + content)
+
+#let focus(content) = {
+  text(fill: accent-color, content)
+}
+
+#let compare(..contents) = {
+  let n = contents.pos().len()
+  grid(columns: n, column-gutter: 1em, ..contents)
+}
+
+// Default color palette
+#import "@preview/typpuccino:0.1.0": latte
+#let palette = latte
+#let colors = (palette.teal, palette.pink, palette.flamingo, palette.mauve, palette.green,)
