@@ -3,18 +3,62 @@
 
 = Quantile $QQ_q$ of a random variable
 
+== Quantile of a sample
+Given an unordered sample $y_1, y_2, ..., y_ell$, we can construct a sorted sample $y^((1)) <= y^((2)) <= ... <= y^((ell))$,
+where $y^((i))$ is the $i$th smallest value of the sample ($i = 1..ell$), also known as
+the $i$th _order statistic_.
+
+#margin[
+  Some order statistics:
+  - $y^((1)) = min Y$ is the 1st order statistic
+  - $y^((2))$ is the 2nd order statistic (2nd smallest value)
+  - $y^((ell\/2))$ is the median, which divides the sample in half
+  - $y^((ell)) = max Y$ is the last ($ell$th) order statistic
+]
+
+#margin[NB][
+  In $y^((i))$, values $i = 1..ell$ are integers, while in $y^((q))$, values $q in [0..1]$ are
+  fractional, e.g., $y^((10))$ refers to the 10th order statistic, while $y^((0.1))$ refers
+  to the 0.1-quantile.
+]
+
+Informally, the $q$-quantile $y^((q))$ is the value that divides the ordered sample into
+two parts with proportions $q : (1 - q)$. However, this definition is ambiguous. One
+practical approach is to use different formulas for $q dot ell in.not NN$ and $q dot ell in NN$:
+
+#margin[
+  In practice, other definitions of quantiles $y^((q))$ are also used, e.g., $y^((q)) := y^((ceil(q dot ell)))$ for
+  any $ell$
+]
+
+$
+  y^((q)) := cases(
+    y^((ceil(q dot ell))) & quad q dot ell "is not integer",
+    1/2 (y^((q dot ell)) + y^((q dot ell + 1))) & quad q dot ell "is integer"
+  ,
+
+  )
+$
+
 == Quantile of a random variable
-By definition, the quantile $QQ_q$ of a random variable $Y$ is the inverse of its CDF:
+For a random variable $Y$, the quantile function, denoted either as $QQ_q [Y]$ or $y^((q))$,
+is defined as the inverse of its CDF:
 
-$ QQ_q [Y] := cdf_Y^(-1)(q) = inf { y | cdf_Y (y) >= q}, $ <eq-quantile-def>
+$ QQ_q [Y] := cdf_Y^(-1)(q) = inf { y | cdf_Y (y) >= q }, $ <eq-quantile-def>
 
-where $inf$ denotes the infimum, meaning that among all $y$ such that $cdf_Y (y) >= q$, we
-select the smallest $y$ if it exists in the set; otherwise, we take the limit of $y$ as it
-approaches the set.
+where $inf$ denotes the infimum, which is the greatest lower bound, i.e., $QQ_q [Y]$ is
+the smallest value $y$ for which the probability $Pr[Y <= y]$ is at least $q$.
 
-#let example(title: [], content) = note(content, title: "Ex")
+#margin[
+  For a sample ${y_1, ..., y_ell}$, the empirical CDF
 
-#compare(
+  $ cdf_Y (y) := 1/ell dot sum_(i=1)^ell Ind(y_i <= y) $
+
+  can be used in @eq-quantile-def to define quantiles $QQ_q$.
+]
+
+#grid(
+  columns: 2,
   example[
     For a uniform distribution on interval $[a,b]$, the CDF is:
 
@@ -119,50 +163,52 @@ $ Pr[ thick Y <= QQ_q [Y|X] thick | thick X thick] = q. $ <eq-quantile-probabili
 Due to the linearity of expectation, it is sensitive to outliers. The quantile, on the
 other hand, is robust to outliers.
 
-#example[
-  #compare[
-    Consider a sample $Y = {1, 2, 3, 4, 5}$ with an outlier introduced by a typo: $Y' = {1, 2, 3, 4, 50}$.
+#example(
+  cols: 2,
+)[
+  Consider a sample $Y = {1, 2, 3, 4, 5}$ with an outlier introduced by a typo: $Y' = {1, 2, 3, 4, 50}$.
 
-    The sample mean is significantly affected:
-    $ Ex[Y] = 1/5 dot (1 + 2 + 3 + 4 + 50) = 12. $
+  The sample mean is significantly affected:
+  $ Ex[Y] = 1/5 dot (1 + 2 + 3 + 4 + 50) = 12. $
 
-    While the median remains completely unaffected by the outlier:
-    $ QQ_(1\/2) [Y] = 3. $
+  While the median remains completely unaffected by the outlier:
+  $ QQ_(1\/2) [Y] = 3. $
 
-    Most of other quantiles are also unaffected.
-  ][
+  Most of other quantiles are also unaffected.
 
-    #table(
-      columns: 4,
-      [],
-      [$Y$],
-      [$Y'$],
-      [comment],
-      [$Q_0 equiv min$],
-      [1],
-      [1],
-      [not affected],
-      [$Q_(1\/4) equiv$ 1st quantile],
-      [2],
-      [2],
-      [not affected],
-      [$Q_(1\/2) equiv "med"$ (2nd quantile)],
-      [3],
-      [3],
-      [not affected],
-      [$Q_(3\/4) equiv$ 3rd quantile],
-      [4],
-      [4],
-      [not affected],
-      [$Q_0.99 equiv$ 99th percentile],
-      [4],
-      [4],
-      [not affected],
-      [$Q_1 equiv max$],
-      [5],
-      [50],
-      [affected],
-    )]
+  #colbreak()
+
+  #table(
+    columns: 4,
+    [],
+    [$Y$],
+    [$Y'$],
+    [comment],
+    [$Q_0 equiv min$],
+    [1],
+    [1],
+    [not affected],
+    [$Q_(1\/4) equiv$ 1st quantile],
+    [2],
+    [2],
+    [not affected],
+    [$Q_(1\/2) equiv "med"$ (2nd quantile)],
+    [3],
+    [3],
+    [not affected],
+    [$Q_(3\/4) equiv$ 3rd quantile],
+    [4],
+    [4],
+    [not affected],
+    [$Q_0.99 equiv$ 99th percentile],
+    [4],
+    [4],
+    [not affected],
+    [$Q_1 equiv max$],
+    [5],
+    [50],
+    [affected],
+  )
 ]
 
 == Median $QQ_(1\/2) [Y]$
@@ -173,7 +219,8 @@ what the median ($y^* = "med" Y$) of a random variable $Y$ is.
 Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two different measures of central
 tendency of a random variable $Y$:
 
-#compare(
+#grid(
+  columns: 2,
   [
     - In ordinary least squares (LS), we predict the expected value of a random variable:
     $
@@ -185,8 +232,6 @@ tendency of a random variable $Y$:
     $ hat(y)_"med" (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
   ],
 )
-
-==
 
 However, median regression is not limited to $q = 1\/2$; we can construct a regression
 model for any conditional quantile $QQ_q [Y|X]$ where
@@ -231,6 +276,7 @@ $ <eq-check-loss>
   Strictly speaking, this is an estimation of the error: $hat(epsilon) := y - hat(y)$; for
   different estimations of $hat(y)$, there are different $hat(epsilon)$
 ]
+
 where $epsilon := y - hat(y)$ is the error term (residual) and $hat(y)$ is the prediction
 of a regression model.
 
