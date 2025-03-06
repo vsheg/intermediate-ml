@@ -19,12 +19,6 @@
 
 #let template(is-draft: true, doc) = {
   // page setup
-  let back = none
-
-  if is-draft {
-    back = draft-pattern
-  }
-
   let content-width = 180mm
   let content-heigh = 250mm
   let margin-size = 10mm
@@ -35,7 +29,7 @@
     width: full-width,
     height: full-heigh,
     margin: (y: margin-size, left: margin-size, right: 0.33 * content-width),
-    background: back,
+    background: if is-draft { draft-pattern } else { none },
   )
 
   // important to margin notes from drafting package
@@ -96,17 +90,7 @@
 
   show heading.where(level: 2): it => {
     set text(size: font-size * 0.9)
-    text(it.body) + [.]
-  }
-
-  show ref: it => {
-    let cite = ref
-    let el = it.element
-    if el == none {
-      footnote(it)
-    } else {
-      it
-    }
+    text(it.body) + [: ]
   }
 
   // quick math shorthands
@@ -118,6 +102,9 @@
   set table(
     fill: (_, y) => if (y == 0) { accent-color.transparentize(80%) } else { if calc.even(y) { ghost-color.transparentize(80%) } },
   )
+
+  // grids
+  set grid(column-gutter: 1em)
 
   // begin document
   doc
@@ -131,28 +118,56 @@
 // Math annotation
 #set math.cancel(stroke: black.transparentize(50%))
 
-#let margin(title: [], content) = {
+#let note-style(content) = {
   set math.equation(numbering: none)
-  set text(size: 0.8em, fill: luma(20%))
+  show math.equation.where(block: true): set block(spacing: 0.5em)
+  set text(size: 0.9em, fill: luma(20%))
+  content
+}
 
-  if title != [] { title = strong(title) + [. ] }
+#let margin(title: none, ..content) = {
+  show: note-style
+
+  if content.pos().len() == 1 {
+    content = content.at(0)
+  } else {
+    title = content.at(0)
+    content = content.pos().slice(1).join(linebreak())
+  }
+
+  if title != none {
+    title = strong(title) + [: ]
+  }
 
   v(0pt, weak: true)
   margin-note(side: right, stroke: none, title + content)
 }
 
-#let note(title: [], content) = {
-  set math.equation(numbering: none)
-  set text(fill: luma(20%), size: 0.9em)
+#let note(cols: 1, title: none, content) = {
+  show: note-style
 
-  title = if title != [] { strong(title) + [.] }
+  title = if title != none {
+    text(strong(title) + [: ], size: 0.9em)
+  }
 
-  align(center, rect(width: 100%, fill: ghost-color.transparentize(90%), radius: 0.5em, {
-    set align(left)
-    set text(size: 0.9em)
-    title
-    content
-  }))
+  let stroke-style = (paint: ghost-color)
+
+  set align(center)
+  rect(
+    width: 100%,
+    stroke: (left: stroke-style),
+    inset: (left: 0.5em, right: 0em, y: 0em),
+    {
+      set align(left)
+      show: it => columns(cols, it)
+      title
+      content
+    },
+  )
+}
+
+#let example(cols: 1, content) = {
+  note(cols: cols, title: [E.g.], content)
 }
 
 #let divider = {
@@ -162,16 +177,13 @@
   )
 }
 
-#let comment(content) = text(fill: ghost-color, size: 0.8em, $   &$ + content)
+// MATH ANNOTATION
 
 #let focus(content) = {
   text(fill: accent-color, content)
 }
 
-#let compare(..contents) = {
-  let n = contents.pos().len()
-  grid(columns: n, column-gutter: 1em, ..contents)
-}
+#let comment(content) = text(fill: ghost-color, size: 0.8em, $   &$ + content)
 
 // Default color palette
 #import "@preview/typpuccino:0.1.0": latte
