@@ -111,6 +111,15 @@
 
   // quick math shorthands
   show: shorthands.with(..replacements)
+
+  // tables
+  set table(stroke: none)
+  set table(align: center + horizon)
+  set table(
+    fill: (_, y) => if (y == 0) { accent-color.transparentize(80%) } else { if calc.even(y) { ghost-color.transparentize(80%) } },
+  )
+
+  // begin document
   doc
   bibliography(title: [References], style: "ieee", "assets/citations.bib")
 }
