@@ -106,9 +106,13 @@
   // grids
   set grid(column-gutter: 1em)
 
+  // references
+  show bibliography: none
+
   // begin document
   doc
-  bibliography(title: [References], style: "ieee", "assets/citations.bib")
+
+  bibliography(title: [References], style: "apa", "assets/citations.bib")
 }
 
 ///////////////////////
