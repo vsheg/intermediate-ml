@@ -470,6 +470,104 @@ This loss function can be used to train a general regression model.
   obvious. For skewed data where OLS fails, quantile regression coefficients differ
   significantly from OLS but may still be interpretable.
 
+= Confidence and parameter convergence
+
+== Parameter convergence
+Quantile regression provides estimates of conditional quantiles of a response variable $Y$ given
+predictors $X$. All regression coefficients $beta_j = beta_j (q)$ are functions of $q$.
+
+Under *appropriate conditions* (e.g., independent observations, a continuously
+differentiable conditional density of $Y$ given $X$ around the $q$-th quantile), the
+*asymptotic distribution* of the quantile regression estimator $hat(beta)(q)$ is *normal,
+unbiased and with variance*:
+
+$ Var[bold(beta)(q)] -> 1/ell dot ub(q (1-q), "I: depends on" q) dot ub(D^(-1) Omega D^(-1), "II: depends on" q "too") $
+
+The second part is the _sandwich variance estimator_. The choice of $D$ and robust
+variance $Omega$ may differ; for example:
+
+$ D(hat(y)_q) = 1/ell sum_(bold(x) in X^ell) hat(f)_(Y|X) (hat(y)_q (bold(x))) dot bold(x) bold(x)^Tr $
+
+$ hat(Omega) = 1/ell sum_(bold(x) in X^ell) (q - Ind(y(bold(x)) <= hat(y)(bold(x))_q )) dot bold(x) bold(x)^Tr $
+
+Both terms I and II depend on $q$: while $q(1-q)$ is smaller near the tails, the term $D^(-1) Omega D^(-1)$ is
+poorly estimated there, which tends to dominate. Therefore, the variance of estimated
+parameters $hat(beta)_j$ is larger when $q$ approaches its limits ($q ~ 0$ or $q ~ 1$). In
+general, predictions in the middle (around median) are more accurate.
+
+The error of ordinary least squares is controlled by the Gauss-Markov theorem; therefore,
+the standard error (and variance) of OLS is always lower when all conditions are met. In
+general, the errors of quantile regression are larger and become more pronounced when $q$ approaches
+the tails, as shown below:
+
+= Pros and Cons of Quantile Regression
+
+Quantile regression offers several advantages over ordinary least squares (OLS)
+regression, but also comes with certain limitations:
+
+== Advantages
+
+=== Non-normality (skew, heavy tails, multimodality)
+Quantile regression models *conditional quantiles*, capturing skewed or heavy-tailed
+distributions *without relying on normality assumptions*. OLS assumes normality and may
+produce misleading results when this assumption is violated.
+
+=== Robustness to outliers and noise
+By focusing on quantiles rather than the mean, quantile regression reduces sensitivity to
+random noise and outliers, emphasizing specific distributional trends. Quantile regression
+also *does not assume any specific noise distribution*. In OLS, a few outliers can have a
+pronounced effect on parameter estimates.
+
+=== Complete picture of conditional distributions
+Quantile regression allows modeling multiple quantiles, providing a comprehensive view of
+how predictors affect the entire conditional distribution of the response, not just its
+center. This reveals heterogeneous effects that OLS cannot capture.
+
+=== Handling censored data
+Some quantiles can be robustly calculated even for censored data. Censoring can also be
+accounted for explicitly by modifying the loss function:
+
+$ cal(L)_q^"cens" (epsilon) := cases(cal(L)_q (epsilon)\, & delta = 1, -q dot min{epsilon, 0} \, & delta = 0 ) $
+
+where $delta$ is the event indicator (0=censored, 1=real), and $min{epsilon, 0}$ represents
+underpredictions.
+
+=== Invariance to monotonic transformations
+Quantile regression is *invariant to monotonic transformations* of $y$ like logarithm or
+square root. In OLS this is not the case, although transformations are sometimes used to
+normalize data.
+
+=== Accommodating heteroscedasticity
+Quantile regression does not assume homoscedasticity (constant variance). Instead, it
+models different parts of the conditional distribution independently, allowing for varying
+spread (e.g., wider or narrower intervals) across predictors. OLS assumes homoscedasticity
+(or equal weight of all observations).
+
+== Limitations
+
+=== Computational complexity
+Quantile regression requires solving a linear programming problem, which is
+computationally more intensive than OLS's closed-form solution, especially for large
+datasets or when modeling multiple quantiles.
+
+=== Statistical efficiency
+When OLS assumptions are met (normality, homoscedasticity, etc.), OLS estimates are more
+efficient (lower variance) than quantile regression estimates.
+
+=== Interpretation challenges
+Interpreting multiple quantile regression models simultaneously can be complex, especially
+when communicating results to non-technical audiences.
+
+=== Crossing quantiles
+In practice, estimated conditional quantile curves may cross, violating the monotonicity
+property of quantile functions. This problem becomes more pronounced when modeling many
+quantiles simultaneously.
+
+=== Sparse data in tails
+Estimates for extreme quantiles (e.g., $q = 0.01$ or $q = 0.99$) are often less reliable
+due to sparse data in distribution tails, resulting in higher variance as shown in the
+parameter convergence section.
+
 = Example: AIDS dataset
 
 #figure(image("aids.svg"))

@@ -5,6 +5,7 @@ import seaborn as sns
 from sksurv.datasets import load_aids
 from sklearn.linear_model import QuantileRegressor
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # %%
 X, y_frame = load_aids()
@@ -19,7 +20,7 @@ y = y.astype(float)
 quantiles = np.linspace(0.1, 0.9, 20)
 coeffs = {}
 
-for q in quantiles:
+for q in tqdm(quantiles):
     model = QuantileRegressor(quantile=q, alpha=0.01)
     model.fit(X, y)
     coeffs[q] = model.coef_
@@ -31,8 +32,8 @@ df_coeffs = df_coeffs.loc[features_important.index].reset_index(names="feature")
 df_coeffs = df_coeffs.melt("feature", var_name="quantile", value_name="coefficient")
 
 # %%
-plt.rcParams["font.family"] = "CMU Serif"
-plt.rcParams["font.size"] = 9
+plt.style.use("../assets/plot.mplstyle")
+
 plot = sns.relplot(
     data=df_coeffs,
     x="quantile",
@@ -46,3 +47,26 @@ plot = sns.relplot(
 
 # %%
 plot.savefig("aids.svg", transparent=True)
+
+# %%
+plot.axes[0].spines["right"].set_visible(True)
+
+# %%
+plot.figure
+
+# %%
+
+
+def enable_spines(plot):
+    for ax in plot.axes:
+        ax.spines["right"].set_visible(True)
+        ax.spines["top"].set_visible(True)
+        ax.spines["left"].set_visible(True)
+        ax.spines["bottom"].set_visible(True)
+    return plot
+
+
+enable_spines(plot)
+plot.figure
+
+# %%
