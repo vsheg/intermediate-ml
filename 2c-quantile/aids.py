@@ -68,5 +68,3 @@ def enable_spines(plot):
 
 enable_spines(plot)
 plot.figure
-
-# %%
