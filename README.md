@@ -1,43 +1,23 @@
-# Intermediate ML
+# ML materials
 
-> This is a work-in-progress draft of intermediate-level machine learning materials. Thanks to LLMs for the high quality; any errors are mine.
-
-
-## Formalisms
-
-- Conditional expectation
-- Risk minimization
-- [MLE and MAP estimation](https://vsheg.github.io/intermediate-ml/01-formalism/mle-map.pdf)
-- [Regularization](https://vsheg.github.io/intermediate-ml/01-formalism/regularization.pdf)
-- [Exponential family](https://vsheg.github.io/intermediate-ml/01-formalism/exp-family.pdf)
-- [Information theory](https://vsheg.github.io/intermediate-ml/01-formalism/information.pdf)
-- [Linear algebra](https://vsheg.github.io/intermediate-ml/01-formalism/linear-algebra.pdf)
-- Singular value decomposition (SVD)
-
-## Linear and quasi-linear models
-
-- Ordinary least squares (OLS)
-- [Weighted least squares (WLS)](https://vsheg.github.io/intermediate-ml/02-linear/weighted-ls.pdf)
-- Generalized additive models (GAM)
-- [Generalized linear models (GLM)](https://vsheg.github.io/intermediate-ml/02-linear/glm.pdf)
-- Partial least squares (PLS)
+> This is a work-in-progress draft of intermediate-level machine learning materials.
+Thanks to LLMs for the high quality; any errors are mine.
 
 
-## Non-linear models
-
-- [Nonlinear least squares](https://vsheg.github.io/intermediate-ml/03-nonlinear/nonlinear-ls.pdf)
-- Support vector classification and regression
-- [Quantile regression](https://vsheg.github.io/intermediate-ml/03-nonlinear/quantile.pdf)
-
-## Ensemble methods
-
-- Decision trees
-- Bagging and stacking
-- Classical boosting
-- Gradient boosting
-
-## Exploratory methods
- 
-- [Principal component analysis (PCA)](https://vsheg.github.io/intermediate-ml/05-exploratory/pca.pdf)
-- [Density estimation](https://vsheg.github.io/intermediate-ml/05-exploratory/density.pdf)
-- Clustering
+- [1a-information](./1a-information/1a-information.pdf)
+- [1b-mle-map](./1b-mle-map/1b-mle-map.pdf)
+- [1c-regularization](./1c-regularization/1c-regularization.pdf)
+- [2a-gaussian-linear](./2a-gaussian-linear/2a-gaussian-linear.pdf)
+- [2b-gaussian-nonlinear](./2b-gaussian-nonlinear/2b-gaussian-nonlinear.pdf)
+- [2c-quantile](./2c-quantile/2c-quantile.pdf)
+- [2d-poisson](./2d-poisson/2d-poisson.pdf)
+- [3a-parametric](./3a-parametric/3a-parametric.pdf)
+- [3b-nonparametric](./3b-nonparametric/3b-nonparametric.pdf)
+- [3c-mixtures](./3c-mixtures/3c-mixtures.pdf)
+- [4-exp-family](./4-exp-family/4-exp-family.pdf)
+- [5-glm](./5-glm/5-glm.pdf)
+- [6-gam](./6-gam/6-gam.pdf)
+- [7-bayesian](./7-bayesian/7-bayesian.pdf)
+- [8-pca](./8-pca/8-pca.pdf)
+- [9a-linear-algebra](./9a-linear-algebra/9a-linear-algebra.pdf)
+- [9b-distributions](./9b-distributions/9b-distributions.pdf)
