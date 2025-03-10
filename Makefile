@@ -1,4 +1,5 @@
 TYP_FILES := $(shell find . -path "./*/*" -name "*.typ" | sort)
+PDF_ROOT := https://vsheg.github.io/intermediate-ml
 
 all: compile
 
@@ -15,15 +16,15 @@ compile:
 	done
 
 readme:
-	@echo "# ML materials\n" > README.md
+	@echo "# ML materials" > README.md
+	@echo "" >> README.md
 	@echo "> This is a work-in-progress draft of intermediate-level machine learning materials." >> README.md
 	@echo "Thanks to LLMs for the high quality; any errors are mine." >> README.md
-	@echo "\n" >> README.md
-	
-
+	@echo "" >> README.md
 	@for typ in $(TYP_FILES); do \
 		dir=$$(dirname $$typ); \
 		parent_dir=$$(basename $$dir); \
+		dir=$$(echo $$dir | sed 's|^\./|$(PDF_ROOT)/|'); \
 		echo "- [$$parent_dir]($$dir/$$parent_dir.pdf)" >> README.md; \
 		echo "Added $$parent_dir/$$parent_dir.pdf to README.md"; \
 	done
