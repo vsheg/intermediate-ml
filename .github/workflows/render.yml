@@ -30,6 +30,8 @@ jobs:
       
       - run: make compile
 
+      - run: make readme
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/jekyll-build-pages@v1 # convert README.md to index.html
