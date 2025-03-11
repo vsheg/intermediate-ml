@@ -402,7 +402,7 @@ The model $a(bold(x)) equiv a(bold(x)|bold(theta); q)$ can be any regression mod
 == Linear quantile regression
 The conditional quantile $QQ_q [Y|X]$ can be modeled as a linear function of predictors $bold(x)$:
 
-$ hat(y)_q (bold(x)) = QQ_q [Y|X = bold(x)] = bra bold(x), bold(beta)(q) ket, quad beta_j (q) = beta_(j|q), $
+$ hat(y)_q (bold(x)) = QQ_q [Y|X = bold(x)] = bra bold(x), bold(beta)(q) ket, quad beta_j (q) = beta_(j|q), $ <eq-linear-quantile-regression>
 
 where $bold(beta)(q)$ is a vector of regression coefficients, and $beta_j (q) = beta_(j|q) in RR$ are
 regression coefficients for the feature $bold(x)^j$ and a _predefined hyperparameter_ $q$.
@@ -440,15 +440,99 @@ class QuantileLoss(L.LightningModule):
 
 This loss function can be used to train a general regression model.
 
+= Convergence and reliability of quantile regression parameters
+
+== Linear quantile regression
+For linear quantile regression @eq-linear-quantile-regression, the conditional quantile $QQ_q [Y|X]$ is
+modeled as a linear function of predictors $bold(x)$. The theoretical properties of linear
+quantile parameters $hat(bold(beta))(q)$ such as convergence and variance can be derived,
+though the analysis is more complex than for traditional Gaussian regression.
+
+== Parameter expectation
+All regression coefficients $beta_j = beta_j (q)$ are functions of $q$. Under appropriate
+conditions (independent observations with finite second moments), the asymptotic
+distribution of the quantile regression estimator $hat(bold(beta))(q)$ is unbiased:
+
+$ hat(bold(beta))(q) -> bold(beta)(q), $
+
+i.e., theoretically the estimator $hat(bold(beta))(q)$ converges to the expected value of
+the parameter $bold(beta)(q)$ as the sample size $ell$ approaches infinity:
+
+$ hat(bold(beta))(q) -> Ex[bold(beta)(q)]). $ <eq-quantile-linear-parameter-expectation>
+
+== Parameter variance
+The estimator $hat(bold(beta))(q)$ is asymptotically normally distributed with variance#margin[and mean $bold(beta)(q) = Ex[bold(beta)(q)]$ according to
+  @eq-quantile-linear-parameter-expectation]
+
+$
+  Var[bold(beta)(q)] -> ub(1/ell, "I") dot ub(q dot (1-q), "II") dot ub(D^(-1) Omega D^(-1), "III").
+$ <eq-quantile-linear-parameter-variance>
+
+The variance in @eq-quantile-linear-parameter-variance depends on three terms:
+
++ The 1st multiplier determines the convergence rate of the estimator $hat(bold(beta))(q)$ as
+  a function of the sample size $ell$; the larger the sample size, the smaller the variance.
+
++ The 2nd multiplier depends on the quantile $q$. As $q$ approaches the tails (0 or 1), this
+  term decreases, which would seemingly lower the variance. It reduces variance if isolated,
+  however, this is not the primary contributor to overall variance.
+
++ The 3rd multiplier is the sandwich variance estimator, which depends on both the estimated
+  parameters $hat(bold(beta))(q)$ and the robust variance matrix $Omega$. Typical
+  formulations include:
+
+  $ D(hat(y)_q) = 1/ell dot sum_(bold(x) in X^ell) hat(f)_(Y|X) (hat(y)_q (bold(x))) dot bold(x) bold(x)^Tr $
+
+  $ hat(Omega) = 1/ell dot sum_(bold(x) in X^ell) (q - Ind(y(bold(x)) <= hat(y)_q (bold(x)) )) dot bold(x) bold(x)^Tr $
+
+Consequently, the *variance of estimated parameters $hat(bold(beta))(q)$ increases as $q$
+approaches 0 or 1*. In practice, predictions near the median are typically more precise,
+while predictions for extreme quantiles (e.g., 0.01 or 0.99) are less reliable.
+
+#note[While $q dot (1-q)$ decreases near the tails, the sandwich term $D^(-1) Omega D^(-1)$ becomes
+  poorly estimated and tends to dominate. ]
+
+== Comparison with OLS
+The error of ordinary least squares (OLS) is controlled by the Gauss-Markov theorem, which
+establishes that OLS provides the minimum-variance linear unbiased estimator when its
+assumptions are satisfied.
+
+Generally, the standard errors of quantile regression estimates are larger than those of
+OLS, with this difference becoming more pronounced for extreme quantiles.
+
+#note[
+  The variance of the quantile regression estimator is larger than that of OLS, especially
+  for extreme quantiles.
+]
+
+#margin[
+  #figure(
+    caption: [
+      $q dot (1-q)$ term in @eq-quantile-linear-parameter-variance reaches its maximum at $q = 0.5$
+    ],
+    plot-canvas(
+      domain: (0, 1),
+      size: (4, 1),
+      x-tick-step: 1 / 4,
+      x-format: plot.formats.fraction,
+      y-tick-step: 1 / 8,
+      y-format: plot.formats.fraction,
+      plot.add(domain: (0, 1), q => q * (1 - q)),
+    ),
+  )
+]
+
 = Interpretation
 
 == Targets
+Median (and other quantiles) is sometimes more interpretable and a better measure of
+centrality than the mean, particularly for skewed or multimodal data:
 
-- Median (quantiles) of $y$ is sometimes more interpretable and a better measure of
-  centrality than the mean, particularly in right-skewed or bimodal data. For example,
-  median salary or house price is more interpretable than mean values. In some cases, a "mean"
-  prediction does not exist, such as with binary groups (deceased = 0 and deceased = 1),
-  where the prediction for an "average" $bold(x)$ is meaningless.
+- Median salary or house price is more interpretable than mean values as both distributions
+  are usually skewed.
+
+  - In some cases, a "mean" prediction does not exist, such as with binary groups (deceased =
+    0 and deceased = 1), where the prediction for an "average" $bold(x)$ is meaningless.
 
 - Quantile regression predictions represent the *conditional quantiles of the response
   variable* $y$ given the predictors $bold(x)$. These predictions act *as boundaries*,
@@ -469,36 +553,6 @@ This loss function can be used to train a general regression model.
   coefficients remain invariant, but their contribution to $y' = log(y)$ becomes less
   obvious. For skewed data where OLS fails, quantile regression coefficients differ
   significantly from OLS but may still be interpretable.
-
-= Confidence and parameter convergence
-
-== Parameter convergence
-Quantile regression provides estimates of conditional quantiles of a response variable $Y$ given
-predictors $X$. All regression coefficients $beta_j = beta_j (q)$ are functions of $q$.
-
-Under *appropriate conditions* (e.g., independent observations, a continuously
-differentiable conditional density of $Y$ given $X$ around the $q$-th quantile), the
-*asymptotic distribution* of the quantile regression estimator $hat(beta)(q)$ is *normal,
-unbiased and with variance*:
-
-$ Var[bold(beta)(q)] -> 1/ell dot ub(q (1-q), "I: depends on" q) dot ub(D^(-1) Omega D^(-1), "II: depends on" q "too") $
-
-The second part is the _sandwich variance estimator_. The choice of $D$ and robust
-variance $Omega$ may differ; for example:
-
-$ D(hat(y)_q) = 1/ell sum_(bold(x) in X^ell) hat(f)_(Y|X) (hat(y)_q (bold(x))) dot bold(x) bold(x)^Tr $
-
-$ hat(Omega) = 1/ell sum_(bold(x) in X^ell) (q - Ind(y(bold(x)) <= hat(y)(bold(x))_q )) dot bold(x) bold(x)^Tr $
-
-Both terms I and II depend on $q$: while $q(1-q)$ is smaller near the tails, the term $D^(-1) Omega D^(-1)$ is
-poorly estimated there, which tends to dominate. Therefore, the variance of estimated
-parameters $hat(beta)_j$ is larger when $q$ approaches its limits ($q ~ 0$ or $q ~ 1$). In
-general, predictions in the middle (around median) are more accurate.
-
-The error of ordinary least squares is controlled by the Gauss-Markov theorem; therefore,
-the standard error (and variance) of OLS is always lower when all conditions are met. In
-general, the errors of quantile regression are larger and become more pronounced when $q$ approaches
-the tails, as shown below:
 
 = Pros and Cons of Quantile Regression
 
