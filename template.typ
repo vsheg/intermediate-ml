@@ -6,6 +6,7 @@
 )
 #import "@preview/quick-maths:0.2.0": shorthands
 #import "defs.typ": *
+#import "plot.typ": *
 
 //////////////
 // TEMPLATE //
@@ -28,7 +29,7 @@
   set page(
     width: full-width,
     height: full-heigh,
-    margin: (y: margin-size, left: margin-size, right: 0.33 * content-width),
+    margin: (y: margin-size, left: margin-size, right: 0.34 * content-width),
     background: if is-draft { draft-pattern } else { none },
   )
 
@@ -90,6 +91,7 @@
 
   show heading.where(level: 2): it => {
     set text(size: font-size * 0.9)
+    v(1em)
     text(it.body) + [: ]
   }
 
