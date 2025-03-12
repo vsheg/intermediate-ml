@@ -23,6 +23,8 @@ jobs:
           fc-cache -f -v
 
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
       
       - uses: typst-community/setup-typst@v4
         with:
