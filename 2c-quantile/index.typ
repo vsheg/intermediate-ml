@@ -461,6 +461,7 @@ the parameter $bold(beta)(q)$ as the sample size $ell$ approaches infinity:
 $ hat(bold(beta))(q) -> Ex[bold(beta)(q)]). $ <eq-quantile-linear-parameter-expectation>
 
 == Parameter variance
+
 The estimator $hat(bold(beta))(q)$ is asymptotically normally distributed with variance#margin[and mean $bold(beta)(q) = Ex[bold(beta)(q)]$ according to
   @eq-quantile-linear-parameter-expectation]
 
@@ -477,13 +478,31 @@ The variance in @eq-quantile-linear-parameter-variance depends on three terms:
   term decreases, which would seemingly lower the variance. It reduces variance if isolated,
   however, this is not the primary contributor to overall variance.
 
-+ The 3rd multiplier is the sandwich variance estimator, which depends on both the estimated
-  parameters $hat(bold(beta))(q)$ and the robust variance matrix $Omega$. Typical
-  formulations include:
+  #margin(
+    figure(
+      caption: [
+        $q dot (1-q)$ term in @eq-quantile-linear-parameter-variance reaches its maximum at $q = 0.5$
+      ],
+      {
+        let x = lq.linspace(0, 1)
+        lq.diagram(
+          width: 4cm,
+          height: 2cm,
+          xlabel: $q$,
+          ylabel: $q dot (1-q)$,
+          lq.plot(mark: none, x, x.map(q => q * (1 - q))),
+        )
+      },
+    ),
+  )
 
-  $ D(hat(y)_q) = 1/ell dot sum_(bold(x) in X^ell) hat(f)_(Y|X) (hat(y)_q (bold(x))) dot bold(x) bold(x)^Tr $
+  + The 3rd multiplier is the sandwich variance estimator, which depends on both the estimated
+    parameters $hat(bold(beta))(q)$ and the robust variance matrix $Omega$. Typical
+    formulations include:
 
-  $ hat(Omega) = 1/ell dot sum_(bold(x) in X^ell) (q - Ind(y(bold(x)) <= hat(y)_q (bold(x)) )) dot bold(x) bold(x)^Tr $
+    $ D(hat(y)_q) = 1/ell dot sum_(bold(x) in X^ell) hat(f)_(Y|X) (hat(y)_q (bold(x))) dot bold(x) bold(x)^Tr $
+
+    $ hat(Omega) = 1/ell dot sum_(bold(x) in X^ell) (q - Ind(y(bold(x)) <= hat(y)_q (bold(x)) )) dot bold(x) bold(x)^Tr $
 
 Consequently, the *variance of estimated parameters $hat(bold(beta))(q)$ increases as $q$
 approaches 0 or 1*. In practice, predictions near the median are typically more precise,
@@ -492,34 +511,30 @@ while predictions for extreme quantiles (e.g., 0.01 or 0.99) are less reliable.
 #note[While $q dot (1-q)$ decreases near the tails, the sandwich term $D^(-1) Omega D^(-1)$ becomes
   poorly estimated and tends to dominate. ]
 
-== Comparison with OLS
-The error of ordinary least squares (OLS) is controlled by the Gauss-Markov theorem, which
-establishes that OLS provides the minimum-variance linear unbiased estimator when its
-assumptions are satisfied.
+== Bad statistical guarantee
+While ordinary least squares (OLS) estimates benefit from the Gauss-Markov theorem, which
+establishes OLS as the best linear unbiased estimator (BLUE) under classical assumptions,
+quantile regression follows different asymptotic properties.
 
-Generally, the standard errors of quantile regression estimates are larger than those of
-OLS, with this difference becoming more pronounced for extreme quantiles.
+Quantile regression estimators remain unbiased and consistent, but their variance behavior
+is more complex. As shown in equation @eq-quantile-linear-parameter-variance, the variance
+depends on both the quantile level $q$ and the underlying data distribution through the
+sandwich estimator term $D^(-1) Omega D^(-1)$.
+
+In practice, quantile regression estimates exhibit higher statistical variability than OLS
+estimates, particularly for extreme quantiles (e.g., $q < 0.1$ or $q > 0.9$). This occurs
+because:
+
+1. The sparsity of data in the tails leads to less reliable sandwich term estimation
+2. The conditional density at extreme quantiles becomes more difficult to estimate accurately
+3. The effective sample size for determining extreme quantiles is effectively reduced
+
+This statistical efficiency trade-off is a necessary cost of gaining robustness to
+outliers and insights into the complete conditional distribution.
 
 #note[
   The variance of the quantile regression estimator is larger than that of OLS, especially
   for extreme quantiles.
-]
-
-#margin[
-  #figure(
-    caption: [
-      $q dot (1-q)$ term in @eq-quantile-linear-parameter-variance reaches its maximum at $q = 0.5$
-    ],
-    plot-canvas(
-      domain: (0, 1),
-      size: (4, 1),
-      x-tick-step: 1 / 4,
-      x-format: plot.formats.fraction,
-      y-tick-step: 1 / 8,
-      y-format: plot.formats.fraction,
-      plot.add(domain: (0, 1), q => q * (1 - q)),
-    ),
-  )
 ]
 
 = Interpretation
@@ -554,7 +569,7 @@ centrality than the mean, particularly for skewed or multimodal data:
   obvious. For skewed data where OLS fails, quantile regression coefficients differ
   significantly from OLS but may still be interpretable.
 
-= Pros and Cons of Quantile Regression
+= Robustness of quantile regression
 
 Quantile regression offers several advantages over ordinary least squares (OLS)
 regression, but also comes with certain limitations:

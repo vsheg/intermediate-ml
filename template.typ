@@ -7,6 +7,7 @@
 #import "@preview/quick-maths:0.2.0": shorthands
 #import "defs.typ": *
 #import "plot.typ": *
+#import "lilaq/src/lilaq.typ" as lq
 
 //////////////
 // TEMPLATE //
