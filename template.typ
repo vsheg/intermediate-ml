@@ -195,3 +195,7 @@
 #import "@preview/typpuccino:0.1.0": latte
 #let palette = latte
 #let colors = (palette.teal, palette.pink, palette.flamingo, palette.mauve, palette.green,)
+
+// Multifigure
+#import "@preview/subpar:0.2.1": grid as multi-figure
+#let multi-figure = multi-figure.with(numbering-sub: "1a:")

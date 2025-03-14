@@ -280,7 +280,23 @@ $ <eq-check-loss>
 where $epsilon := y - hat(y)$ is the error term (residual) and $hat(y)$ is the prediction
 of a regression model.
 
-// TODO: add check loss plot
+#margin(
+  {
+    // NOTE: when plotted on the same graph, it looks like a six-legged spider: not illustrative at all
+    let x = lq.linspace(-2, 2)
+
+    let sub-figure(q) = figure(
+      caption: [Check loss $cal(L)_#q (epsilon)$],
+      lq.diagram(width: 3cm, height: 3cm / 2, xlabel: $epsilon$, lq.plot(
+        mark: none,
+        x,
+        x.map(epsilon => if (epsilon >= 0) { q * epsilon } else { -(1 - q) * epsilon }),
+      )),
+    )
+
+    multi-figure(sub-figure(0.25), sub-figure(0.5), sub-figure(0.75))
+  },
+)
 
 == Constant model
 Let's first consider the simplest case, where we look for $a^*$ in the family of all
