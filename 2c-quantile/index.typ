@@ -477,7 +477,6 @@ the parameter $bold(beta)(q)$ as the sample size $ell$ approaches infinity:
 $ hat(bold(beta))(q) -> Ex[bold(beta)(q)]). $ <eq-quantile-linear-parameter-expectation>
 
 == Parameter variance
-
 The estimator $hat(bold(beta))(q)$ is asymptotically normally distributed with variance#margin[and mean $bold(beta)(q) = Ex[bold(beta)(q)]$ according to
   @eq-quantile-linear-parameter-expectation]
 
@@ -653,6 +652,60 @@ Estimates for extreme quantiles (e.g., $q = 0.01$ or $q = 0.99$) are often less 
 due to sparse data in distribution tails, resulting in higher variance as shown in the
 parameter convergence section.
 
-= Example: AIDS dataset
+= Example: AIDS clinical trials group 320 (ACTG 320)
 
-#figure(image("aids.svg"))
+== Background
+In 1997, a clinical trial known as ACTG 320 conducted by [...] demonstrated effectivnes of
+a protease inhibitor drug indinavir to the then-standard dual drug therapy (zidovudine and
+lamivudine) notably improved patient outcomes.
+
+The triple-drug regimen halved the risk of desease progression, markedly increased CD4
+cell counts, and achieved greater viral suppression.
+
+== Data
+Associated dataset contains data from 1,151 records (patients) with HIV infection who were
+randomly assigned to to receive either the new triple-drug regimen or the standard
+dual-drug regimen. 11 features were recorded for each patient:
+
+#figure(caption: [
+  ACTG 320 dataset features
+], table(
+  columns: (auto, 1fr),
+  align: (left, left),
+  [Variable],
+  [Description],
+  [`tx`],
+  [Treatment: 1=includes Indinavir, 0=control],
+  [`txgrp`],
+  [Treatment group: 1-4 (different drug combinations)],
+  [`strat2`],
+  [CD4 stratum: 0=≤50, 1=>50],
+  [`sexF`],
+  [Sex: 0=male, 1=female],
+  [`raceth`],
+  [Race/ethnicity: 1=white non-Hispanic to 6=other],
+  [`ivdrug`],
+  [IV drug history: 1=never, 2=current, 3=previous],
+  [`hemophil`],
+  [Hemophiliac: 1=yes, 0=no],
+  [`karnof`],
+  [Karnofsky scale (70-100): functional status],
+  [`cd4`],
+  [Baseline CD4 count (cells/mL)],
+  [`priorzdv`],
+  [Prior ZDV use (months)],
+  [`age`],
+  [Age at enrollment (years)],
+))
+// TODO: Add reference to https://search.r-project.org/CRAN/refmans/GLDreg/html/actg.html
+
+The target variable is Time to AIDS diagnosis or death (days), i.e. follow-up time to AIDS
+progression or death (in days), i.e. time form enrollment to the event (end of study or
+death).
+
+== Quantile regression
+Quantile regression can be used to understand the impact of various factors on the
+distribution of a target variable.
+
+#let (x, y) = lq.load-txt(read("aids/coeffs.csv"), skip-rows: 1, usecols: (0, 1))
+#lq.diagram(lq.plot(x, y))
