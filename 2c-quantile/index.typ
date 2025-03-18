@@ -652,60 +652,90 @@ Estimates for extreme quantiles (e.g., $q = 0.01$ or $q = 0.99$) are often less 
 due to sparse data in distribution tails, resulting in higher variance as shown in the
 parameter convergence section.
 
-= Example: AIDS clinical trials group 320 (ACTG 320)
+= Interpretation of linear coefficients
 
-== Background
-In 1997, a clinical trial known as ACTG 320 conducted by [...] demonstrated effectivnes of
-a protease inhibitor drug indinavir to the then-standard dual drug therapy (zidovudine and
-lamivudine) notably improved patient outcomes.
+== Impact on target variable
+Quantile regression coefficients $beta_j (q)$, similar to OLS coefficients $beta_j$, represent the
+impact of a unit change in predictor $bold(x)^j$ on the response variable $y$. However, since they
+are functions of $q$, these coefficients capture more nuanced relationships between features and the
+target variable across different parts of its distribution.
 
-The triple-drug regimen halved the risk of desease progression, markedly increased CD4
-cell counts, and achieved greater viral suppression.
+By analyzing how coefficients $beta_j(q)$ vary across different quantile levels, we gain insight
+into how predictors differentially affect the entire conditional distribution of $y$, not just its
+central tendency.
+
+For instance, if $y$ represents patient survival time, quantile regression illustrates how a feature
+influences various segments of the target distribution: high-risk patients ($q << 0.5$, shorter
+survival), typical patients ($q approx 0.5$, median survival), or low-risk patients ($q >> 0.5$,
+longer survival).
 
 == Data
-Associated dataset contains data from 1,151 records (patients) with HIV infection who were
-randomly assigned to to receive either the new triple-drug regimen or the standard
-dual-drug regimen. 11 features were recorded for each patient:
 
-#figure(caption: [
-  ACTG 320 dataset features
-], table(
-  columns: (auto, 1fr),
-  align: (left, left),
-  [Variable],
-  [Description],
-  [`tx`],
-  [Treatment: 1=includes Indinavir, 0=control],
-  [`txgrp`],
-  [Treatment group: 1-4 (different drug combinations)],
-  [`strat2`],
-  [CD4 stratum: 0=≤50, 1=>50],
-  [`sexF`],
-  [Sex: 0=male, 1=female],
-  [`raceth`],
-  [Race/ethnicity: 1=white non-Hispanic to 6=other],
-  [`ivdrug`],
-  [IV drug history: 1=never, 2=current, 3=previous],
-  [`hemophil`],
-  [Hemophiliac: 1=yes, 0=no],
-  [`karnof`],
-  [Karnofsky scale (70-100): functional status],
-  [`cd4`],
-  [Baseline CD4 count (cells/mL)],
-  [`priorzdv`],
-  [Prior ZDV use (months)],
-  [`age`],
-  [Age at enrollment (years)],
-))
+#margin[#figure(
+  caption: [
+    ACTG 320 dataset features (simplified)
+  ],
+  table(
+    columns: (auto, 1fr),
+    align: (left, left),
+    [Variable],
+    [Description],
+    [`time` (target)],
+    [Follow-up time to AIDS progression or death (in days). Represents the time from enrollment to the
+      event (end of study or death).],
+    [`age`],
+    [Age of the patient at the time of enrollment (in years).],
+    [`cd4_cell_count`],
+    [Baseline CD4 T-cell count (cells/mL), a key indicator of immune function.],
+    [`race_*`],
+    [Indicator variables representing the patient's race.],
+    [`group_*`],
+    [Indicator variables representing the treatment group.],
+  ),
+) <tab-aids-320-features>]
+
+The ACTG 320 trial, initiated in 1997 by Merck, was designed to evaluate the effectiveness of the
+antiretroviral drug indinavir when used in a triple-drug regimen compared to a standard two-drug
+treatment for HIV patients.
+
+The associated dataset contains approximately 1,150 records of HIV-infected patients who were
+randomized to receive either the novel triple-drug regimen or the conventional two-drug therapy.
+
 // TODO: Add reference to https://search.r-project.org/CRAN/refmans/GLDreg/html/actg.html
 
-The target variable is Time to AIDS diagnosis or death (days), i.e. follow-up time to AIDS
-progression or death (in days), i.e. time form enrollment to the event (end of study or
-death).
-
 == Quantile regression
-Quantile regression can be used to understand the impact of various factors on the
-distribution of a target variable.
+The target variable is `time`, representing the follow-up duration. Quantile regression was used to
+analyze the impact of various linear predictors $bold(x)^j$ from @tab-aids-320-features on the time $y$ to
+AIDS progression or death.
 
-#let (x, y) = lq.load-txt(read("aids/coeffs.csv"), skip-rows: 1, usecols: (0, 1))
-#lq.diagram(lq.plot(x, y))
+Quantile regression coefficients $beta_j (q)$ as functions of quantile $q$ are plotted in
+@fig-aids-quantile-plot.
+
+#figure(caption: [
+  Quantile regression coefficients for ACTG 320 dataset
+], grid(columns: (1fr, 1fr, 1fr), align: center + horizon, row-gutter: 1em, ..{
+  let data = lq.load-txt(read("aids/coeffs.csv"), header: true)
+  let quantile = data.remove("quantile")
+
+  data.keys().map(col => {
+    lq.diagram(
+      ylabel: $beta_#raw(col)$,
+      xlabel: $q$,
+      margin: 15%,
+      width: 3cm,
+      height: 2cm,
+      lq.plot(quantile, data.at(col), mark: none),
+    )
+  })
+})) <fig-aids-quantile-plot>
+
+- Low $q$ values represent individuals who progressed to AIDS or died quickly, while high $q$ values
+  correspond to individuals with longer survival times.
+
+- Positive $beta_j (q)$ values indicate that the predictor $bold(x)^j$ makes a positive contribution
+  to survival time $y$, meaning $Delta y$ increases proportionally to $beta_j (q) dot Delta bold(x)^j$ for
+  individuals around the $q$-quantile of the distribution.
+
+- Negative $beta_j (q)$ values suggest that the predictor $bold(x)^j$ makes a negative contribution to
+  survival time $y$, meaning $Delta y$ decreases proportionally to $beta_j (q) dot Delta bold(x)^j$ for
+  individuals around the $q$-quantile of the distribution.
