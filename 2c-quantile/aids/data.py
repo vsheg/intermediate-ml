@@ -1,14 +1,15 @@
 # %% Import libraries and load the AIDS clinical trial dataset
+from pathlib import Path
+
 import pandas as pd
 from sksurv.datasets import load_aids
-from pathlib import Path
 
 ## Load the data
 X, y_frame = load_aids()
 X = X.rename(
     columns=dict(
         tx="indinavir",
-        txgrp="treatment",
+        txgrp="group",
         strat2="stratum",
         sex="male",
         raceth="race",
@@ -47,22 +48,21 @@ X.narcotics = (
 # %% Convert hemophilia indicator to boolean type
 X.hemophilia = X.hemophilia.astype(int).astype(bool)
 
-# %% Filter to relevant treatment groups and apply descriptive labels
-X.treatment = X.treatment.astype(int)
-mask = X.treatment.isin([1, 2])
+# %% Filter to relevant groups and apply descriptive labels
+X.group = X.group.astype(int)
+mask = X.group.isin([1, 2])
 X = X[mask].copy()
-treatment_map = {
-    1: "zidovudine_lamivudine",
-    2: "zidovudine_lamivudine_indinavir",
+group_map = {
+    1: "baseline",
+    2: "indinavir",
 }
-treatment_dtype = pd.CategoricalDtype(categories=treatment_map.values())
-X.treatment = X.treatment.replace(treatment_map).astype(treatment_dtype)
+group_dtype = pd.CategoricalDtype(categories=group_map.values())
+X.group = X.group.replace(group_map).astype(group_dtype)
 
 
 # %% Perform one-hot encoding on categorical variables
 X = pd.get_dummies(
     X,
-    columns=["narcotics", "race", "male", "treatment"],
     drop_first=True,
 )
 

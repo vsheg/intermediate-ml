@@ -1,46 +1,52 @@
 # %%
-from sklearn.model_selection import cross_val_score
-from sklearn.linear_model import QuantileRegressor
-import pandas as pd
-from sklearn.feature_selection import SequentialFeatureSelector
-import numpy as np
 from pathlib import Path
 
-# %%
-df = pd.read_csv("aids.csv")
+import numpy as np
+import pandas as pd
+from sklearn.feature_selection import SequentialFeatureSelector
+from sklearn.linear_model import LinearRegression, QuantileRegressor
+from tqdm import tqdm
 
-y = df.pop("time")
+# %% Load the data
+parent = Path(__file__).parent
+df = pd.read_csv(parent / "aids.csv")
+
+# %% Remove censored observations for simplicity
 censored = df.pop("censored")
+X = df[~censored].copy()
+y = X.pop("time")
 
-X = df.copy()
-
-# %%
-model_median = QuantileRegressor(quantile=0.5, alpha=0.0)
+# %% Apply linear regression to select features
+# NOTE: Linear regression is much faster than quantile regression and we can use simple metrics
+# to measure the model performance
+model_mean = LinearRegression()
 sfs = SequentialFeatureSelector(
-    model_median,
+    model_mean,
     direction="backward",
-    scoring="neg_mean_absolute_error",
+    scoring="r2",
     cv=5,
+    n_jobs=-1,
+    n_features_to_select="auto",
+    tol=0.0,
 )
 sfs.fit(X, y)
 
-mask_features = sfs.get_support()
-X = X.loc[:, mask_features]
+mask_features = X.columns[sfs.get_support()]
+X = X[mask_features].copy()
 
-# %%
+# %% Run linear quantile regression and extract coefficients
 coeffs_dict = {}
-quantiles = np.linspace(0.05, 0.95, 20)
+quantiles = np.linspace(0.1, 0.9, 10)
 
-for q in quantiles:
+for q in tqdm(quantiles):
     model = QuantileRegressor(quantile=q, alpha=0.0)
     model.fit(X, y)
-    coeffs_dict[q] = model.coef_
+    coeffs_dict[q] = [model.intercept_] + model.coef_.tolist()
 
-df_coeffs = pd.DataFrame(coeffs_dict, index=X.columns).T
+df_coeffs = pd.DataFrame(coeffs_dict, index=["intercept"] + list(X.columns)).T
+column_order = df_coeffs.mean().sort_values(ascending=False).index
+df_coeffs = df_coeffs[column_order]
 df_coeffs.index.name = "quantile"
 
-# %%
-path = Path(__file__).parent / "coeffs.csv"
-df_coeffs.to_csv(path)
-
-# %%
+# %% Save
+df_coeffs.to_csv(parent / "coeffs.csv")
