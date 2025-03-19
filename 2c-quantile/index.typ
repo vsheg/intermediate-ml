@@ -670,6 +670,9 @@ survival), typical patients ($q approx 0.5$, median survival), or low-risk patie
 longer survival).
 
 == Data
+The ACTG 320 trial, initiated in 1997 by Merck, was designed to evaluate the effectiveness of the
+antiretroviral drug indinavir when used in a triple-drug regimen compared to a standard two-drug
+treatment for HIV patients.
 
 #margin[#figure(
   caption: [
@@ -677,10 +680,9 @@ longer survival).
   ],
   table(
     columns: (auto, 1fr),
-    align: (left, left),
     [Variable],
     [Description],
-    [`time` (target)],
+    [`time` \ (target)],
     [Follow-up time to AIDS progression or death (in days). Represents the time from enrollment to the
       event (end of study or death).],
     [`age`],
@@ -693,10 +695,6 @@ longer survival).
     [Indicator variables representing the treatment group.],
   ),
 ) <tab-aids-320-features>]
-
-The ACTG 320 trial, initiated in 1997 by Merck, was designed to evaluate the effectiveness of the
-antiretroviral drug indinavir when used in a triple-drug regimen compared to a standard two-drug
-treatment for HIV patients.
 
 The associated dataset contains approximately 1,150 records of HIV-infected patients who were
 randomized to receive either the novel triple-drug regimen or the conventional two-drug therapy.
@@ -713,20 +711,24 @@ Quantile regression coefficients $beta_j (q)$ as functions of quantile $q$ are p
 
 #figure(caption: [
   Quantile regression coefficients for ACTG 320 dataset
-], grid(columns: (1fr, 1fr, 1fr), align: center + horizon, row-gutter: 1em, ..{
-  let data = lq.load-txt(read("aids/coeffs.csv"), header: true)
+], grid(columns: (1fr, 1fr, 1fr), row-gutter: 1em, ..{
+  let data = lq.load-txt(read("aids/out.csv"), header: true)
   let quantile = data.remove("quantile")
 
-  data.keys().map(col => {
+  data.keys().map(col => ({
+    let coeffs = data.at(col)
+    let lim = calc.max(..coeffs.map(calc.abs))
     lq.diagram(
+      ylim: if (col == "intercept") { auto } else { (-lim, lim) },
+      xlim: (0, 1),
       ylabel: $beta_#raw(col)$,
       xlabel: $q$,
+      width: 2.5cm,
+      height: 3cm,
       margin: 15%,
-      width: 3cm,
-      height: 2cm,
-      lq.plot(quantile, data.at(col), mark: none),
+      lq.plot(quantile, coeffs, mark-size: 2pt),
     )
-  })
+  }))
 })) <fig-aids-quantile-plot>
 
 - Low $q$ values represent individuals who progressed to AIDS or died quickly, while high $q$ values

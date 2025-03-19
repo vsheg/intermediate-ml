@@ -36,7 +36,7 @@ X = X[mask_features].copy()
 
 # %% Run linear quantile regression and extract coefficients
 coeffs_dict = {}
-quantiles = np.linspace(0.1, 0.9, 10)
+quantiles = np.linspace(0.2, 0.8, 20)
 
 for q in tqdm(quantiles):
     model = QuantileRegressor(quantile=q, alpha=0.0)
@@ -49,4 +49,4 @@ df_coeffs = df_coeffs[column_order]
 df_coeffs.index.name = "quantile"
 
 # %% Save
-df_coeffs.to_csv(parent / "coeffs.csv")
+df_coeffs.to_csv(parent / "out.csv")
