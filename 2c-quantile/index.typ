@@ -48,14 +48,6 @@ $ QQ_q [Y] := cdf_Y^(-1)(q) = inf { y | cdf_Y (y) >= q }, $ <eq-quantile-def>
 where $inf$ denotes the infimum, which is the greatest lower bound, i.e., $QQ_q [Y]$ is the smallest
 value $y$ for which the probability $Pr[Y <= y]$ is at least $q$.
 
-#margin[
-  For a sample ${y_1, ..., y_ell}$, the empirical CDF
-
-  $ cdf_Y (y) := 1 / ell dot sum_(i=1)^ell Ind(y_i <= y) $
-
-  can be used in @eq-quantile-def to define quantiles $QQ_q$.
-]
-
 #grid(
   columns: 2,
   example[
@@ -83,6 +75,12 @@ value $y$ for which the probability $Pr[Y <= y]$ is at least $q$.
 
   ],
 )
+
+For a sample ${y_1, ..., y_ell}$, the empirical CDF
+
+$ cdf_Y (y) := 1 / ell dot sum_(i=1)^ell Ind(y_i <= y) $
+
+can be used in @eq-quantile-def to define quantiles $QQ_q$.
 
 #margin[
   For a continuous random variable $Y$, the probability of $Y$ being less than or equal to $y^*$
@@ -164,9 +162,7 @@ $ <eq-quantile-probability-conditional>
 Due to the linearity of expectation, it is sensitive to outliers. The quantile, on the other hand,
 is robust to outliers.
 
-#example(
-  cols: 2,
-)[
+#example(cols: 2)[
   Consider a sample $Y = {1, 2, 3, 4, 5}$ with an outlier introduced by a typo: $Y' = {1, 2, 3, 4, 50}$.
 
   The sample mean is significantly affected:
@@ -181,34 +177,13 @@ is robust to outliers.
 
   #table(
     columns: 4,
-    [],
-    [$Y$],
-    [$Y'$],
-    [comment],
-    [$Q_0 equiv min$],
-    [1],
-    [1],
-    [not affected],
-    [$Q_(1\/4) equiv$ 1st quantile],
-    [2],
-    [2],
-    [not affected],
-    [$Q_(1\/2) equiv "med"$ (2nd quantile)],
-    [3],
-    [3],
-    [not affected],
-    [$Q_(3\/4) equiv$ 3rd quantile],
-    [4],
-    [4],
-    [not affected],
-    [$Q_0.99 equiv$ 99th percentile],
-    [4],
-    [4],
-    [not affected],
-    [$Q_1 equiv max$],
-    [5],
-    [50],
-    [affected],
+    [], [$Y$], [$Y'$], [comment],
+    [$Q_0 equiv min$], [1], [1], [not affected],
+    [$Q_(1\/4) equiv$ 1st quantile], [2], [2], [not affected],
+    [$Q_(1\/2) equiv "med"$ (2nd quantile)], [3], [3], [not affected],
+    [$Q_(3\/4) equiv$ 3rd quantile], [4], [4], [not affected],
+    [$Q_0.99 equiv$ 99th percentile], [4], [4], [not affected],
+    [$Q_1 equiv max$], [5], [50], [affected],
   )
 ]
 
@@ -220,15 +195,19 @@ median ($y^* = "med" Y$) of a random variable $Y$ is.
 Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two different measures of central tendency of a
 random variable $Y$:
 
-#grid(columns: 2, [
-  - In ordinary least squares (LS), we predict the expected value of a random variable:
-  $
-    hat(y)(bold(x)) = Ex[Y|X = bold(x)].
-  $
-], [
-  - We can also build a regression model that predicts the conditional median:
-  $ hat(y)_"med" (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
-])
+#grid(
+  columns: 2,
+  [
+    - In ordinary least squares (LS), we predict the expected value of a random variable:
+    $
+      hat(y)(bold(x)) = Ex[Y|X = bold(x)].
+    $
+  ],
+  [
+    - We can also build a regression model that predicts the conditional median:
+    $ hat(y)_"med" (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
+  ],
+)
 
 However, median regression is not limited to $q = 1\/2$; we can construct a regression model for any
 conditional quantile $QQ_q [Y|X]$ where
@@ -264,7 +243,7 @@ $
   cal(L)_q (epsilon)
   :&= cases(q dot epsilon & quad epsilon >= 0, -(1-q) dot epsilon & quad epsilon < 0
   ) \
-   &= epsilon dot q dot Ind(epsilon >=0) - epsilon dot (1-q) dot Ind(epsilon<=0)
+  &= epsilon dot q dot Ind(epsilon >=0) - epsilon dot (1-q) dot Ind(epsilon<=0)
   ,
 $ <eq-check-loss>
 
@@ -276,23 +255,26 @@ $ <eq-check-loss>
 where $epsilon := y - hat(y)$ is the error term (residual) and $hat(y)$ is the prediction of a
 regression model.
 
-#margin(
-  {
-    // NOTE: when plotted on the same graph, it looks like a six-legged spider: not illustrative at all
-    let x = lq.linspace(-2, 2)
+#margin({
+  // NOTE: when plotted on the same graph, it looks like a six-legged spider: not illustrative at all
+  let x = lq.linspace(-2, 2)
 
-    let sub-figure(q) = figure(
-      caption: [Check loss $cal(L)_#q (epsilon)$],
-      lq.diagram(width: 3cm, height: 3cm / 2, xlabel: $epsilon$, lq.plot(
+  let sub-figure(q) = figure(
+    caption: [Check loss $cal(L)_#q (epsilon)$],
+    lq.diagram(
+      width: 3cm,
+      height: 3cm / 2,
+      xlabel: $epsilon$,
+      lq.plot(
         mark: none,
         x,
         x.map(epsilon => if (epsilon >= 0) { q * epsilon } else { -(1 - q) * epsilon }),
-      )),
-    )
+      ),
+    ),
+  )
 
-    multi-figure(sub-figure(0.25), sub-figure(0.5), sub-figure(0.75))
-  },
-)
+  multi-figure(sub-figure(0.25), sub-figure(0.5), sub-figure(0.75))
+})
 
 == Constant model
 Let's first consider the simplest case, where we look for $a^*$ in the family of all constant models $a^* in {a | a = const}$.
@@ -303,9 +285,9 @@ Let's first consider the simplest case, where we look for $a^*$ in the family of
 
   $
     cal(R)(a) &:= Ex_((bold(x), y) ~ pdf(bold(x), y)) [cal(L)_q (a(bold(x)), y)] \
-              &= Ex_((bold(x), y) ~ pdf(bold(x), y)) [cal(L)_q (y - a(bold(x)))] \
-              &= integral cal(L)_q (y - a(bold(x))) dot pdf(bold(x), y) dot dd(bold(x)) dd(y) \
-              &= integral cal(L)_q (y - a(bold(x))) dot dd(cdf(bold(x), y)) -> min_a
+    &= Ex_((bold(x), y) ~ pdf(bold(x), y)) [cal(L)_q (y - a(bold(x)))] \
+    &= integral cal(L)_q (y - a(bold(x))) dot pdf(bold(x), y) dot dd(bold(x)) dd(y) \
+    &= integral cal(L)_q (y - a(bold(x))) dot dd(cdf(bold(x), y)) -> min_a
   $
 ]
 
@@ -412,9 +394,6 @@ $
 The model $a(bold(x)) equiv a(bold(x)|bold(theta); q)$ can be any general regression model
 supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
 
-== Linear quantile regression
-The conditional quantile $QQ_q [Y|X]$ can be modeled as a linear function of predictors $bold(x)$:
-
 #let quantile-model-plot(file) = {
   let data = lq.load-txt(read(file), header: true)
   let x = data.remove("x")
@@ -433,74 +412,82 @@ The conditional quantile $QQ_q [Y|X]$ can be modeled as a linear function of pre
   // FIX: legend overlaps with the plot
 }
 
-#margin(figure(
-  caption: [Linear quantile regression for non-normaly distributed noise],
-  quantile-model-plot("linear/out.csv"),
-))
+#grid(
+  columns: (1fr, 1.3fr),
+  [== Linear quantile regression
+    The conditional quantile $QQ_q [Y|X]$ can be modeled as a linear function of predictors $bold(x)$:
 
-$
-  QQ_q [Y|X = bold(x)] = bra bold(x), bold(beta) ket, quad beta_j equiv beta_j (q),
-$ <eq-linear-quantile-regression>
+    #margin(
+      figure(
+        caption: [Linear quantile regression for non-normaly distributed noise],
+        quantile-model-plot("linear/out.csv"),
+      ),
+    )
 
-where $bold(beta)(q)$ is a vector of regression coefficients, and $beta_j (q) = beta_(j|q) in RR$ are
-regression coefficients for the feature $bold(x)^j$ and a _predefined hyperparameter_ $q$.
-Coefficients $beta_j (q)$ are estimated by minimizing the empirical risk:
+    $
+      QQ_q [Y|X = bold(x)] = bra bold(x), bold(beta) ket, quad beta_j equiv beta_j (q),
+    $ <eq-linear-quantile-regression>
 
-$
-  cal(R)(bold(beta)) = 1 / ell dot sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - bra bold(x), bold(beta) ket) -> min_(bold(beta)).
-$
+    where $bold(beta)(q)$ is a vector of regression coefficients, and $beta_j (q) = beta_(j|q) in RR$ are
+    regression coefficients for the feature $bold(x)^j$ and a _predefined hyperparameter_ $q$.
+    Coefficients $beta_j (q)$ are estimated by minimizing the empirical risk:
 
-== Gradient boosting quantile regression
-Quantile loss @eq-check-loss is differentiable if $epsilon != 0$:
+    $
+      cal(R)(bold(beta)) &= 1 / ell dot sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - bra bold(x), bold(beta) ket) \
+      &-> min_(bold(beta)).
+    $
+  ],
+  [== Neural quantile regression
+    Neural networks inherently support custom loss functions and can model conditional quantiles $QQ_q [Y|X]$ as
+    well (@fig-neural-quantile-regression). A model predicting conditional quantiles $QQ_q [Y|X]$ must
+    be trained with a quantile loss, which can be easily implemented:
 
-#margin[#figure(
-    caption: [Quantile regression performed by a gradient boosting model],
-    quantile-model-plot("boosting/out.csv"),
-  ) <fig-boosting-quantile-regression>
-]
+    #margin[#figure(
+        caption: [Quantile regression performed by a neural network],
+        quantile-model-plot("nn/out.csv"),
+      ) <fig-neural-quantile-regression>
+    ]
 
-$
-  pdv(, epsilon) cal(L)_q (epsilon) = cases(q & quad epsilon > 0, -(1-q) & quad epsilon < 0
-  ) quad ,
-$
+    ```python
+    class QuantileLoss(L.LightningModule):
+        def __init__(self, q: float):
+            super().__init__()
+            self.q = q
 
-thus, gradient boosting can approximate the quantile function $QQ_q [Y|X]$ to handle non-linear
-dependencies between features and quantiles (@fig-boosting-quantile-regression).
+        def forward(self, y_pred, y_true):
+            return T.where(
+                (epsilon := y_true - y_pred) >= 0,
+                self.q * epsilon,
+                (self.q - 1) * epsilon,
+            ).mean()```
+  ],
 
-== Neural quantile regression
-Neural networks inherently support custom loss functions and can model conditional quantiles $QQ_q [Y|X]$ as
-well (@fig-neural-quantile-regression). A model predicting conditional quantiles $QQ_q [Y|X]$ must
-be trained with a quantile loss, which can be easily implemented:
+  [== Gradient boosting quantile regression
+    Quantile loss @eq-check-loss is differentiable if $epsilon != 0$:
 
-#margin[#figure(
-    caption: [Quantile regression performed by a neural network],
-    quantile-model-plot("nn/out.csv"),
-  ) <fig-neural-quantile-regression>
-]
+    #margin[#figure(
+        caption: [Quantile regression performed by a gradient boosting model],
+        quantile-model-plot("boosting/out.csv"),
+      ) <fig-boosting-quantile-regression>
+    ]
 
-```python
-class QuantileLoss(L.LightningModule):
-    def __init__(self, q: float):
-        super().__init__()
-        self.q = q
+    $
+      pdv(, epsilon) cal(L)_q (epsilon) = cases(q & quad epsilon > 0, -(1-q) & quad epsilon < 0
+      ) med ,
+    $
 
-    def forward(self, y_pred, y_true):
-        return T.where(
-            (epsilon := y_true - y_pred) >= 0,
-            self.q * epsilon,
-            (self.q - 1) * epsilon,
-        ).mean()
-```
+    thus, gradient boosting can approximate the quantile function $QQ_q [Y|X]$ to handle non-linear
+    dependencies between features and quantiles (@fig-boosting-quantile-regression).],
+  [== Random forest quantile regression
+    Random forests use ensemble averaging to make final predictions:
 
-== Random forest quantile regression
-Random forests use ensemble averaging to make final predictions:
+    $
+      A(bold(x)) = 1 / T dot sum_(t=1)^T a_t (bold(x)).
+    $
 
-$
-  A(bold(x)) = 1 / T dot sum_(t=1)^T a_t (bold(x)).
-$
-
-If each base algorithm $a_t (bold(x))$ is trained to predict quantiles $QQ_q [Y|X]$, the ensemble $A(bold(x))$ will
-estimate the expectation of the quantile $Ex [QQ_q [Y|X]]$.
+    If each base algorithm $a_t (bold(x))$ is trained to predict quantiles $QQ_q [Y|X]$, the ensemble $A(bold(x))$ will
+    estimate the expectation of the quantile $Ex [QQ_q [Y|X]]$.],
+)
 
 = Convergence and reliability of quantile regression parameters
 
@@ -573,7 +560,8 @@ approaches 0 or 1*. In practice, predictions near the median are typically more 
 predictions for extreme quantiles (e.g., 0.01 or 0.99) are less reliable.
 
 #note[While $q dot (1-q)$ decreases near the tails, the sandwich term $D^(-1) Omega D^(-1)$ becomes poorly
-  estimated and tends to dominate. ]
+  estimated and tends to dominate.
+]
 
 == Bad statistical guarantee
 While ordinary least squares (OLS) estimates benefit from the Gauss-Markov theorem, which
@@ -721,26 +709,24 @@ antiretroviral drug indinavir when used in a triple-drug regimen compared to a s
 treatment for HIV patients.
 
 #margin[#figure(
-  caption: [
-    ACTG 320 dataset features (simplified)
-  ],
-  table(
-    columns: (auto, 1fr),
-    [Variable],
-    [Description],
-    [`time` \ (target)],
-    [Follow-up time to AIDS progression or death (in days). Represents the time from enrollment to the
-      event (end of study or death).],
-    [`age`],
-    [Age of the patient at the time of enrollment (in years).],
-    [`cd4_cell_count`],
-    [Baseline CD4 T-cell count (cells/mL), a key indicator of immune function.],
-    [`race_*`],
-    [Indicator variables representing the patient's race.],
-    [`group_*`],
-    [Indicator variables representing the treatment group.],
-  ),
-) <tab-aids-320-features>]
+    caption: [
+      ACTG 320 dataset features (simplified)
+    ],
+    table(
+      columns: (auto, 1fr),
+      [Variable], [Description],
+      [`time` \ (target)],
+      [Follow-up time to AIDS progression or death (in days). Represents the time from enrollment to the
+        event (end of study or death).],
+
+      [`age`], [Age of the patient at the time of enrollment (in years).],
+      [`cd4_cell_count`],
+      [Baseline CD4 T-cell count (cells/mL), a key indicator of immune function.],
+
+      [`race_*`], [Indicator variables representing the patient's race.],
+      [`group_*`], [Indicator variables representing the treatment group.],
+    ),
+  ) <tab-aids-320-features>]
 
 The associated dataset contains approximately 1,150 records of HIV-infected patients who were
 randomized to receive either the novel triple-drug regimen or the conventional two-drug therapy.
@@ -755,27 +741,34 @@ AIDS progression or death.
 Quantile regression coefficients $beta_j (q)$ as functions of quantile $q$ are plotted in
 @fig-aids-quantile-plot.
 
-#figure(caption: [
-  Quantile regression coefficients for ACTG 320 dataset
-], grid(columns: (1fr, 1fr, 1fr), row-gutter: 1em, ..{
-  let data = lq.load-txt(read("aids/out.csv"), header: true)
-  let quantile = data.remove("quantile")
+#figure(
+  caption: [
+    Quantile regression coefficients for ACTG 320 dataset
+  ],
+  grid(columns: (1fr, 1fr, 1fr), row-gutter: 1em, ..{
+      let data = lq.load-txt(read("aids/out.csv"), header: true)
+      let quantile = data.remove("quantile")
 
-  data.keys().map(col => ({
-    let coeffs = data.at(col)
-    let lim = calc.max(..coeffs.map(calc.abs))
-    lq.diagram(
-      ylim: if (col == "intercept") { auto } else { (-lim, lim) },
-      xlim: (0, 1),
-      ylabel: $beta_#raw(col)$,
-      xlabel: $q$,
-      width: 2.5cm,
-      height: 3cm,
-      margin: 15%,
-      lq.plot(quantile, coeffs, mark-size: 2pt),
-    )
-  }))
-})) <fig-aids-quantile-plot>
+      data
+        .keys()
+        .map(col => (
+          {
+            let coeffs = data.at(col)
+            let lim = calc.max(..coeffs.map(calc.abs))
+            lq.diagram(
+              ylim: if (col == "intercept") { auto } else { (-lim, lim) },
+              xlim: (0, 1),
+              ylabel: $beta_#raw(col)$,
+              xlabel: $q$,
+              width: 2.5cm,
+              height: 3cm,
+              margin: 15%,
+              lq.plot(quantile, coeffs, mark-size: 2pt),
+            )
+          }
+        ))
+    }),
+) <fig-aids-quantile-plot>
 
 - Low $q$ values represent individuals who progressed to AIDS or died quickly, while high $q$ values
   correspond to individuals with longer survival times.
