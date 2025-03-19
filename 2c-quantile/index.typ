@@ -492,7 +492,15 @@ class QuantileLoss(L.LightningModule):
         ).mean()
 ```
 
-This loss function can be used to train a general regression model.
+== Random forest quantile regression
+Random forests use ensemble averaging to make final predictions:
+
+$
+  A(bold(x)) = 1 / T dot sum_(t=1)^T a_t (bold(x)).
+$
+
+If each base algorithm $a_t (bold(x))$ is trained to predict quantiles $QQ_q [Y|X]$, the ensemble $A(bold(x))$ will
+estimate the expectation of the quantile $Ex [QQ_q [Y|X]]$.
 
 = Convergence and reliability of quantile regression parameters
 
