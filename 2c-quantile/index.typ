@@ -451,13 +451,21 @@ $
 $
 
 == Gradient boosting quantile regression
-Gradient boosting can also be used for quantile regression:
+Quantile loss @eq-check-loss is differentiable if $epsilon != 0$:
 
-```python
-from sklearn.ensemble import GradientBoostingRegressor
+#margin[#figure(
+    caption: [Quantile regression performed by a gradient boosting model],
+    quantile-model-plot("boosting/out.csv"),
+  ) <fig-boosting-quantile-regression>
+]
 
-model = GradientBoostingRegressor(loss="quantile", alpha=0.5)
-```
+$
+  pdv(, epsilon) cal(L)_q (epsilon) = cases(q & quad epsilon > 0, -(1-q) & quad epsilon < 0
+  ) quad ,
+$
+
+thus, gradient boosting can approximate the quantile function $QQ_q [Y|X]$ to handle non-linear
+dependencies between features and quantiles (@fig-boosting-quantile-regression).
 
 == Neural quantile regression
 An ordinary neural network can model conditional quantiles $QQ_q [Y|X]$ as well. The quantile loss
