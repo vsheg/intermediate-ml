@@ -1,9 +1,9 @@
 # %%
-import pandas as pd
-import seaborn as sns
+from pathlib import Path
+
 import lightning as L
+import pandas as pd
 import torch as T
-import matplotlib.pyplot as plt
 
 # %% Generate data
 x = T.linspace(-5, 5, 1024)
@@ -53,44 +53,29 @@ class Model(L.LightningModule):
 
     def train_dataloader(self):
         dataset = T.utils.data.TensorDataset(X, y)
-        return T.utils.data.DataLoader(
-            dataset, batch_size=128, shuffle=True, pin_memory=True
-        )
+        return T.utils.data.DataLoader(dataset, batch_size=64, shuffle=True, pin_memory=True)
 
     def configure_optimizers(self):
         return T.optim.NAdam(self.parameters(), lr=1e-2)
 
 
-# %%
-quantiles = [0.025, 0.5, 0.975]
+# %% Predict mean
 df = pd.DataFrame({"x": X.reshape(-1), "y": y.reshape(-1)})
 
-# %% Predict mean
 model = Model()
 trainer = L.Trainer(max_epochs=100)
 trainer.fit(model)
 df["mean"] = model(X).detach()
 
 # %% Predict quantiles
+quantiles = [0.05, 0.5, 0.95]
+
 for q in quantiles:
     model = Model(q=q)
     trainer = L.Trainer(max_epochs=100)
     trainer.fit(model)
     df[q] = model(X).detach()
 
-# %%
-df = df.melt(
-    id_vars=["x", "y"],
-    value_vars=["mean"] + quantiles,
-    var_name="model",
-    value_name="y_pred",
-)
-
-# %% Plot
-with plt.style.context("../assets/plot.mplstyle"):
-    sns.scatterplot(data=df, x="x", y="y", s=5, alpha=0.2)
-    sns.lineplot(data=df, x="x", y="y_pred", hue="regression")
-    plt.xlabel("$x$")
-    plt.ylabel("$y$")
-
-# %%
+# %% Save results
+path = Path(__file__).parent / "out.csv"
+df.to_csv(path, index=False)

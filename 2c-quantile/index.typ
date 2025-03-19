@@ -468,21 +468,28 @@ thus, gradient boosting can approximate the quantile function $QQ_q [Y|X]$ to ha
 dependencies between features and quantiles (@fig-boosting-quantile-regression).
 
 == Neural quantile regression
-An ordinary neural network can model conditional quantiles $QQ_q [Y|X]$ as well. The quantile loss
-@eq-check-loss determines that the model $a(bold(x))$ will predict conditional quantiles $QQ_q [Y|X]$;
-it can be implemented as follows:
+Neural networks inherently support custom loss functions and can model conditional quantiles $QQ_q [Y|X]$ as
+well (@fig-neural-quantile-regression). A model predicting conditional quantiles $QQ_q [Y|X]$ must
+be trained with a quantile loss, which can be easily implemented:
+
+#margin[#figure(
+    caption: [Quantile regression performed by a neural network],
+    quantile-model-plot("nn/out.csv"),
+  ) <fig-neural-quantile-regression>
+]
 
 ```python
-import lightning as L
-
 class QuantileLoss(L.LightningModule):
-  def __init__(self, q):
-    super().__init__()
-    self.q = q
+    def __init__(self, q: float):
+        super().__init__()
+        self.q = q
 
-  def forward(self, y_pred, y_true):
-    errors = y_true - y_pred
-    return torch.max(self.q * errors, (self.q - 1) * errors).mean()
+    def forward(self, y_pred, y_true):
+        return T.where(
+            (epsilon := y_true - y_pred) >= 0,
+            self.q * epsilon,
+            (self.q - 1) * epsilon,
+        ).mean()
 ```
 
 This loss function can be used to train a general regression model.
