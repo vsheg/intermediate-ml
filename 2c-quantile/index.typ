@@ -394,7 +394,7 @@ By minimizing the empirical risk, we can find the optimal model $a^*(bold(x))$ t
 quantile $QQ_q [Y|X=bold(x)]$:
 
 $
-  a^*(bold(x)) = arg min_a { ub(Ex_((bold(x), y) ~ pdf(bold(x), y)) [ cal(L)_q (y - a(bold(x))) ], cal(R)(a)) }.
+  a^*(bold(x)) = arg min_a ub(Ex_((bold(x), y) ~ pdf(bold(x), y)) [ cal(L)_q (y - a(bold(x))) ], cal(R)(a)).
 $
 
 == Practical reformulation
@@ -409,22 +409,45 @@ $
   cal(R)(a) = 1 / ell dot sum_((bold(x)^*, y^*) in (X, Y)^ell) cal(L)_q (y^* - a(bold(x)^*)) -> min_a.
 $
 
-The model $a(bold(x)) equiv a(bold(x)|bold(theta); q)$ can be any regression model.
+The model $a(bold(x)) equiv a(bold(x)|bold(theta); q)$ can be any general regression model
+supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
 
 == Linear quantile regression
 The conditional quantile $QQ_q [Y|X]$ can be modeled as a linear function of predictors $bold(x)$:
 
+#let quantile-model-plot(file) = {
+  let data = lq.load-txt(read(file), header: true)
+  let x = data.remove("x")
+  let y = data.remove("y")
+
+  let label-fn(col) = if (col == "mean") { $Ex$ } else { $QQ_#col$ }
+
+  lq.diagram(
+    width: 4cm,
+    height: 3cm,
+    legend: (position: right + bottom),
+    lq.scatter(x, y, size: 3pt, stroke: none, color: ghost-color),
+    ..data.keys().map(col => lq.plot(mark: none, x, data.at(col), label: label-fn(col))),
+  )
+  // TODO: add link to code
+  // FIX: legend overlaps with the plot
+}
+
+#margin(figure(
+  caption: [Linear quantile regression for non-normaly distributed noise],
+  quantile-model-plot("linear/out.csv"),
+))
+
 $
-  hat(y)_q (bold(x)) = QQ_q [Y|X = bold(x)] = bra bold(x), bold(beta)(q) ket, quad beta_j (q) = beta_(j|q),
+  QQ_q [Y|X = bold(x)] = bra bold(x), bold(beta) ket, quad beta_j equiv beta_j (q),
 $ <eq-linear-quantile-regression>
 
 where $bold(beta)(q)$ is a vector of regression coefficients, and $beta_j (q) = beta_(j|q) in RR$ are
 regression coefficients for the feature $bold(x)^j$ and a _predefined hyperparameter_ $q$.
-
 Coefficients $beta_j (q)$ are estimated by minimizing the empirical risk:
 
 $
-  cal(R)(bold(beta)) = 1 / ell dot sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - hat(y)_q (bold(x)|bold(beta))) -> min_(bold(beta)).
+  cal(R)(bold(beta)) = 1 / ell dot sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - bra bold(x), bold(beta) ket) -> min_(bold(beta)).
 $
 
 == Gradient boosting quantile regression
