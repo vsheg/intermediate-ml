@@ -686,97 +686,112 @@ Estimates for extreme quantiles (e.g., $q = 0.01$ or $q = 0.99$) are often less 
 sparse data in distribution tails, resulting in higher variance as shown in the parameter
 convergence section.
 
-= Interpretation of linear coefficients
+= Interpretation of linear quantile coefficients $hat(beta)_j (q)$
+
+#margin(
+  // TODO: add subfigure reference labels to the plot
+  multi-figure(
+    caption: [
+      Quantile regression coefficients for ACTG 320 dataset
+    ],
+    ..{
+      let data = lq.load-txt(read("aids/out.csv"), header: true)
+      let x = data.remove("quantile")
+
+      let plot-coeff(col) = {
+        let y = data.at(col)
+        let lim = calc.max(..y.map(calc.abs))
+
+        let diagram = lq.diagram(
+          ylim: if (col == "intercept") { auto } else { (-lim, lim) },
+          xlim: (0, 1),
+          ylabel: $hat(beta)_#raw(col)$,
+          xlabel: [quantile $q$],
+          width: 4cm,
+          height: 2.5cm,
+          margin: 15%,
+          lq.plot(x, y, mark-size: 2pt),
+        )
+
+        [#figure(diagram) #label("fig-aids-" + col.replace("_", "-"))]
+      }
+
+      data.keys().map(col => plot-coeff(col))
+    },
+    label: <fig-aids-quantile-plot>,
+  ),
+)
 
 == Impact on target variable
-Quantile regression coefficients $beta_j (q)$, similar to OLS coefficients $beta_j$, represent the
-impact of a unit change in predictor $bold(x)^j$ on the response variable $y$. However, since they
-are functions of $q$, these coefficients capture more nuanced relationships between features and the
-target variable across different parts of its distribution.
+Quantile regression coefficients $beta_j (q)$ represent the impact of a unit change in predictor $bold(x)^j$ on the response variable at specific quantiles. Unlike OLS coefficients, they capture how features influence different parts of the target distribution.
 
-By analyzing how coefficients $beta_j(q)$ vary across different quantile levels, we gain insight
-into how predictors differentially affect the entire conditional distribution of $y$, not just its
-central tendency.
-
-For instance, if $y$ represents patient survival time, quantile regression illustrates how a feature
-influences various segments of the target distribution: high-risk patients ($q << 0.5$, shorter
-survival), typical patients ($q approx 0.5$, median survival), or low-risk patients ($q >> 0.5$,
-longer survival).
+By examining how $hat(beta)_j (q)$ varies across quantile levels, we can guess how predictors affect various segments of the conditional distribution, revealing effects that are not directly observable in standard regression.
 
 == Data
-The ACTG 320 trial, initiated in 1997 by Merck, was designed to evaluate the effectiveness of the
+The ACTG 320 clinical trial, initiated in 1997 by Merck, was designed to evaluate the effectiveness of the
 antiretroviral drug indinavir when used in a triple-drug regimen compared to a standard two-drug
 treatment for HIV patients.
 
-#margin[#figure(
-    caption: [
-      ACTG 320 dataset features (simplified)
-    ],
-    table(
-      columns: (auto, 1fr),
-      [Variable], [Description],
-      [`time` \ (target)],
-      [Follow-up time to AIDS progression or death (in days). Represents the time from enrollment to the
-        event (end of study or death).],
+#figure(
+  caption: [
+    ACTG 320 dataset features (simplified)
+  ],
+  table(
+    columns: (auto, 1fr),
+    [Variable], [Description],
+    [`time` \ (target)],
+    [Follow-up time to AIDS progression or death (in days). Represents the time from enrollment to the
+      event (end of study or death).],
 
-      [`age`], [Age of the patient at the time of enrollment (in years).],
-      [`cd4_cell_count`],
-      [Baseline CD4 T-cell count (cells/mL), a key indicator of immune function.],
+    [`age`], [Age of the patient at the time of enrollment (in years).],
+    [`cd4_cell_count`], [Baseline CD4 T-cell count (cells/mL), a key indicator of immune function.],
+    [`race_*`], [Indicator variables representing the patient's race.],
+    [`group_*`], [Indicator variables representing the treatment group.],
+  ),
+) <tab-aids-320-features>
 
-      [`race_*`], [Indicator variables representing the patient's race.],
-      [`group_*`], [Indicator variables representing the treatment group.],
-    ),
-  ) <tab-aids-320-features>]
-
-The associated dataset contains approximately 1,150 records of HIV-infected patients who were
+The associated dataset contains aprox. 1,150 records of HIV-infected patients who were
 randomized to receive either the novel triple-drug regimen or the conventional two-drug therapy.
 
 // TODO: Add reference to https://search.r-project.org/CRAN/refmans/GLDreg/html/actg.html
 
 == Quantile regression
-The target variable is `time`, representing the follow-up duration. Quantile regression was used to
-analyze the impact of various linear predictors $bold(x)^j$ from @tab-aids-320-features on the time $y$ to
-AIDS progression or death.
+The target variable is `time`, representing the follow-up duration. Linear quantile regression
+
+$ QQ_q [Y|X] = sum_j beta_j dot bold(x)^j, quad beta_j equiv beta_j (q) $
+
+was used to estimate the impact of various linear predictors $bold(x)^j$ from @tab-aids-320-features
+on the time $y$ to AIDS progression or death.
 
 Quantile regression coefficients $beta_j (q)$ as functions of quantile $q$ are plotted in
-@fig-aids-quantile-plot.
+@fig-aids-quantile-plot. Low $q$ values represent individuals who progressed to AIDS or died quickly, while high $q$ values
+correspond to individuals with longer survival times.
 
-#figure(
-  caption: [
-    Quantile regression coefficients for ACTG 320 dataset
-  ],
-  grid(columns: (1fr, 1fr, 1fr), row-gutter: 1em, ..{
-      let data = lq.load-txt(read("aids/out.csv"), header: true)
-      let quantile = data.remove("quantile")
+#margin[
+  Check @koenker2001quantile for more examples.
+]
 
-      data
-        .keys()
-        .map(col => (
-          {
-            let coeffs = data.at(col)
-            let lim = calc.max(..coeffs.map(calc.abs))
-            lq.diagram(
-              ylim: if (col == "intercept") { auto } else { (-lim, lim) },
-              xlim: (0, 1),
-              ylabel: $beta_#raw(col)$,
-              xlabel: $q$,
-              width: 2.5cm,
-              height: 3cm,
-              margin: 15%,
-              lq.plot(quantile, coeffs, mark-size: 2pt),
-            )
-          }
-        ))
-    }),
-) <fig-aids-quantile-plot>
+== Baseline estimate
+Baseline survival time is estimated by the model intercept (@fig-aids-intercept). Median survival
+time $QQ_(1\/2) [Y|X]$ corresponds to $q = 1\/2$ and is approximately 240 days.
 
-- Low $q$ values represent individuals who progressed to AIDS or died quickly, while high $q$ values
-  correspond to individuals with longer survival times.
+== Reliability of coefficients
+For $q approx 0.5$, the estimates are most reliable and often close to the OLS estimates. Extreme
+quantiles are estimated at tails where data is sparse, leading to higher variance $Var [hat(beta)_j]$ and
+less reliable estimates, as seen in the fluctuations in @fig-aids-race-hispanic at both tails.
+Quantiles $q < 0.1$ and $q > 0.9$ were not estimated at all.
 
-- Positive $beta_j (q)$ values indicate that the predictor $bold(x)^j$ makes a positive contribution
-  to survival time $y$, meaning $Delta y$ increases proportionally to $beta_j (q) dot Delta bold(x)^j$ for
-  individuals around the $q$-quantile of the distribution.
 
-- Negative $beta_j (q)$ values suggest that the predictor $bold(x)^j$ makes a negative contribution to
-  survival time $y$, meaning $Delta y$ decreases proportionally to $beta_j (q) dot Delta bold(x)^j$ for
-  individuals around the $q$-quantile of the distribution.
+== Sign of quantile regression coefficients $beta_j (q)$
+The sign of $beta_j (q)$ reflects the predictor $bold(x)^j$'s impact on survival time $y$ at the $q$-quantile, i.e.,
+$QQ_q [Y] prop beta_j (q) dot Delta bold(x)^j$ at the $q$-quantile.
+
+Consistently positive $beta_j (q)$ across all $q$ suggest that the predictor $bold(x)^j$ has only
+positive contributions to survival time $y$ for all individuals. For the indinavir group
+(@fig-aids-group-indinavir), the positive impact (in days) is greatest for short-survived patients
+(low $q$) and decreases for long-lived patients (high $q$).
+
+Likewise, consistently negative $beta_j (q)$ across all $q$ suggest that the predictor $bold(x)^j$ has only
+negative contributions to survival time $y$ for all quantiles. AIDS patients generally have lower
+CD4 cell counts than healthy individuals, and the lower the CD4 cell count, the more pronounced its
+negative contribution (@fig-aids-cd4-cell-count) to survival time $y$.
