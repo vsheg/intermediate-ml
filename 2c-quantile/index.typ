@@ -478,8 +478,8 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
 
     thus, gradient boosting can approximate the quantile function $QQ_q [Y|X]$ to handle non-linear
     dependencies between features and quantiles (@fig-boosting-quantile-regression).],
-  [== Random forest quantile regression
-    Random forests use ensemble averaging to make final predictions:
+  [== Ensemble models
+    Multiple base algorithms $a_t (bold(x))$ can be combined to create an ensemble model
 
     $
       A(bold(x)) = 1 / T dot sum_(t=1)^T a_t (bold(x)).
