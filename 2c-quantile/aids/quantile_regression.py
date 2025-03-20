@@ -36,7 +36,7 @@ X = X[mask_features].copy()
 
 # %% Run linear quantile regression and extract coefficients
 coeffs_dict = {}
-quantiles = np.linspace(0.2, 0.8, 20)
+quantiles = np.linspace(0.1, 0.9, 20)
 
 for q in tqdm(quantiles):
     model = QuantileRegressor(quantile=q, alpha=0.0)
