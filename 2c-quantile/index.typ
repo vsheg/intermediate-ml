@@ -442,7 +442,8 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
     well (@fig-neural-quantile-regression). A model predicting conditional quantiles $QQ_q [Y|X]$ must
     be trained with a quantile loss, which can be easily implemented:
 
-    #margin[#figure(
+    #margin[
+      #figure(
         caption: [Quantile regression performed by a neural network],
         quantile-model-plot("nn/out.csv"),
       ) <fig-neural-quantile-regression>
@@ -459,7 +460,8 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
                 (epsilon := y_true - y_pred) >= 0,
                 self.q * epsilon,
                 (self.q - 1) * epsilon,
-            ).mean()```
+            ).mean()
+    ```
   ],
 
   [== Gradient boosting quantile regression
@@ -772,8 +774,9 @@ correspond to individuals with longer survival times.
 ]
 
 == Baseline estimate
-Baseline survival time is estimated by the model intercept (@fig-aids-intercept). Median survival
-time $QQ_(1\/2) [Y|X]$ corresponds to $q = 1\/2$ and is approximately 240 days.
+Baseline survival time is estimated by the model intercept (@fig-aids-intercept), e.g., median intercept
+$beta_"intercept" (q = 1\/2)$ is approximately 240 days. Note that the intercept would be the median
+survival time if all other predictors were zero, in our case, they are not.
 
 == Reliability of coefficients
 For $q approx 0.5$, the estimates are most reliable and often close to the OLS estimates. Extreme
