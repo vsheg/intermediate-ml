@@ -413,8 +413,8 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
 }
 
 #grid(
-  columns: (1fr, 1.3fr),
-  [== Linear quantile regression
+  columns: (1fr, 1fr),
+  uplift[== Linear quantile regression
     The conditional quantile $QQ_q [Y|X]$ can be modeled as a linear function of predictors $bold(x)$:
 
     #margin(
@@ -437,7 +437,7 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
       &-> min_(bold(beta)).
     $
   ],
-  [== Neural quantile regression
+  uplift[== Neural quantile regression
     Neural networks inherently support custom loss functions and can model conditional quantiles $QQ_q [Y|X]$ as
     well (@fig-neural-quantile-regression). A model predicting conditional quantiles $QQ_q [Y|X]$ must
     be trained with a quantile loss, which can be easily implemented:
@@ -456,15 +456,16 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
             self.q = q
 
         def forward(self, y_pred, y_true):
+            epsilon = y_true - y_pred
             return T.where(
-                (epsilon := y_true - y_pred) >= 0,
+                epsilon >= 0,
                 self.q * epsilon,
                 (self.q - 1) * epsilon,
             ).mean()
     ```
   ],
 
-  [== Gradient boosting quantile regression
+  uplift[== Gradient boosting quantile regression
     Quantile loss @eq-check-loss is differentiable if $epsilon != 0$:
 
     #margin[#figure(
@@ -480,7 +481,7 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
 
     thus, gradient boosting can approximate the quantile function $QQ_q [Y|X]$ to handle non-linear
     dependencies between features and quantiles (@fig-boosting-quantile-regression).],
-  [== Ensemble models
+  uplift[== Ensemble models
     Multiple base algorithms $a_t (bold(x))$ can be combined to create an ensemble model
 
     $

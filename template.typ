@@ -1,12 +1,9 @@
 #import "@preview/physica:0.9.3": *
-#import "@preview/drafting:0.2.2": (
-  margin-note,
-  set-page-properties,
-  set-margin-note-defaults,
-)
+#import "@preview/drafting:0.2.2": margin-note, set-page-properties, set-margin-note-defaults
 #import "@preview/quick-maths:0.2.0": shorthands
 #import "defs.typ": *
 #import "@preview/lilaq:0.1.0" as lq
+#import "@preview/shadowed:0.2.0": shadowed
 
 //////////////
 // TEMPLATE //
@@ -38,12 +35,8 @@
 
   // font
   let font-size = 9pt
-  set text(
-    size: font-size,
-    hyphenate: true,
-    font: "New Computer Modern",
-    costs: (hyphenation: 10%),
-  )
+  set text(size: font-size, hyphenate: true, font: "New Computer Modern", costs: (hyphenation: 10%))
+  show raw: set text(font: "Menlo", size: 0.9em)
 
   // math equations
   set math.equation(numbering: "(1)")
@@ -69,10 +62,12 @@
   set par(justify: true)
 
   // lists
-  set list(marker: (
-    text(font: "Menlo", size: 1.5em, baseline: -0.2em, "✴", fill: accent-color),
-    text(size: 0.6em, baseline: +0.2em, "➤", fill: ghost-color),
-  ))
+  set list(
+    marker: (
+      text(font: "Menlo", size: 1.5em, baseline: -0.2em, "✴", fill: accent-color),
+      text(size: 0.6em, baseline: +0.2em, "➤", fill: ghost-color),
+    ),
+  )
 
   // headings
   show heading: set text(fill: accent-color)
@@ -102,7 +97,9 @@
   set table(stroke: none)
   set table(align: center + horizon)
   set table(
-    fill: (_, y) => if (y == 0) { accent-color.transparentize(80%) } else { if calc.even(y) { ghost-color.transparentize(80%) } },
+    fill: (_, y) => if (y == 0) { accent-color.transparentize(80%) } else {
+      if calc.even(y) { ghost-color.transparentize(80%) }
+    },
   )
 
   // grids
@@ -149,6 +146,20 @@
   margin-note(side: right, stroke: none, title + content)
 }
 
+#let uplift(content) = {
+  pad(
+    x: -2mm,
+    y: -1mm,
+    shadowed(
+      radius: 2mm,
+      inset: 2mm,
+      shadow: 2mm,
+      fill: gradient.linear(luma(99%), luma(98%), angle: 30deg),
+      content,
+    ),
+  )
+}
+
 #let note(cols: 1, title: none, content) = {
   show: note-style
 
@@ -156,31 +167,22 @@
     text(strong(title) + [: ], size: 0.9em)
   }
 
-  let stroke-style = (paint: ghost-color)
-
   set align(center)
-  rect(
-    width: 100%,
-    stroke: (left: stroke-style),
-    inset: (left: 0.5em, right: 0em, y: 0em),
-    {
-      set align(left)
-      show: it => columns(cols, it)
-      title
-      content
-    },
-  )
+
+  uplift({
+    set align(left)
+    show: it => columns(cols, it)
+    title
+    content
+  })
 }
 
 #let example(cols: 1, content) = {
-  note(cols: cols, title: [E.g.], content)
+  note(cols: cols, title: [Example], content)
 }
 
 #let divider = {
-  line(
-    length: 100%,
-    stroke: (paint: ghost-color, thickness: 0.5pt, dash: "loosely-dashed"),
-  )
+  line(length: 100%, stroke: (paint: ghost-color, thickness: 0.5pt, dash: "loosely-dashed"))
 }
 
 // MATH ANNOTATION
@@ -189,12 +191,12 @@
   text(fill: accent-color, content)
 }
 
-#let comment(content) = text(fill: ghost-color, size: 0.8em, $   &$ + content)
+#let comment(content) = text(fill: ghost-color, size: 0.8em, $&$ + content)
 
 // Default color palette
 #import "@preview/typpuccino:0.1.0": latte
 #let palette = latte
-#let colors = (palette.teal, palette.pink, palette.flamingo, palette.mauve, palette.green,)
+#let colors = (palette.teal, palette.pink, palette.flamingo, palette.mauve, palette.green)
 
 // Multifigure
 #import "@preview/subpar:0.2.1": grid as multi-figure
