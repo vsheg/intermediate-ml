@@ -590,23 +590,15 @@ insights into the complete conditional distribution.
   quantiles.
 ]
 
-= Interpretation
+= Practical considerations
 
 == Targets
-Median (and other quantiles) is sometimes more interpretable and a better measure of centrality than
+Median is sometimes more interpretable and a better measure of centrality than
 the mean, particularly for skewed or multimodal data:
 
-- Median salary or house price is more interpretable than mean values as both distributions are
-  usually skewed.
+- Median salary or house price characterizes the central tendency of a distribution better than
+  the mean, which can be skewed by extreme values.
 
-  - In some cases, a "mean" prediction does not exist, such as with binary groups (deceased = 0 and
-    deceased = 1), where the prediction for an "average" $bold(x)$ is meaningless.
-
-- Quantile regression predictions represent the *conditional quantiles of the response variable* $y$ given
-  the predictors $bold(x)$. These predictions act *as boundaries*, splitting the distribution into $q$-lower
-  and $(1-q)$-upper portions by value of $y$, much like the median divides the data into two equal
-  groups. These predictions do not correspond to any specific object or individual in the training
-  data but rather model the distribution of $y$ itself.
 
 == Parameters
 
@@ -619,6 +611,31 @@ the mean, particularly for skewed or multimodal data:
   regression is applied to transformed data (e.g., $log(y)$), coefficients remain invariant, but their
   contribution to $y' = log(y)$ becomes less obvious. For skewed data where OLS fails, quantile
   regression coefficients differ significantly from OLS but may still be interpretable.
+
+== Computational complexity
+Quantile regression lacks a universal analytical solution and is typically solved numerically.
+The quantile loss function from @eq-check-loss combines two linear functions separated at $epsilon = 0$.
+Residuals can be decomposed into positive and negative parts:
+
+$
+  epsilon = epsilon^+ - epsilon^-, quad "where" quad cases(epsilon^+ := max {0, epsilon}, epsilon^- := -min{0, epsilon}),
+$
+
+Using this decomposition, the quantile loss can be expressed as:
+
+$
+  cal(L)_q (epsilon) = q dot epsilon^+ + (1-q) dot epsilon^-.
+$
+
+This formulation leads to a constrained linear programming problem [@Koenker2018handbook, p.282]:
+
+$
+  & 1 / ell sum_(i=1)^ell {q dot epsilon_i^+ + (1-q) dot epsilon_i^-} -> min_(bold(epsilon)^+, bold(epsilon)^-) \
+  "s.t." quad & y_i - hat(y)_i = epsilon_i^+ - epsilon_i^-, quad i = 1..ell, \
+  & epsilon_i^+ >= 0, quad epsilon_i^- >= 0, quad i = 1..ell.
+$
+
+Solving this optimization problem is computationally more intensive than OLS's closed-form solution, particularly for large datasets or when estimating multiple quantiles simultaneously.
 
 = Robustness of quantile regression
 
