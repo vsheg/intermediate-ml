@@ -827,3 +827,54 @@ convergence section.
 Quantile regression allows modeling multiple quantiles, providing a comprehensive view of how
 predictors affect the entire conditional distribution of the response, not just its center. This
 reveals heterogeneous effects that OLS cannot capture.
+
+= Goodness-of-fit
+
+== Bad metrics
+Classical metrics (e.g., MAE, MSE, $R^2$) evaluate predictions based on their distribution around the mean $Ex[Y]$. However, quantile regression focuses on other distribution properties, intentionally ignoring the mean. As a result, classical metrics are not suitable for evaluating quantile regression models.
+
+#margin[
+  For a model $a(bold(x)) equiv hat(y)(bold(x))$, the definitions are:
+
+  - TSS (_total sum of squares_):
+
+  $
+    "TSS" := sum_(bold(x) in X^ell) (y(bold(x)) - Ex[Y|bold(x)])^2
+  $
+
+  - ESS (_explained sum of squares_):
+
+  $
+    "ESS" := sum_(bold(x) in X^ell) (hat(y)(bold(x)) - Ex[Y|bold(x)])^2
+  $
+
+  - RSS (_residual sum of squares_):
+
+  $
+    "RSS" := sum_(bold(x) in X^ell) (y(bold(x)) - hat(y)(bold(x)))^2
+  $
+
+  For unbiased models, $"TSS" = "ESS" + "RSS"$, which is used to derive @eq-r2-quantile.
+]
+
+== Mean quantile loss
+The simplest approach is to use the quantile loss function $cal(L)_q (epsilon)$ directly. For example, to compare two quantile models $hat(y)_q (bold(x))$ and $hat(y)'_q (bold(x))$ (e.g., for different quantiles, regularization, or features), the model with the lower quantile loss better fits the data.
+
+In `sklearn`, this metric is implemented as `sklearn.metrics.mean_pinball_loss`.
+
+== $R^1$ metric
+A more sophisticated approach involves metrics specifically designed for quantile regression. Classical $R^2$ measures the proportion of variance explained by the model:
+
+$
+  R^2 = "ESS" / "TSS" = 1 - "RSS" / "TSS".
+$ <eq-r2-quantile>
+
+For quantile regression, a similar metric can be defined (@koenker1999goodness, eq. 7):
+
+$
+  R^1 (q) = 1 - ( sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - hat(y)_q (bold(x))) ) / ( sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - hat(y)'_q (bold(x))) ),
+$ <eq-r1-quantile>
+
+where $hat(y)_q$ and $hat(y)'_q$ are the proposed and baseline models, respectively. A straightforward choice for the baseline model $hat(y)'_q$ is the empirical quantile value $QQ_q [Y]$ calculated from the training set.
+
+In `sklearn`, this metric is implemented as `sklearn.metrics.d2_pinball_score`.
