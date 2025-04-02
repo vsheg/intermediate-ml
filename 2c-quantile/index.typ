@@ -834,47 +834,66 @@ reveals heterogeneous effects that OLS cannot capture.
 Classical metrics (e.g., MAE, MSE, $R^2$) evaluate predictions based on their distribution around the mean $Ex[Y]$. However, quantile regression focuses on other distribution properties, intentionally ignoring the mean. As a result, classical metrics are not suitable for evaluating quantile regression models.
 
 #margin[
-  For a model $a(bold(x)) equiv hat(y)(bold(x))$, the definitions are:
+  For a model $a(bold(x)) equiv hat(y)(bold(x))$:
 
-  - TSS (_total sum of squares_):
-
-  $
-    "TSS" := sum_(bold(x) in X^ell) (y(bold(x)) - Ex[Y|bold(x)])^2
-  $
-
-  - ESS (_explained sum of squares_):
+  - The _total sum of squares_ is:
 
   $
-    "ESS" := sum_(bold(x) in X^ell) (hat(y)(bold(x)) - Ex[Y|bold(x)])^2
+    TSS := sum_(bold(x) in X^ell) (y(bold(x)) - Ex[Y|bold(x)])^2
   $
 
-  - RSS (_residual sum of squares_):
+  - The _explained sum of squares_ is:
 
   $
-    "RSS" := sum_(bold(x) in X^ell) (y(bold(x)) - hat(y)(bold(x)))^2
+    ESS := sum_(bold(x) in X^ell) (hat(y)(bold(x)) - Ex[Y|bold(x)])^2
   $
 
-  For unbiased models, $"TSS" = "ESS" + "RSS"$, which is used to derive @eq-r2-quantile.
+  - The _residual sum of squares_ is:
+
+  $
+    RSS := sum_(bold(x) in X^ell) (y(bold(x)) - hat(y)(bold(x)))^2
+  $
+
+  For unbiased models, $TSS = ESS + RSS$, which is used to derive @eq-r2-quantile.
 ]
 
 == Mean quantile loss
-The simplest approach is to use the quantile loss function $cal(L)_q (epsilon)$ directly. For example, to compare two quantile models $hat(y)_q (bold(x))$ and $hat(y)'_q (bold(x))$ (e.g., for different quantiles, regularization, or features), the model with the lower quantile loss better fits the data.
+The simplest approach to evaluate quantile regression models is to use the quantile loss $cal(L)_q$ directly:
 
-In `sklearn`, this metric is implemented as `sklearn.metrics.mean_pinball_loss`.
+$
+  bra cal(L)_q ket := 1 / ell dot sum_((bold(x), y) in (X, Y)^ell) cal(L)_q (y - hat(y)_q (bold(x))),
+$ <eq-mean-quantile-loss>
+
+where $hat(y)_q (bold(x))$ is the quantile regression model.
+
+For two quantile regression models $hat(y)_q$ and $hat(y)'_q'$ (e.g., for different quantiles, regularization, or features), the model with the lower quantile loss better fits the data and is preferred. In `sklearn`, this metric is implemented as `sklearn.metrics.mean_pinball_loss`.
 
 == $R^1$ metric
-A more sophisticated approach involves metrics specifically designed for quantile regression. Classical $R^2$ measures the proportion of variance explained by the model:
+Another approach involves metrics specifically designed for quantile regression. Classical $R^2$ measures the proportion of variance explained by the model:
 
 $
-  R^2 = "ESS" / "TSS" = 1 - "RSS" / "TSS".
+  R^2 = ESS / TSS :> 1 - RSS / TSS,
 $ <eq-r2-quantile>
 
-For quantile regression, a similar metric can be defined (@koenker1999goodness, eq. 7):
+where $RSS$ is the sum of squared residuals between the predicted and actual values, and $TSS$ is the squared difference between the actual values $y(bold(x))$ and the mean $macron(y) = Ex[Y]$. $TSS$ can be viewed as $RSS$ for a very simple constant model $hat(y) (bold(x)) = macron(y)$:
+
+$ R^2 = 1 - (RSS[hat(y)]) / (RSS[macron(y)]), $ <eq-r2-baseline-model>
+
+where $RSS[hat(y)]$ and $RSS[macron(y)]$ are the residual sum of squares for the actual (proposed) model $hat(y)$ and the mean constant (baseline) model $macron(y)$, respectively.
+
+#note[
+  The choice of the baseline model is *arbitrary*, so a pseudo-$R^2$ metric can be used to compare $RSS$ of any two arbitrary models $hat(y)$ and $hat(y)'$.
+]
+
+For quantile regression, a similar metric can be defined (@koenker1999goodness, eq. 7). For two quantile regression models $hat(y)_q$ and $hat(y)'_q'$ and corresponding mean quantile losses $bra cal(L)_q [hat(y)_q] ket$ and $bra cal(L)'_q' [hat(y)'_q'] ket$ computed via @eq-mean-quantile-loss, the analog of $R^2$ is:
 
 $
-  R^1 (q) = 1 - ( sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - hat(y)_q (bold(x))) ) / ( sum_(bold(x) in X^ell) cal(L)_q (y(bold(x)) - hat(y)'_q (bold(x))) ),
+  R^1 := 1 - ( bra cal(L)_q [hat(y)_q] ket ) / ( bra cal(L)'_q' [hat(y)'_q'] ket ),
 $ <eq-r1-quantile>
 
-where $hat(y)_q$ and $hat(y)'_q$ are the proposed and baseline models, respectively. A straightforward choice for the baseline model $hat(y)'_q$ is the empirical quantile value $QQ_q [Y]$ calculated from the training set.
+where $hat(y)_q$ and $hat(y)'_q'$ are the proposed and baseline models, respectively. Usually, models are compared for the same quantile $q$.
 
-In `sklearn`, this metric is implemented as `sklearn.metrics.d2_pinball_score`.
+A straightforward choice for the baseline model $hat(y)'_q$ is the empirical quantile value $QQ_q [Y]$ calculated from the training set. The difference in the upper index arises because in $R^2$, quadratic units ($TSS$, $RSS$, and $ESS$) are used, while in $R^1$, linear units (quantile loss) are used, as seen in @eq-check-loss.
+
+Like the general definition of $R^2$, which is not bound to $[0, 1]$ and can be negative, the $R^1$ metric can also be negative if the model $hat(y)_q$ is worse than the baseline model $hat(y)'_q$. In `sklearn`, this metric is implemented as `sklearn.metrics.d2_pinball_score`.
+
