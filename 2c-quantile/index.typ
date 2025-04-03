@@ -597,6 +597,36 @@ Quantile regression models *conditional quantiles*, capturing skewed or heavy-ta
 *without relying on normality assumptions*. OLS assumes normality and may produce misleading results
 when this assumption is violated.
 
+#{
+  let data = lq.load-txt(read("distributions/out.csv"), header: true)
+  let x = data.remove("x")
+  let y = data.remove("y")
+
+  let plot(col-name, residual: false) = lq.diagram(
+    width: 3cm,
+    height: 3cm,
+    xlabel: $x$,
+    ylabel: if not residual { $y = f(x) + epsilon_#col-name.split("_").at(1)$ } else {
+      $epsilon_#col-name.split("_").at(1)$
+    },
+    ylim: (-4, 4),
+    if not residual {
+      lq.scatter(x, data.at(col-name).zip(y).map(el => el.sum()), size: 2pt)
+    } else {
+      lq.scatter(x, data.at(col-name), size: 2pt)
+    },
+    if not residual {
+      lq.plot(x, y, stroke: 2pt, mark: none)
+    },
+  )
+
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    ..data.keys().map(col => plot(col)),
+    ..data.keys().map(col => plot(col, residual: true)),
+  )
+}
+
 == Heteroscedasticity
 Quantile regression does not assume homoscedasticity (constant variance). Instead, it models
 different parts of the conditional distribution independently, allowing for varying spread (e.g.,
