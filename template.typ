@@ -2,7 +2,7 @@
 #import "@preview/drafting:0.2.2": margin-note, set-page-properties, set-margin-note-defaults
 #import "@preview/quick-maths:0.2.0": shorthands
 #import "defs.typ": *
-#import "@preview/lilaq:0.1.0" as lq
+#import "@preview/lilaq:0.2.0" as lq
 #import "@preview/shadowed:0.2.0": shadowed
 
 //////////////
