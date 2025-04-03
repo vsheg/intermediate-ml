@@ -623,7 +623,7 @@ when this assumption is violated.
   grid(
     columns: (1fr, 1fr, 1fr),
     ..data.keys().map(col => plot(col)),
-    ..data.keys().map(col => plot(col, residual: true)),
+    ..data.keys().map(col => plot(col, residual: true)), // TODO: switch to KDE or histogram
   )
 }
 
