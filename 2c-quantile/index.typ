@@ -63,24 +63,13 @@ value $y$ for which the probability $Pr[Y <= y]$ is at least $q$.
     $ QQ_q [Y] = cdf_Y^(-1)(q) = a + q dot (b - a). $
   ],
   example[
-    For a normal distribution, the CDF is derived from its PDF:
+    For a sample ${y_1, ..., y_ell}$, the empirical CDF
 
-    $
-      cdf(y^*) = integral_(-oo)^(y^*) 1 / sqrt(2 pi) e^(-y^2\/2) dd(y) = 1 / 2 (1 + erf(y^* / sqrt(2))),
-    $
+    $ cdf_Y (y) := 1 / ell dot sum_(i=1)^ell Ind(y_i <= y) $
 
-    where $erf$ is the error function. The quantile function is therefore:
-
-    $ QQ_q [Y] = cdf_Y^(-1)(q) = sqrt(2) dot erf^(-1)(2q - 1). $
-
+    can be used in @eq-quantile-def to define quantiles $QQ_q$.
   ],
 )
-
-For a sample ${y_1, ..., y_ell}$, the empirical CDF
-
-$ cdf_Y (y) := 1 / ell dot sum_(i=1)^ell Ind(y_i <= y) $
-
-can be used in @eq-quantile-def to define quantiles $QQ_q$.
 
 #margin[
   For a continuous random variable $Y$, the probability of $Y$ being less than or equal to $y^*$
@@ -159,8 +148,7 @@ $ <eq-quantile-probability-conditional>
 = Quantile $QQ_q$ vs. expectation $Ex$
 
 == Robustness
-Due to the linearity of expectation, it is sensitive to outliers. The quantile, on the other hand,
-is robust to outliers.
+The quantile is robust to outliers.
 
 #example(cols: 2)[
   Consider a sample $Y = {1, 2, 3, 4, 5}$ with an outlier introduced by a typo: $Y' = {1, 2, 3, 4, 50}$.
@@ -598,6 +586,27 @@ Quantile regression models *conditional quantiles*, capturing skewed or heavy-ta
 when this assumption is violated.
 
 #{
+  let data = lq.load-txt(read("robustness/out.csv"), header: true)
+  let x = data.remove("x")
+
+  let plot(y-name) = lq.diagram(
+    width: 3cm,
+    height: 3cm,
+    xlabel: $x$,
+    ylabel: $y$,
+    ylim: (-10, 10),
+    lq.scatter(x, data.at(y-name), size: 2pt),
+    lq.plot(x, data.at(y-name + "_pred_ls"), stroke: 2pt, mark: none, label: $EE$),
+    lq.plot(x, data.at(y-name + "_pred_qr"), stroke: 2pt, mark: none, label: $QQ_(1\/2)$),
+  )
+
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    plot("y_lognormal"), plot("y_laplace"), plot("y_bimodal"),
+  )
+}
+
+#{
   let data = lq.load-txt(read("distributions/out.csv"), header: true)
   let x = data.remove("x")
   let y = data.remove("y")
@@ -640,13 +649,9 @@ assume any specific noise distribution*. In OLS, a few outliers can have a prono
 parameter estimates.
 
 == Censoring
-Some quantiles can be robustly calculated even for censored data. Censoring can also be accounted
-for explicitly by modifying the loss function:
+Censoring arises when the response variable $y$ is not fully observed. For instance, in clinical trials, the exact value of $y$ may be unavailable for some patients. If a patient exits a longitudinal study, we only know they survived up to time $y$, but their true survival time might be much longer (@fig-censoring-plot).
 
 #margin[
-  In clinical trials, the exact value of the response variable $y$ is often unavailable due to censoring.
-  For example, when a patient withdraws from a longitudinal study, we only know they survived at least until time $y$,
-  but their actual survival time could be significantly longer.
 
   #figure(
     caption: [
@@ -669,22 +674,14 @@ for explicitly by modifying the loss function:
         mark: "x",
       ),
     ),
-  )
-
-  With standard Gaussian regression, this censored data creates a leftward bias in estimates since observations are truncated.
-
-  Quantile regression offers a solution by allowing us to model different quantiles $q$ of the distribution.
-  Unlike mean estimation, certain quantiles remain robust even with censored data, providing more reliable predictions
-  when observations are incomplete.
-
+  ) <fig-censoring-plot>
 ]
 
-$
-  cal(L)_q^"cens" (epsilon) := cases(cal(L)_q (epsilon)\, & delta = 1, -q dot min{epsilon, 0} \, & delta = 0 )
-$
+In standard Gaussian regression, censoring results in a bias in estimates since observations are truncated. Quantile regression allows to model different quantiles $q$ of the distribution: some areas of the distribution may not be affected by
+censoring, while others are. By choosing appropriate quantiles, we can obtain reliable estimates even in the presence of censoring.
 
-where $delta$ is the event indicator (0=censored, 1=real), and $min{epsilon, 0}$ represents
-underpredictions.
+However, in general it's better to experiment with different losses and other models, that work with
+censoring implicitly.
 
 == Invariance
 Quantile regression is *invariant to monotonic transformations* of $y$ like logarithm or square
