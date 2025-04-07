@@ -861,6 +861,10 @@ reveals heterogeneous effects that OLS cannot capture.
 Classical metrics (e.g., MAE, MSE, $R^2$) evaluate predictions based on their distribution around the mean $Ex[Y]$. However, quantile regression focuses on other distribution properties, intentionally ignoring the mean. As a result, classical metrics are not suitable for evaluating quantile regression models.
 
 #margin[
+  In fact, MAE is equivalent to the mean quantile loss for $q = 1\/2$, making it suitable for *median regression specifically*
+]
+
+#margin[
   For a model $a(bold(x)) equiv hat(y)(bold(x))$:
 
   - The _total sum of squares_ is:
