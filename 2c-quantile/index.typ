@@ -929,7 +929,8 @@ A straightforward choice for the baseline model $hat(y)'_q$ is the empirical qua
 Like the general definition of $R^2$, which is not bound to $[0, 1]$ and can be negative, the $R^1$ metric can also be negative if the model $hat(y)_q$ is worse than the baseline model $hat(y)'_q$. In `sklearn`, this metric is implemented as `sklearn.metrics.d2_pinball_score`.
 
 == Ordered metrics
-In survival analysis, models are evaluated on their ability to preserve the order of predicted survival times. For example, if a patient $bold(x)$ died at $y(bold(x))$ and another at $y(bold(x)')$, where $y(bold(x)) < y(bold(x)')$, the model should predict $hat(y)(bold(x)) < hat(y)(bold(x)')$.
+A quantile model can be evaluated on how well it preserves the order. This is particularly important for risk modeling applications and ranking.
+For example, if a patient $bold(x)$ died at $y(bold(x))$ and another at $y(bold(x)')$, where $y(bold(x)) < y(bold(x)')$, the model should predict $hat(y)_q (bold(x)) < hat(y)_q (bold(x)')$.
 
 #margin[
   In @eq-c-index, the numerator counts the number of observation pairs where the model predicts the same order as the actual order.
@@ -940,9 +941,9 @@ In survival analysis, models are evaluated on their ability to preserve the orde
   The calculation can be optimized by summing over unique pairs $i = 1..ell$ and $j = i+1..ell$, reducing redundancy.
 ]
 
-The concordance index (C-index) measures the proportion of correctly ordered pairs:
+The proportion of correctly ordered pairs is measured by the _concordance index_ (C-index):
 $
-  C := (sum_(i=1)^ell sum_(j=1)^ell Ind(y(bold(x)_i) < y(bold(x)_j)) dot Ind(hat(y)(bold(x)_i) < hat(y)(bold(x)_j))) / (sum_(i=1)^ell sum_(j=1)^ell Ind(y(bold(x)_i) < y(bold(x)_j))),
+  C := (sum_(i=1)^ell sum_(j=1)^ell Ind(y(bold(x)_i) < y(bold(x)_j)) dot Ind(hat(y)_q (bold(x)_i) < hat(y)_q (bold(x)_j))) / (sum_(i=1)^ell sum_(j=1)^ell Ind(y(bold(x)_i) < y(bold(x)_j))),
 $ <eq-c-index>
 
-The C-index ranges from 0.5 (random predictions) to 1 (perfect predictions). For quantile regression, it compares predicted quantiles to observed survival times.
+The C-index ranges from 0.5 (random predictions) to 1 (perfect predictions).
