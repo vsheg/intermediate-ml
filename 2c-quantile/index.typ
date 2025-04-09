@@ -145,79 +145,6 @@ $
   Pr[ thick Y <= QQ_q [Y|X] thick | thick X thick] = q.
 $ <eq-quantile-probability-conditional>
 
-= Quantile $QQ_q$ vs. expectation $Ex$
-
-== Robustness
-The quantile is robust to outliers.
-
-#example(cols: 2)[
-  Consider a sample $Y = {1, 2, 3, 4, 5}$ with an outlier introduced by a typo: $Y' = {1, 2, 3, 4, 50}$.
-
-  The sample mean is significantly affected:
-  $ Ex[Y] = 1 / 5 dot (1 + 2 + 3 + 4 + 50) = 12. $
-
-  While the median remains completely unaffected by the outlier:
-  $ QQ_(1\/2) [Y] = 3. $
-
-  Most of other quantiles are also unaffected.
-
-  #colbreak()
-
-  #table(
-    columns: 4,
-    [], [$Y$], [$Y'$], [comment],
-    [$Q_0 equiv min$], [1], [1], [not affected],
-    [$Q_(1\/4) equiv$ 1st quantile], [2], [2], [not affected],
-    [$Q_(1\/2) equiv "med"$ (2nd quantile)], [3], [3], [not affected],
-    [$Q_(3\/4) equiv$ 3rd quantile], [4], [4], [not affected],
-    [$Q_0.99 equiv$ 99th percentile], [4], [4], [not affected],
-    [$Q_1 equiv max$], [5], [50], [affected],
-  )
-]
-
-== Median $QQ_(1\/2) [Y]$
-For $q = 1\/2$, the quantile $QQ_(1\/2) [Y]$ corresponds to the value $y^*$ such that
-$Pr[Y <= y^*] = 1\/2$; i.e., the value $y^*$ cuts the distribution of $Y$ in half. This is what the
-median ($y^* = "med" Y$) of a random variable $Y$ is.
-
-Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two different measures of central tendency of a
-random variable $Y$:
-
-#grid(
-  columns: 2,
-  [
-    - In ordinary least squares (LS), we predict the expected value of a random variable:
-    $
-      hat(y)(bold(x)) = Ex[Y|X = bold(x)].
-    $
-  ],
-  [
-    - We can also build a regression model that predicts the conditional median:
-    $ hat(y)_"med" (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
-  ],
-)
-
-However, median regression is not limited to $q = 1\/2$; we can construct a regression model for any
-conditional quantile $QQ_q [Y|X]$ where
-$q$ is a hyperparameter.
-
-== Prediction $hat(y)_q$ and error term $hat(epsilon)_q$
-In LS regression, the prediction
-$hat(y)(bold(x))$ is singular; there are no two expectations $Ex[Y|X=bold(x)]$ for the same random
-variable and parameter. The corresponding error term (residual) $epsilon(bold(x)) = y(bold(x)) - hat(y)(bold(x))$ is
-also singular.
-
-Alternatively, in quantile regression, the prediction $hat(y)_q (bold(x))$ is parameterized by $q$;
-there are many (potentially infinite) predictions $QQ_q
-[Y|X=bold(x)]$ for the same random variable and parameter.
-
-// TODO: add plot of quantiles of a random variable
-
-The corresponding error term (residual) is:
-
-$
-  hat(epsilon)_q (bold(x)^*) := QQ_q [Y|X=bold(x)^*] - y(bold(x)^*) = hat(y)_q (bold(x)^*) - y(bold(x)^*).
-$
 
 = Quantile loss $cal(L)_q$
 
@@ -344,6 +271,88 @@ Likewise, the error term (residual) depends on $q$:
 $ epsilon_q (bold(x)) = QQ_q [Y|X=bold(x)] - y(bold(x)) = hat(y)_q - y, $
 
 and the check loss in @eq-check-loss is actually $cal(L)_q (epsilon) equiv cal(L)_q (epsilon_q)$.
+
+= Expectation $Ex$ vs. Quantile $QQ_q$
+
+== Minimization of MSE
+The expectation $Ex[Y]$ is the average value of a random variable $Y$. It can be found by minimizing
+quadratic loss (MSE).
+
+$ Ex[Y|X = bold(x)^*] = arg min_a Ex[ (Y - a(bold(x)^*))^2 ] $
+
+where $a(bold(x)^*)$ is a function of the input $bold(x)^*$.
+
+#margin[
+  Differentiating the quadratic loss with respect to $a$ gives:
+  $
+    pdv(,a) & Ex[(Y - a(bold(x)^*))^2] \
+    = & Ex[Y^2 - 2 Y a(bold(x)^*) + a(bold(x)^*)^2] \
+    = & Ex[(Y-a(bold(x)^*))^2] \
+    = & Ex[0 - 2 Y + 2 a(bold(x)^*)] \
+    = & -2 Ex[Y|X=bold(x)^*] + 2 a(bold(x)^*) = 0
+  $
+
+  Rearranging gives:
+  $ a(bold(x)^*) = Ex[Y|X=bold(x)^*] $
+]
+
+== Minimization of MAE
+The median $QQ_(1\/2) [Y]$ is the value of $Y$ that halves the distribution of $Y$. It can be found by
+minimizing absolute loss (MAE):
+
+For $q = 1\/2$, the quantile $QQ_(1\/2) [Y]$ corresponds to the value $y^*$ such that
+$Pr[Y <= y^*] = 1\/2$; i.e., the value $y^*$ cuts the distribution of $Y$ in half. This is what the
+median ($y^* = "med" Y$) of a random variable $Y$ is.
+
+$ QQ_(1\/2) [Y|X = bold(x)^*] = arg min_a Ex[ abs(Y - a(bold(x)^*)) ] $
+
+where $a(bold(x)^*)$ is a function of the input $bold(x)^*$.
+
+== Measures of central tendency
+Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two different measures of central tendency of a
+random variable $Y$:
+
+#grid(
+  columns: 2,
+  [
+    - In ordinary least squares (LS), we predict the expected value of a random variable:
+    $
+      hat(y)(bold(x)) = Ex[Y|X = bold(x)].
+    $
+  ],
+  [
+    - We can also build a regression model that predicts the conditional median:
+    $ hat(y)_"med" (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
+  ],
+)
+
+However, quantile regression is not limited to $q = 1\/2$; we can construct a regression model for any
+conditional quantile $QQ_q [Y|X]$ where
+$q$ is a hyperparameter.
+
+
+== Prediction $hat(y)_q$ and error term $hat(epsilon)_q$
+In LS regression, the prediction
+$hat(y)(bold(x))$ is singular; there are no two expectations $Ex[Y|X=bold(x)]$ for the same random
+variable and parameter. The corresponding error term (residual) $epsilon(bold(x)) = y(bold(x)) - hat(y)(bold(x))$ is
+also singular.
+
+Alternatively, in quantile regression, the prediction $hat(y)_q (bold(x))$ is parameterized by $q$;
+there are many (potentially infinite) predictions $QQ_q
+[Y|X=bold(x)]$ for the same random variable and parameter.
+
+// TODO: add plot of quantiles of a random variable
+
+The corresponding error term (residual) is:
+
+$
+  hat(epsilon)_q (bold(x)^*) := QQ_q [Y|X=bold(x)^*] - y(bold(x)^*) = hat(y)_q (bold(x)^*) - y(bold(x)^*).
+$
+
+== Robustness
+...
+
+
 
 = Quantile regression
 
