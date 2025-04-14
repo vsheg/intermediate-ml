@@ -276,41 +276,67 @@ and the check loss in @eq-check-loss is actually $cal(L)_q (epsilon) equiv cal(L
 
 == Minimization of MSE
 The expectation $Ex[Y]$ is the average value of a random variable $Y$. It can be found by minimizing
-quadratic loss (MSE).
-
-$ Ex[Y|X = bold(x)^*] = arg min_a Ex[ (Y - a(bold(x)^*))^2 ] $
-
-where $a(bold(x)^*)$ is a function of the input $bold(x)^*$.
+quadratic loss (MSE):
 
 #margin[
   Differentiating the quadratic loss with respect to $a$ gives:
   $
-    pdv(,a) & Ex[(Y - a(bold(x)^*))^2] \
-    = & Ex[Y^2 - 2 Y a(bold(x)^*) + a(bold(x)^*)^2] \
-    = & Ex[(Y-a(bold(x)^*))^2] \
-    = & Ex[0 - 2 Y + 2 a(bold(x)^*)] \
-    = & -2 Ex[Y|X=bold(x)^*] + 2 a(bold(x)^*) = 0
+    pdv(,a) & Ex[(Y - a(X))^2 | X=bold(x)^*] \
+    &= pdv(,a) Ex[Y^2 - 2 Y a(X) + a(X)^2 | X=bold(x)^*] \
+    &= Ex[-2 Y + 2 a(X) | X=bold(x)^*] \
+    &= -2 Ex[Y | X=bold(x)^*] + 2 a(bold(x)^*) = 0
   $
 
   Rearranging gives:
   $ a(bold(x)^*) = Ex[Y|X=bold(x)^*] $
 ]
 
+$ Ex[Y|X = bold(x)^*] = arg min_a Ex[ (Y - a(X))^2 | X=bold(x)^* ], $ <eq-min-mse-estimator>
+
+which holds for both conditional $Ex[Y|X]$ and unconditional $Ex[Y]$ expectations.
+
+The algorithm $a^*$ that minimizes the average quadratic loss has the lowest MSE among all possible estimators and sometimes is called the _minimum mean squared error_ (MMSE) estimator, which is more commonly known as the _least squares_ (LS) estimator.
+
+In other words, minimization of quadratic loss is *one of (many) possible ways* to find a good model $a^*$. During training, this model learns
+how to predict conditional expectation $Ex[Y|X = bold(x)^*]$ for a given $bold(x)^*$, then we use it to predict the expectation $Ex[Y|X = bold(x)']$
+for previously unseen data points $bold(x)'$.
+
+This estimator has good theoretical guarantees (e.g., unbiasedness, minimum variance, etc. under certain conditions) and
+because of that is the first choice for most regression problems.
+
 == Minimization of MAE
-The median $QQ_(1\/2) [Y]$ is the value of $Y$ that halves the distribution of $Y$. It can be found by
-minimizing absolute loss (MAE):
+An alternative estimator $a^*$ is obtained when instead of minimizing the quadratic term $epsilon^2$, we replace it with absolute difference $abs(epsilon)$, which
+is equivalent to minimizing mean absolute error (MAE). Interestingly, this gives us the median of the random variable $Y$:
+
+$
+  QQ_(1\/2) [Y|X = bold(x)^*] = arg min_a Ex[ abs(Y - a(X)) | X = bold(x)^*]
+$ <eq-min-mae-estimator>
+
+Indeed, MAE is directly connected to the quantile loss $cal(L)_q (epsilon)$. For $q = 1\/2$, the quantile loss is simply the absolute
+value of the error $epsilon$ (we ignore $1\/2$ factor):
+
+$
+  cal(L)_(1\/2) (epsilon) = cases(
+    1\/2 dot epsilon & quad epsilon >= 0,
+    -1\/2 dot epsilon & quad epsilon < 0
+  ) quad = abs(epsilon) / 2
+$
 
 For $q = 1\/2$, the quantile $QQ_(1\/2) [Y]$ corresponds to the value $y^*$ such that
 $Pr[Y <= y^*] = 1\/2$; i.e., the value $y^*$ cuts the distribution of $Y$ in half. This is what the
-median ($y^* = "med" Y$) of a random variable $Y$ is.
+median ($Q_(1\/2)$) of a random variable $Y$ is.
 
-$ QQ_(1\/2) [Y|X = bold(x)^*] = arg min_a Ex[ abs(Y - a(bold(x)^*)) ] $
-
-where $a(bold(x)^*)$ is a function of the input $bold(x)^*$.
+#margin[
+  Given training data $(bold(x)^*, y^*) in (X, Y)^ell$, the empirical estimation according to @eq-min-mse-estimator and @eq-min-mae-estimator
+  can be expressed as:
+  $
+    cal(R)(a) = 1 / ell dot sum_((bold(x)^*, y^*) in (X, Y)^ell) ub(cal(L)(y^* - a(bold(x)^*)), (Y - a(X))^2 | X=bold(x)^* \ "or" \ abs(Y - a(X)) | X=bold(x)^*) -> min_a.
+  $
+]
 
 == Measures of central tendency
 Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two different measures of central tendency of a
-random variable $Y$:
+random variable $Y$. This leads to two different regression models:
 
 #grid(
   columns: 2,
@@ -322,7 +348,7 @@ random variable $Y$:
   ],
   [
     - We can also build a regression model that predicts the conditional median:
-    $ hat(y)_"med" (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
+    $ hat(y) (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
   ],
 )
 
