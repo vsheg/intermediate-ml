@@ -338,6 +338,26 @@ For $q = 1\/2$, the quantile $QQ_(1\/2) [Y]$ corresponds to the value $y^*$ such
 $Pr[Y <= y^*] = 1\/2$; i.e., the value $y^*$ cuts the distribution of $Y$ in half. This is what the
 median ($Q_(1\/2)$) of a random variable $Y$ is.
 
+#margin(
+  figure(
+    caption: [PDF of standard Normal and Laplace distributions. Laplace has heavier tails.],
+    {
+      let x = lq.linspace(-4, 4)
+      let y-norm = x.map(x => 1 / calc.sqrt(2 * calc.pi) * calc.exp(-x * x / 2))
+      let y-laplace = x.map(x => 1 / 2 * calc.exp(-calc.abs(x)))
+
+      lq.diagram(
+        width: 4cm,
+        height: 3cm,
+        xlabel: $x$,
+        ylabel: $pdf_Y (y)$,
+        lq.plot(mark: none, x, y-norm, label: $cal(N)(mu = 0, sigma = 1)$),
+        lq.plot(mark: none, x, y-laplace, label: $"Laplace"(mu = 0, b = 1)$),
+      )
+    },
+  ),
+)
+
 == Laplace distribution
 Quadratic loss is derived from assuming a Gaussian distribution of $Y$ when maximizing likelihood. Similarly, absolute loss comes from assuming a Laplace distribution:
 
