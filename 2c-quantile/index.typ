@@ -361,6 +361,19 @@ median ($Q_(1\/2)$) of a random variable $Y$ is.
 == Laplace distribution
 Quadratic loss is derived from assuming a Gaussian distribution of $Y$ when maximizing likelihood. Similarly, absolute loss comes from assuming a Laplace distribution:
 
+#margin[
+  Median is more robust to outliers than mean:
+  - In an ordered sample ${y_1, ..., y_ell}$, adding an outlier $y'$ shifts the mean *proportionally* to its magnitude:
+
+    $ Delta Ex[Y] = y' / (ell+1). $
+
+  - In the worst case an *extreme* outlier $y' << y_1$ or $y' >> y_ell$ can only
+    shift the median to the adjacent element:
+
+    $ y^((ell\/2 - 1)) - y^((ell\/2)) <= Delta QQ_(1\/2) [Y] <= y^((ell\/2 + 1)) - y^((ell\/2)). $
+]
+
+
 $
   pdf_Y (y) = 1 / (2b) dot e^(-abs(y - mu) / b),
 $
