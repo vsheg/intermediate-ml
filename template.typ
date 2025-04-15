@@ -1,9 +1,9 @@
-#import "@preview/physica:0.9.3": *
+#import "@preview/physica:0.9.5": *
 #import "@preview/drafting:0.2.2": margin-note, set-page-properties, set-margin-note-defaults
-#import "@preview/quick-maths:0.2.0": shorthands
-#import "defs.typ": *
+#import "@preview/quick-maths:0.2.1": shorthands
 #import "@preview/lilaq:0.2.0" as lq
 #import "@preview/shadowed:0.2.0": shadowed
+#import "defs.typ": *
 
 //////////////
 // TEMPLATE //
