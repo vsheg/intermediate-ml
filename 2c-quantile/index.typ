@@ -386,30 +386,6 @@ Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two distinct measures of cent
 )
 
 
-
-== Prediction $hat(y)_q$ and error term $hat(epsilon)_q$
-In LS regression, the prediction
-$hat(y)(bold(x))$ is singular; there are no two expectations $Ex[Y|X=bold(x)]$ for the same random
-variable and parameter. The corresponding error term (residual) $epsilon(bold(x)) = y(bold(x)) - hat(y)(bold(x))$ is
-also singular.
-
-Alternatively, in quantile regression, the prediction $hat(y)_q (bold(x))$ is parameterized by $q$;
-there are many (potentially infinite) predictions $QQ_q
-[Y|X=bold(x)]$ for the same random variable and parameter.
-
-// TODO: add plot of quantiles of a random variable
-
-The corresponding error term (residual) is:
-
-$
-  hat(epsilon)_q (bold(x)^*) := QQ_q [Y|X=bold(x)^*] - y(bold(x)^*) = hat(y)_q (bold(x)^*) - y(bold(x)^*).
-$
-
-== Robustness
-...
-
-
-
 = Quantile regression
 
 #margin[
@@ -435,6 +411,12 @@ $
 == Practical reformulation
 From the theoretical expression of the empirical risk, we can derive a practical reformulation of
 the quantile regression problem.
+
+#margin[
+  In LS regression, only one prediction $hat(y)(bold(x)) = Ex[Y|X=bold(x)]$ exists, with a single residual $epsilon(bold(x)) := y(bold(x)) - hat(y)(bold(x))$.
+
+  In quantile regression, $hat(y)_q (bold(x))$ is parameterized by $q$, producing multiple possible predictions $QQ_q [Y|X=bold(x)]$ for the same random variable, with corresponding residuals $hat(epsilon)_q (bold(x)^*) := hat(y)_q (bold(x)^*) - y(bold(x)^*)$
+]
 
 For a specific pair $(bold(x)^*, y^*)$ drawn from the joint distribution $pdf(bold(x), y)$ represented
 by a training set $(X, Y)^ell$, the empirical risk can be expressed via the check loss
