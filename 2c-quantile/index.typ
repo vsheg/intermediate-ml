@@ -272,7 +272,7 @@ $ epsilon_q (bold(x)) = QQ_q [Y|X=bold(x)] - y(bold(x)) = hat(y)_q - y, $
 
 and the check loss in @eq-check-loss is actually $cal(L)_q (epsilon) equiv cal(L)_q (epsilon_q)$.
 
-= Expectation $Ex$ vs. Quantile $QQ_q$
+= Expectation $Ex$ vs. median $QQ_(1\/2)$
 
 == Minimization of MSE
 The expectation $Ex[Y]$ is the average value of a random variable $Y$. It can be found by minimizing
@@ -305,8 +305,16 @@ This estimator has good theoretical guarantees (e.g., unbiasedness, minimum vari
 because of that is the first choice for most regression problems.
 
 == Minimization of MAE
-An alternative estimator $a^*$ is obtained when instead of minimizing the quadratic term $epsilon^2$, we replace it with absolute difference $abs(epsilon)$, which
+An alternative estimator $a$ is obtained when instead of minimizing the quadratic term $epsilon^2$, we replace it with absolute difference $abs(epsilon)$, which
 is equivalent to minimizing mean absolute error (MAE). Interestingly, this gives us the median of the random variable $Y$:
+
+#margin[
+  Given training data $(bold(x)^*, y^*) in (X, Y)^ell$, the empirical estimation according to @eq-min-mse-estimator and @eq-min-mae-estimator
+  can be expressed as:
+  $
+    cal(R)(a) = 1 / ell dot sum_((bold(x)^*, y^*) in (X, Y)^ell) ub(cal(L)(y^* - a(bold(x)^*)), (Y - a(X))^2 | X=bold(x)^* \ "or" \ abs(Y - a(X)) | X=bold(x)^*) -> min_a.
+  $
+]
 
 $
   QQ_(1\/2) [Y|X = bold(x)^*] = arg min_a Ex[ abs(Y - a(X)) | X = bold(x)^*]
@@ -322,21 +330,46 @@ $
   ) quad = abs(epsilon) / 2
 $
 
+#margin[
+  This model is also referred to as the Least Absolute Deviations (LAD) estimator.
+]
+
 For $q = 1\/2$, the quantile $QQ_(1\/2) [Y]$ corresponds to the value $y^*$ such that
 $Pr[Y <= y^*] = 1\/2$; i.e., the value $y^*$ cuts the distribution of $Y$ in half. This is what the
 median ($Q_(1\/2)$) of a random variable $Y$ is.
 
-#margin[
-  Given training data $(bold(x)^*, y^*) in (X, Y)^ell$, the empirical estimation according to @eq-min-mse-estimator and @eq-min-mae-estimator
-  can be expressed as:
-  $
-    cal(R)(a) = 1 / ell dot sum_((bold(x)^*, y^*) in (X, Y)^ell) ub(cal(L)(y^* - a(bold(x)^*)), (Y - a(X))^2 | X=bold(x)^* \ "or" \ abs(Y - a(X)) | X=bold(x)^*) -> min_a.
-  $
-]
+== Laplace distribution
+Quadratic loss is derived from assuming a Gaussian distribution of $Y$ when maximizing likelihood. Similarly, absolute loss comes from assuming a Laplace distribution:
+
+$
+  pdf_Y (y) = 1 / (2b) dot e^(-abs(y - mu) / b),
+$
+
+where $mu$ is the mean (expectation) and $b$ is the scale parameter.
+
+== Likelihood
+Assuming observations $(bold(x)^*, y^*)$ are i.i.d. and algorithm $a$ predicts expectation $mu = Ex[Y|X=bold(x)^*]$, the likelihood function is:
+
+$
+  LL = product_((bold(x)^*, y^*) in (X, Y)^ell) f_Y (y^*|bold(x)^*)
+  = product_((bold(x)^*, y^*) in (X, Y)^ell) 1 / (2b) dot e^(-abs(y^* - a(bold(x)^*)) \/ b),
+$
+
+Maximizing the likelihood function is equivalent to minimizing MAE:
+
+$
+  log LL &= sum_((bold(x)^*, y^*) in (X, Y)^ell) (-log 2b - abs(y^* - a(bold(x)^*)) / b) \
+  &= -1 / b ub(sum_((bold(x)^*, y^*) in (X, Y)^ell) abs(y^* - a(bold(x)^*)), ell dot "MAE") - ub(ell dot log 2b, const) -> max_a
+$
 
 == Measures of central tendency
-Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two different measures of central tendency of a
-random variable $Y$. This leads to two different regression models:
+Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two distinct measures of central tendency for a random variable $Y$. This distinction leads to two different regression models:
+
+#margin[
+  Quantile regression is not limited to $q = 1\/2$; we can construct a regression model for any
+  conditional quantile $QQ_q [Y|X]$ where
+  $q$ is a hyperparameter
+]
 
 #grid(
   columns: 2,
@@ -347,14 +380,11 @@ random variable $Y$. This leads to two different regression models:
     $
   ],
   [
-    - We can also build a regression model that predicts the conditional median:
+    - In median regression, we build a model that predicts the conditional median:
     $ hat(y) (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
   ],
 )
 
-However, quantile regression is not limited to $q = 1\/2$; we can construct a regression model for any
-conditional quantile $QQ_q [Y|X]$ where
-$q$ is a hyperparameter.
 
 
 == Prediction $hat(y)_q$ and error term $hat(epsilon)_q$
