@@ -359,7 +359,7 @@ median ($Q_(1\/2)$) of a random variable $Y$ is.
 )
 
 == Laplace distribution
-Quadratic loss is derived from assuming a Gaussian distribution of $Y$ when maximizing likelihood. Similarly, absolute loss comes from assuming a Laplace distribution:
+Quadratic loss is derived from assuming a Gaussian distribution of $Y$. Formally, absolute loss comes from assuming a Laplace distribution of $Y$:
 
 #margin[
   Median is more robust to outliers than mean:
@@ -378,10 +378,12 @@ $
   pdf_Y (y) = 1 / (2b) dot e^(-abs(y - mu) / b),
 $
 
-where $mu$ is the mean (expectation) and $b$ is the scale parameter.
+where $b$ is the scale parameter and $mu$ is the mean. As the Laplace distribution is symmetric, the
+mean $Ex[Y]$ is equal to the median $QQ_(1\/2) [Y]$.
 
 == Likelihood
-Assuming observations $(bold(x)^*, y^*)$ are i.i.d. and algorithm $a$ predicts expectation $mu = Ex[Y|X=bold(x)^*]$, the likelihood function is:
+Assuming observations $(bold(x)^*, y^*)$ are i.i.d. and algorithm $a$ predicts the conditional mean
+$mu = Ex[Y|X=bold(x)^*] = QQ_(1\/2) [Y|X=bold(x)^*]$, the likelihood function is given by:
 
 $
   LL = product_((bold(x)^*, y^*) in (X, Y)^ell) f_Y (y^*|bold(x)^*)
@@ -396,7 +398,8 @@ $
 $
 
 == Measures of central tendency
-Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two distinct measures of central tendency for a random variable $Y$. This distinction leads to two different regression models:
+Expectation $Ex[Y]$ and median $QQ_(1\/2) [Y]$ are two distinct measures of central tendency for a random variable $Y$. In some cases, they
+are equal, but in general they are not. This distinction leads to two different regression models:
 
 #margin[
   Quantile regression is not limited to $q = 1\/2$; we can construct a regression model for any
