@@ -272,7 +272,7 @@ $ epsilon_q (bold(x)) = QQ_q [Y|X=bold(x)] - y(bold(x)) = hat(y)_q - y, $
 
 and the check loss in @eq-check-loss is actually $cal(L)_q (epsilon) equiv cal(L)_q (epsilon_q)$.
 
-= Expectation $Ex$ vs. median $QQ_(1\/2)$
+= Expectation $Ex$ and median $QQ_(1\/2)$
 
 == Minimization of MSE
 The expectation $Ex[Y]$ is the average value of a random variable $Y$. It can be found by minimizing
