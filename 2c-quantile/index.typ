@@ -338,8 +338,8 @@ For $q = 1\/2$, the quantile $QQ_(1\/2) [Y]$ corresponds to the value $y^*$ such
 $Pr[Y <= y^*] = 1\/2$; i.e., the value $y^*$ cuts the distribution of $Y$ in half. This is what the
 median ($Q_(1\/2)$) of a random variable $Y$ is.
 
-#margin(
-  figure(
+#margin[
+  #figure(
     caption: [PDF of standard Normal and Laplace distributions. Laplace has heavier tails.],
     {
       let x = lq.linspace(-4, 4)
@@ -355,8 +355,8 @@ median ($Q_(1\/2)$) of a random variable $Y$ is.
         lq.plot(mark: none, x, y-laplace, label: $"Laplace"(mu = 0, b = 1)$),
       )
     },
-  ),
-)
+  ) <fig-laplacian-dist>
+]
 
 == Laplace distribution
 Quadratic loss is derived from assuming a Gaussian distribution of $Y$. Formally, absolute loss comes from assuming a Laplace distribution of $Y$:
@@ -381,6 +381,8 @@ $
 where $b$ is the scale parameter and $mu$ is the mean. As the Laplace distribution is symmetric, the
 mean $Ex[Y]$ is equal to the median $QQ_(1\/2) [Y]$.
 
+The Laplacian distribution's heavier tails (@fig-laplacian-dist) assign higher probabilities to extreme values, making models based on it more robust to outliers.
+
 == Likelihood
 Assuming observations $(bold(x)^*, y^*)$ are i.i.d. and algorithm $a$ predicts the conditional mean
 $mu = Ex[Y|X=bold(x)^*] = QQ_(1\/2) [Y|X=bold(x)^*]$, the likelihood function is given by:
@@ -393,7 +395,7 @@ $
 Maximizing the likelihood function is equivalent to minimizing MAE:
 
 $
-  log LL &= sum_((bold(x)^*, y^*) in (X, Y)^ell) (-log 2b - abs(y^* - a(bold(x)^*)) / b) \
+  log LL &= sum_((bold(x)^*, y^*) in (X, Y)^ell) {-log 2b - abs(y^* - a(bold(x)^*)) / b} \
   &= -1 / b ub(sum_((bold(x)^*, y^*) in (X, Y)^ell) abs(y^* - a(bold(x)^*)), ell dot "MAE") - ub(ell dot log 2b, const) -> max_a
 $
 
@@ -420,7 +422,6 @@ are equal, but in general they are not. This distinction leads to two different 
     $ hat(y) (bold(x)) = QQ_(1\/2) [Y|X=bold(x)]. $
   ],
 )
-
 
 = Quantile regression
 
