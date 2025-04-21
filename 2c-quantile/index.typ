@@ -630,18 +630,23 @@ The variance in @eq-quantile-linear-parameter-variance depends on three terms:
       hat(Omega) = 1 / ell dot sum_(bold(x) in X^ell) (q - Ind(y(bold(x)) <= hat(y)_q (bold(x)) )) dot bold(x) bold(x)^Tr
     $
 
+#margin[While $q dot (1-q)$ decreases near the tails, the sandwich term $D^(-1) Omega D^(-1)$ becomes poorly
+  estimated and tends to dominate.
+]
+
 Consequently, the *variance of estimated parameters $hat(bold(beta))(q)$ increases as $q$
 approaches 0 or 1*. In practice, predictions near the median are typically more precise, while
 predictions for extreme quantiles (e.g., 0.01 or 0.99) are less reliable.
-
-#note[While $q dot (1-q)$ decreases near the tails, the sandwich term $D^(-1) Omega D^(-1)$ becomes poorly
-  estimated and tends to dominate.
-]
 
 == Bad statistical guarantee
 While ordinary least squares (OLS) estimates benefit from the Gauss-Markov theorem, which
 establishes OLS as the best linear unbiased estimator (BLUE) under classical assumptions, quantile
 regression follows different asymptotic properties.
+
+#margin[
+  The variance of the quantile regression estimator is larger than that of OLS, especially for extreme
+  quantiles
+]
 
 Quantile regression estimators remain unbiased and consistent, but their variance behavior is more
 complex. As shown in equation @eq-quantile-linear-parameter-variance, the variance depends on both
@@ -657,10 +662,6 @@ estimates, particularly for extreme quantiles (e.g., $q < 0.1$ or $q > 0.9$). Th
 This statistical efficiency trade-off is a necessary cost of gaining robustness to outliers and
 insights into the complete conditional distribution.
 
-#note[
-  The variance of the quantile regression estimator is larger than that of OLS, especially for extreme
-  quantiles.
-]
 
 = Robustness of quantile regression
 
