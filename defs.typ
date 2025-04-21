@@ -28,18 +28,15 @@
 #let Cov = math.op("Cov")
 #let Cor = math.op("Cor")
 #let supp = math.op("supp")
-#let pdf = math.op("pdf")
-#let cdf = math.op("cdf")
+#let pdf = $cal(f)$
+#let pmf = $cal(p)$
+#let cdf = $cal(F)$
 #let Exp = math.op("Exp")
 #let logit = math.op("logit")
 #let odd = math.op("odd")
 #let fun = math.op($(dot)$)
 
 #let scr(it) = text(features: ("ss01",), box($cal(it)$))
-
-#let pdf = $cal(f)$
-#let pmf = $cal(p)$
-#let cdf = $cal(F)$
 
 #let fn(args, operations) = {
   args.join(",")
