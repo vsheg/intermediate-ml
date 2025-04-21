@@ -882,63 +882,6 @@ negative contributions to survival time $y$ for all quantiles. AIDS patients gen
 CD4 cell counts than healthy individuals, and the lower the CD4 cell count, the more pronounced its
 negative contribution (@fig-aids-cd4-cell-count) to survival time $y$.
 
-= Practical considerations
-
-== Targets
-Median is sometimes more interpretable and a better measure of centrality than
-the mean, particularly for skewed or multimodal data:
-
-- Median salary or house price characterizes the central tendency of a distribution better than
-  the mean, which can be skewed by extreme values.
-
-
-== Parameters
-
-- Coefficients $beta$ in linear quantile regression are noisier than in OLS and depend on quantile $q$,
-  making them harder to interpret. The Gauss-Markov theorem ensuring convergence and variance in OLS
-  does not apply to quantile regression.
-
-- Exact values of $beta$ in OLS are interpretable, but in quantile regression, they are generally not.
-  In simple cases, they can be close to OLS coefficients and interpretable. However, when quantile
-  regression is applied to transformed data (e.g., $log(y)$), coefficients remain invariant, but their
-  contribution to $y' = log(y)$ becomes less obvious. For skewed data where OLS fails, quantile
-  regression coefficients differ significantly from OLS but may still be interpretable.
-
-== Computational complexity
-Quantile regression lacks a universal analytical solution and is typically solved numerically.
-The quantile loss function from @eq-check-loss combines two linear functions separated at $epsilon = 0$.
-Residuals can be decomposed into positive and negative parts:
-
-$
-  epsilon = epsilon^+ - epsilon^-, quad "where" quad cases(epsilon^+ := max {0, epsilon}, epsilon^- := -min{0, epsilon}),
-$
-
-Using this decomposition, the quantile loss can be expressed as:
-
-$
-  cal(L)_q (epsilon) = q dot epsilon^+ + (1-q) dot epsilon^-.
-$
-
-This formulation leads to a constrained linear programming problem [@Koenker2018handbook, p.282]:
-
-$
-  & 1 / ell sum_(i=1)^ell {q dot epsilon_i^+ + (1-q) dot epsilon_i^-} -> min_(bold(epsilon)^+, bold(epsilon)^-) \
-  "s.t." quad & y_i - hat(y)_i = epsilon_i^+ - epsilon_i^-, quad i = 1..ell, \
-  & epsilon_i^+ >= 0, quad epsilon_i^- >= 0, quad i = 1..ell.
-$
-
-Solving this optimization problem is computationally more intensive than OLS's closed-form solution, particularly for large datasets or when estimating multiple quantiles simultaneously.
-
-== Extreme quantiles
-Estimates for extreme quantiles (e.g., $q = 0.01$ or $q = 0.99$) are often less reliable due to
-sparse data in distribution tails, resulting in higher variance as shown in the parameter
-convergence section.
-
-== Complete picture of conditional distributions
-Quantile regression allows modeling multiple quantiles, providing a comprehensive view of how
-predictors affect the entire conditional distribution of the response, not just its center. This
-reveals heterogeneous effects that OLS cannot capture.
-
 = Goodness-of-fit
 
 == Bad metrics
@@ -1031,3 +974,61 @@ $
 $ <eq-c-index>
 
 The C-index ranges from 0.5 (random predictions) to 1 (perfect predictions).
+
+
+= Practical considerations
+
+== Targets
+Median is sometimes more interpretable and a better measure of centrality than
+the mean, particularly for skewed or multimodal data:
+
+- Median salary or house price characterizes the central tendency of a distribution better than
+  the mean, which can be skewed by extreme values.
+
+
+== Parameters
+
+- Coefficients $beta$ in linear quantile regression are noisier than in OLS and depend on quantile $q$,
+  making them harder to interpret. The Gauss-Markov theorem ensuring convergence and variance in OLS
+  does not apply to quantile regression.
+
+- Exact values of $beta$ in OLS are interpretable, but in quantile regression, they are generally not.
+  In simple cases, they can be close to OLS coefficients and interpretable. However, when quantile
+  regression is applied to transformed data (e.g., $log(y)$), coefficients remain invariant, but their
+  contribution to $y' = log(y)$ becomes less obvious. For skewed data where OLS fails, quantile
+  regression coefficients differ significantly from OLS but may still be interpretable.
+
+== Computational complexity
+Quantile regression lacks a universal analytical solution and is typically solved numerically.
+The quantile loss function from @eq-check-loss combines two linear functions separated at $epsilon = 0$.
+Residuals can be decomposed into positive and negative parts:
+
+$
+  epsilon = epsilon^+ - epsilon^-, quad "where" quad cases(epsilon^+ := max {0, epsilon}, epsilon^- := -min{0, epsilon}),
+$
+
+Using this decomposition, the quantile loss can be expressed as:
+
+$
+  cal(L)_q (epsilon) = q dot epsilon^+ + (1-q) dot epsilon^-.
+$
+
+This formulation leads to a constrained linear programming problem [@Koenker2018handbook, p.282]:
+
+$
+  & 1 / ell sum_(i=1)^ell {q dot epsilon_i^+ + (1-q) dot epsilon_i^-} -> min_(bold(epsilon)^+, bold(epsilon)^-) \
+  "s.t." quad & y_i - hat(y)_i = epsilon_i^+ - epsilon_i^-, quad i = 1..ell, \
+  & epsilon_i^+ >= 0, quad epsilon_i^- >= 0, quad i = 1..ell.
+$
+
+Solving this optimization problem is computationally more intensive than OLS's closed-form solution, particularly for large datasets or when estimating multiple quantiles simultaneously.
+
+== Extreme quantiles
+Estimates for extreme quantiles (e.g., $q = 0.01$ or $q = 0.99$) are often less reliable due to
+sparse data in distribution tails, resulting in higher variance as shown in the parameter
+convergence section.
+
+== Complete picture of conditional distributions
+Quantile regression allows modeling multiple quantiles, providing a comprehensive view of how
+predictors affect the entire conditional distribution of the response, not just its center. This
+reveals heterogeneous effects that OLS cannot capture.
