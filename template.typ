@@ -18,14 +18,12 @@
 #let template(is-draft: true, doc) = {
   // page setup
   let content-width = 180mm
-  let content-heigh = 250mm
   let margin-size = 10mm
   let full-width = content-width + 2 * margin-size
-  let full-heigh = content-heigh + 2 * margin-size
 
   set page(
     width: full-width,
-    height: full-heigh,
+    height: auto,
     margin: (y: margin-size, left: margin-size, right: 0.34 * content-width),
     background: if is-draft { draft-pattern } else { none },
   )
