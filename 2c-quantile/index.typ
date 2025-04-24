@@ -151,7 +151,7 @@ $ <eq-quantile-probability-conditional>
 == Check-loss
 Consider an asymmetric loss function parameterized by $q in (0, 1)$:
 #margin[
-  This loss function is also called the _pinball loss_ and _quantile loss_ (more on this below)
+  This loss function is also called the _pinball loss_ and _quantile loss_
 ]
 
 $
@@ -1001,7 +1001,7 @@ the mean, particularly for skewed or multimodal data:
 
 == Computational complexity
 Quantile regression lacks a universal analytical solution and is typically solved numerically.
-The quantile loss function from @eq-check-loss combines two linear functions separated at $epsilon = 0$.
+The quantile loss function @eq-check-loss combines two linear functions separated at $epsilon = 0$.
 Residuals can be decomposed into positive and negative parts:
 
 $
