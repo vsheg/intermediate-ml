@@ -6,15 +6,14 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression, QuantileRegressor
 
 # %%
-x = np.linspace(-5, 5, 128)
+np.random.seed(5)
+N_POINTS = 128
+
+x = np.linspace(-7, 7, N_POINTS)
 y = x
-y_lognormal = y + np.random.lognormal(0, 4, 128)
-y_laplace = y + np.random.laplace(0, 4, 128)
+uniform_noise = np.random.uniform(-4, 4, N_POINTS)
 
 # %%
-bimodal_noise = np.concatenate([np.random.normal(-2, 1, 64), np.random.normal(+2, 3, 64)])
-np.random.shuffle(bimodal_noise)
-y_bimodal = x + bimodal_noise
 
 
 # %%
@@ -22,9 +21,11 @@ df = pd.DataFrame(
     {
         "x": x,
         "y": y,
-        "y_lognormal": y_lognormal,
-        "y_laplace": y_laplace,
-        "y_bimodal": y_bimodal,
+        "y_uniform_1": y + 3 * uniform_noise,
+        "y_uniform_2": y + uniform_noise**3,
+        "y_uniform_3": y
+        + uniform_noise * (uniform_noise >= 0)
+        + 4 * uniform_noise * (uniform_noise < 0),
     }
 )
 
@@ -36,7 +37,7 @@ for col in df.columns[2:]:
     model_ls.fit(X, df[col])
     df[f"{col}_pred_ls"] = model_ls.predict(X)
 
-    model_qr = QuantileRegressor(quantile=0.5, alpha=0)
+    model_qr = QuantileRegressor(quantile=0.5, alpha=0, solver="highs-ds")
     model_qr.fit(X, df[col])
     df[f"{col}_pred_qr"] = model_qr.predict(X)
 

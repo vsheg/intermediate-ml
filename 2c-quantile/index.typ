@@ -670,26 +670,43 @@ Quantile regression models *conditional quantiles*, capturing skewed or heavy-ta
 *without relying on normality assumptions*. OLS assumes normality and may produce misleading results
 when this assumption is violated.
 
-#{
+Given uniform $epsilon ~ cal(U)(-4, 4)$, look (@fig-quantile-non-normality) at three different models with non-normal additive
+noises: $3 epsilon$, $epsilon^3$, and $epsilon_+ + 4 epsilon_-$.
+
+#margin[
+  - $epsilon_+ := max{0, epsilon}$
+  - $epsilon_- := min{epsilon, 0}$
+]
+
+#figure({
   let data = lq.load-txt(read("robustness/out.csv"), header: true)
   let x = data.remove("x")
 
-  let plot(y-name) = lq.diagram(
+  let plot(y-name, y-label: $y$) = lq.diagram(
     width: 3cm,
     height: 3cm,
     xlabel: $x$,
-    ylabel: $y$,
+    ylabel: y-label,
     ylim: (-10, 10),
+    xlim: (-10, 10),
+    legend: (position: bottom + right),
     lq.scatter(x, data.at(y-name), size: 2pt),
     lq.plot(x, data.at(y-name + "_pred_ls"), stroke: 2pt, mark: none, label: $EE$),
     lq.plot(x, data.at(y-name + "_pred_qr"), stroke: 2pt, mark: none, label: $QQ_(1\/2)$),
+    lq.line((-10, -10), (10, 10)),
   )
 
   grid(
     columns: (1fr, 1fr, 1fr),
-    plot("y_lognormal"), plot("y_laplace"), plot("y_bimodal"),
+    plot("y_uniform_1", y-label: $y = x + 3 epsilon$),
+    plot("y_uniform_2", y-label: $y = x + epsilon^3$),
+    plot(
+      "y_uniform_3",
+      y-label: $y = x + epsilon_+ + 4 epsilon_-$,
+    ),
   )
-}
+}) <fig-quantile-non-normality>
+
 
 #{
   let data = lq.load-txt(read("distributions/out.csv"), header: true)
