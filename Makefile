@@ -13,6 +13,12 @@ compile:
 			mv $$pdf_file $$dir/$$parent_dir.pdf; \
 			echo "Compiled $$typ to $$dir/$$parent_dir.pdf"; \
 		fi; \
+		typst compile --format png --pages 1 $$typ --root .; \
+		png_file=$${typ%.typ}.png; \
+		if [ -f $$png_file ]; then \
+			mv $$png_file $$dir/_cover.png; \
+			echo "Generated cover $$dir/_cover.png"; \
+		fi; \
 	done
 
 readme:
@@ -34,8 +40,13 @@ clean:
 		dir=$$(dirname $$typ); \
 		parent_dir=$$(basename $$dir); \
 		pdf_file=$$dir/$$parent_dir.pdf; \
+		png_file=$$dir/_cover.png; \
 		if [ -f $$pdf_file ]; then \
 			echo "Removing $$pdf_file"; \
 			rm $$pdf_file; \
+		fi; \
+		if [ -f $$png_file ]; then \
+			echo "Removing $$png_file"; \
+			rm $$png_file; \
 		fi; \
 	done
