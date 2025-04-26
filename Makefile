@@ -13,7 +13,7 @@ compile:
 			mv $$pdf_file $$dir/$$parent_dir.pdf; \
 			echo "Compiled $$typ to $$dir/$$parent_dir.pdf"; \
 		fi; \
-		typst compile --format png --ppi 100 --pages 1 $$typ --root .; \
+		typst compile --format png --ppi 70 --pages 1 $$typ --root .; \
 		png_file=$${typ%.typ}.png; \
 		if [ -f $$png_file ]; then \
 			mv $$png_file $$dir/_cover.png; \
