@@ -54,7 +54,7 @@ clean:
 			echo "Removing $$pdf_file"; \
 			rm $$pdf_file; \
 		fi; \
-		if [ -f $$png_fil e ]; then \
+		if [ -f $$png_file ]; then \
 			echo "Removing $$png_file"; \
 			rm $$png_file; \
 		fi; \
