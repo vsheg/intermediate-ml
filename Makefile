@@ -27,13 +27,22 @@ readme:
 	@echo "> This is a work-in-progress draft of intermediate-level machine learning materials." >> README.md
 	@echo "Thanks to LLMs for the high quality; any errors are mine." >> README.md
 	@echo "" >> README.md
-	@for typ in $(TYP_FILES); do \
+	@echo "## Covers" >> README.md
+	@echo '<table><tr>' >> README.md
+	@col=0; \
+	for typ in $(TYP_FILES); do \
 		dir=$$(dirname $$typ); \
 		parent_dir=$$(basename $$dir); \
-		dir=$$(echo $$dir | sed 's|^\./|$(PDF_ROOT)/|'); \
-		echo "- [$$parent_dir]($$dir/$$parent_dir.pdf)" >> README.md; \
-		echo "Added $$parent_dir/$$parent_dir.pdf to README.md"; \
-	done
+		pdf_url=$$(echo $$dir | sed 's|^\./|$(PDF_ROOT)/|')/$$parent_dir.pdf; \
+		img_url=$$(echo $$dir | sed 's|^\./|$(PDF_ROOT)/|')/_cover.png; \
+		echo "<td align=\"center\"><a href=\"$$pdf_url\"><img src=\"$$img_url\" width=\"120\"/></a><br/><a href=\"$$pdf_url\">$$parent_dir.pdf</a></td>" >> README.md; \
+		col=$$((col+1)); \
+		if [ $$col -eq 3 ]; then \
+			echo "</tr><tr>" >> README.md; \
+			col=0; \
+		fi; \
+	done; \
+	echo "</tr></table>" >> README.md
 
 clean:
 	@for typ in $(TYP_FILES); do \
@@ -45,7 +54,7 @@ clean:
 			echo "Removing $$pdf_file"; \
 			rm $$pdf_file; \
 		fi; \
-		if [ -f $$png_file ]; then \
+		if [ -f $$png_fil e ]; then \
 			echo "Removing $$png_file"; \
 			rm $$png_file; \
 		fi; \
