@@ -27,7 +27,6 @@ readme:
 	@echo "> This is a work-in-progress draft of intermediate-level machine learning materials." >> README.md
 	@echo "Thanks to LLMs for the high quality; any errors are mine." >> README.md
 	@echo "" >> README.md
-	@echo "## Covers" >> README.md
 	@echo '<table><tr>' >> README.md
 	@col=0; \
 	for typ in $(TYP_FILES); do \
@@ -37,7 +36,7 @@ readme:
 		img_url=$$(echo $$dir | sed 's|^\./|$(PDF_ROOT)/|')/_cover.png; \
 		echo "<td align=\"center\"><a href=\"$$pdf_url\"><img src=\"$$img_url\" width=\"120\"/></a><br/><a href=\"$$pdf_url\">$$parent_dir.pdf</a></td>" >> README.md; \
 		col=$$((col+1)); \
-		if [ $$col -eq 3 ]; then \
+		if [ $$col -eq 4 ]; then \
 			echo "</tr><tr>" >> README.md; \
 			col=0; \
 		fi; \
