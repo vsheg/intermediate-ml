@@ -27,7 +27,7 @@ readme:
 	@echo "> This is a work-in-progress draft of intermediate-level machine learning materials." >> README.md
 	@echo "Thanks to LLMs for the high quality; any errors are mine." >> README.md
 	@echo "" >> README.md
-	@echo '<table><tr>' >> README.md
+	@echo '<table width="100%"><tr>' >> README.md
 	@col=0; \
 	for typ in $(TYP_FILES); do \
 		dir=$$(dirname $$typ); \

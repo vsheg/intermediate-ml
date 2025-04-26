@@ -3,7 +3,7 @@
 > This is a work-in-progress draft of intermediate-level machine learning materials.
 Thanks to LLMs for the high quality; any errors are mine.
 
-<table><tr>
+<table width="100%"><tr>
 <td align="center"><a href="https://vsheg.github.io/intermediate-ml/1a-information/1a-information.pdf"><img src="https://vsheg.github.io/intermediate-ml/1a-information/_cover.png" width="120"/></a><br/><a href="https://vsheg.github.io/intermediate-ml/1a-information/1a-information.pdf">1a-information.pdf</a></td>
 <td align="center"><a href="https://vsheg.github.io/intermediate-ml/1b-mle-map/1b-mle-map.pdf"><img src="https://vsheg.github.io/intermediate-ml/1b-mle-map/_cover.png" width="120"/></a><br/><a href="https://vsheg.github.io/intermediate-ml/1b-mle-map/1b-mle-map.pdf">1b-mle-map.pdf</a></td>
 <td align="center"><a href="https://vsheg.github.io/intermediate-ml/1c-regularization/1c-regularization.pdf"><img src="https://vsheg.github.io/intermediate-ml/1c-regularization/_cover.png" width="120"/></a><br/><a href="https://vsheg.github.io/intermediate-ml/1c-regularization/1c-regularization.pdf">1c-regularization.pdf</a></td>
