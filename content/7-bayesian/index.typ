@@ -1,14 +1,13 @@
 #import "../template.typ": *
 #show: template
 
-= Foundations of Bayesian Statistics
+= Bayesian approach
 
 == Bayes' Theorem for Probability Densities
-
 The conditional probability mass function of a random variable $xi$ given another random variable $eta$ can be expressed as:
 
 $
-  f_(xi|eta)(x | y) := (f_(xi|eta)(x, y)) / (f_eta (y)) = (f_(xi, eta)(y | x) dot f_xi (x)) / (f_eta (y))
+  f_(xi|eta)(x | y) := (f_(xi, eta)(x, y)) / (f_eta (y)) = (f_(xi, eta)(x, y)) / (f_eta (y)) = (f_(eta|xi)(y | x) dot f_xi (x)) / (f_eta (y))
 $
 
 Where:
@@ -18,7 +17,6 @@ $x in supp xi$ \
 $y in supp eta$
 
 == Likelihood
-
 The joint probability of an object $bold(x)$ and its class $y$ can be decomposed in two equivalent ways:
 
 $
@@ -30,12 +28,16 @@ $
 Where:
 $p(bold(x)) equiv Pr[X = bold(x)]$ is the distribution of $bold(x)$ \
 $p(y) equiv Pr[Y = y]$ is the probability of a class $y$ \
-$p(bold(x) | y) equiv Pr[X = bold(x) | y(bold(x)) = y]$ is the likelihood function of a class $y$ \
+$p(bold(x) | y) equiv Pr[X = bold(x) | Y = y]$ is the likelihood function of a class $y$ \
 $p(y | bold(x)) equiv Pr[Y = y | X = bold(x)]$ is the a posterior probability of a class $y$ \
-$p(x|y) := p(x, y) / p(y)$ is the Bayes' formula
+$p(y|bold(x)) = (p(bold(x)|y) dot p(y)) / p(bold(x))$ is the Bayes' formula
+
+#margin[
+  The term "likelihood" may seem confusing since we're talking about probabilities. However, the likelihood function $p(bold(x)|y)$ measures how likely the data $bold(x)$ is, given a specific class $y$. While it's a probability, we interpret it as the "likelihood of observing $bold(x)$ if the true class is $y$".
+]
 
 Objects and class labels are produced by a joint distribution:
-$ X^ell, Y = (bold(x)_i, y_i)_(i=1)^ell tilde p(bold(x), y) $
+$ (bold(x)_i, y_i)_(i=1)^ell tilde p(bold(x), y) $
 
 The term $p(x | y)$ is called the *likelihood* as it assesses how likely the data (objects $x$) comes from a particular class $y$. For example, if $x$ is weight and $y$ is one of two classes, 'cat' or 'dog', $p(x | y = "cat")$ is the probability for a particular animal to have weight $x$ assuming it is a cat. If this probability is low, the animal is unlikely to be a cat.
 
@@ -44,20 +46,25 @@ The term $p(x | y)$ is called the *likelihood* as it assesses how likely the dat
 $
   a^*(bold(x))
   &= arg max_(y in Y) lambda_y dot p(y|bold(x)) \
+  &= arg max_(y in Y) lambda_y dot p(y) dot p(bold(x)|y) / p(bold(x)) \
   &= arg max_(y in Y) lambda_y dot p(y) dot p(bold(x)|y)
 $
 
 Where:
 $lambda_y$ is the error cost for class $y$ \
-$p(bold(x))$ is the distribution of $bold(x)$ \
-$p(y)$ is the probability of class $y$ \
+$p(bold(x))$ is the distribution of $bold(x)$ (independent of $y$, so dropped from argmax) \
+$p(y)$ is the probability of class $y$ (prior) \
 $p(bold(x) | y)$ is the likelihood function of class $y$ \
 $p(y | bold(x))$ is the posterior probability of class $y$ \
+
+#margin[
+  The Bayes optimal classifier is derived by minimizing expected risk. The error cost $lambda_y$ allows us to assign different penalties to different types of misclassification. For example, in medical diagnosis, falsely classifying a sick patient as healthy (false negative) might be more costly than falsely classifying a healthy patient as sick (false positive).
+]
 
 This classifier is considered "optimal" because it minimizes the probability of classification error:
 
 $
-  a = a^* colon quad R(a) = sum_(y in Y) lambda_y integral Ind(a(bold(x)) != y) dot f(bold(x), y) dd(bold(x)) -> min_a
+  R(a) = sum_(y in Y) lambda_y integral Ind(a(bold(x)) != y) dot f(bold(x), y) dd(bold(x)) -> min_a
 $
 
 by selecting the hypothesis that maximizes the posterior probability $p(y | x)$ given the data.
@@ -78,6 +85,10 @@ $
 
 The main idea of this method is to assign the object to the class whose probability density is maximized in a given region.
 
+#margin[
+  The key insight of Bayesian classification is that we incorporate both prior knowledge (class probabilities) and observed evidence (likelihood) to make decisions. This matches human intuition - we often make judgments based on both our prior beliefs and new observations.
+]
+
 However, it's optimal only if we know the true distributions $p(y | x)$ or $p(y), p(x|y)$, which are unknown in practice. Overfitting occurs when the empirical estimations $hat(p)(y | x)$ or $hat(p)(y), hat(p)(x|y)$ are used.
 
 = Discriminative vs Generative Models
@@ -85,46 +96,48 @@ However, it's optimal only if we know the true distributions $p(y | x)$ or $p(y)
 == Key Characteristics
 
 #margin[
-  - A **discriminative classification model** focuses on learning the **decision boundary between classes** by modeling the conditional probability $P(y|x)$, where $y$ is the class label and $x$ is the input data. These models do not attempt to model the distribution of the data itself, but rather directly predict the label given the features.
+  - A *discriminative classification model* focuses on learning the *decision boundary between classes* by modeling the conditional probability $P(y|x)$, where $y$ is the class label and $x$ is the input data. These models do not attempt to model the distribution of the data itself, but rather directly predict the label given the features.
 
-  - A **generative classification model** aims to model the **joint probability distribution** $P(x, y)$, meaning they model **how the data is generated for each class**. From this, they can derive the conditional probability $P(y|x)$.
+  - A *generative classification model* aims to model the *joint probability distribution* $P(x, y)$, meaning they model *how the data is generated for each class*. From this, they can derive the conditional probability $P(y|x)$.
 ]
 
-#grid(
+#table(
   columns: (auto, 1fr, 1fr),
-  [**Aspect**], [**Discriminative Models**], [**Generative Models**],
-  [**Goal**],
-  [Learn the decision boundary between classes],
-  [Model the joint probability $P(x, y)$],
-
-  [**Probability Modeled**],
-  [$P(y | x)$ (conditional probability)],
-  [$P(x, y)$ (joint probability)],
-
-  [**Example Algorithms**],
+  [*Aspect*], [*Discriminative Models*], [*Generative Models*],
+  [*Goal*], [Learn the decision boundary between classes], [Model the joint probability $P(x, y)$],
+  [*Probability Modeled*], [$P(y | x)$ (conditional probability)], [$P(x, y)$ (joint probability)],
+  [*Example Algorithms*],
   [Logistic regression, GLM, SVMs, neural networks],
   [Naive Bayes, GMMs, Fisher's Linear Discriminant, HMMs],
 
-  [**Accuracy**],
+  [*Accuracy*],
   [Often more accurate for classification tasks],
   [Can be less accurate for classification],
 
-  [**Data Generation**],
+  [*Data Generation*],
   [Cannot generate new data],
   [Can generate new data (e.g., by sampling from $P(x, y)$)],
 
-  [**Insight into Data**],
+  [*Insight into Data*],
   [Focuses on boundaries between classes],
   [Models the distribution of the data],
 
-  [**Complexity**],
+  [*Complexity*],
   [Simpler, as only the boundary is learned],
   [More complex, as the full data distribution is modeled. Require more data.],
 
-  [**Use Case**],
+  [*Use Case*],
   [When classification accuracy is the priority],
   [When understanding data distribution or data synthesis is needed],
 )
+
+#margin[
+  In practice, the choice between discriminative and generative models depends on:
+  - Amount of training data available (generative models work better with limited data)
+  - Need for data generation capabilities
+  - Importance of interpretability
+  - Computational constraints
+]
 
 In a discriminative approach, it's important to accurately describe only the points near the decision boundary, while other points can be ignored. Methods like SVM are sensitive to outliers since they build their decision boundary based on these points.
 
@@ -142,10 +155,14 @@ $
 
 Where:
 $lambda_y$ is the error cost for class $y$ \
-$p(y) equiv Pr[y] = integral f(bold(x), y) dd(bold(x))$ is the probability of class $y$ (marginal dist.) \
+$p(y) equiv Pr[Y = y] = integral f(bold(x), y) dd(bold(x))$ is the probability of class $y$ (marginal dist.) \
 $Ind(a(bold(x)) != y)$ defines the region of space where the algorithm made an error
 
 The integral exactly equals the total probability of error: the probability $f(x, y)$ is integrated over the region of space where the algorithm makes an error.
+
+#margin[
+  The empirical risk formulation allows us to understand Bayesian classification from a risk minimization perspective. The decision rule minimizes the expected cost of misclassification by choosing the class that minimizes the posterior expected loss.
+]
 
 The form of the Bayesian classification algorithm (maximum likelihood classifier) follows from minimizing this empirical risk:
 
@@ -157,7 +174,7 @@ $
 
 The Bayesian classifier $a(x)$ is optimal in the sense that it minimizes the error $R(a) -> min$. This optimality is proven when the density distributions $p(y|x)$ or $p(y), p(x|y)$ are exactly known, but in reality, they are unknown. Overfitting occurs when empirical estimates of distributions $hat(p)(y|x)$ or $hat(p)(y), hat(p)(x|y)$ are used to build the classifier.
 
-If the error costs $lambda_y$ and/or class probabilities $p(y) equiv Pr[y]$ are equal for all classes, they can be removed from the $arg max$ operator.
+If the error costs $lambda_y$ and/or class probabilities $p(y) equiv Pr[Y = y]$ are equal for all classes, they can be removed from the $arg max$ operator.
 
 A generalization of the optimal Bayesian classifier formula for when the error cost $lambda = lambda_(y|y')$ depends not only on the true class $y$ but also on the erroneous class $y'$ predicted by the algorithm:
 
@@ -169,15 +186,19 @@ $
   a^*(bold(x)) = arg min_(y' in Y) sum_(y in Y) lambda_(y|y') dot p(y) dot p(bold(x)|y)
 $
 
+#margin[
+  This generalized form allows for sophisticated cost modeling. For example, in multiclass medical diagnosis, misclassifying a malignant tumor as benign might have a much higher cost than misclassifying it as any other non-benign condition. The cost matrix $lambda_(y|y')$ encodes these domain-specific priorities.
+]
+
 This records the total probability that the algorithm will confuse the true class with another class, taking penalties into account. The original formulation treats the error cost as a class weight; the more dangerous it is to make a mistake on a class, the greater its weight.
 
-The minimal error value $R(a)$ is achieved if the class $y'$ is chosen for which the probability of error is **minimal**:
+The minimal error value $R(a)$ is achieved if the class $y'$ is chosen for which the probability of error is *minimal*:
 
 $
   a^*(bold(x)) = arg min_(y' in Y) sum_(y in Y) lambda_(y|y') dot p(y) dot p(bold(x)|y)
 $
 
-In the original formulation, the posterior probability of class $y$ is **maximized**, and $arg max$ is used over the true classes. In this generalization, the class $y'$ is chosen for which the prediction of error probability is lowest.
+In the original formulation, the posterior probability of class $y$ is *maximized*, and $arg max$ is used over the true classes. In this generalization, the class $y'$ is chosen for which the prediction of error probability is lowest.
 
 = Naïve Bayes Classifier
 
@@ -191,6 +212,10 @@ Where:
 $p(bold(x)|y) := p_1 (f_1 (bold(x)) | y) ... p_k (f_k (bold(x)) | y)$, meaning features are independent \
 $hat(p)(y)$ is the empirical probability density \
 $hat(p)_j (bold(x)^j)$ is the 1D empirical distribution for the $j$th feature
+
+#margin[
+  The "naïve" in Naïve Bayes refers to the strong independence assumption between features. While this assumption rarely holds in real data, the algorithm often performs well in practice. This is partly because classification only requires getting the decision boundary right, not the exact probability values.
+]
 
 From the optimal Bayes classifier:
 $
@@ -217,6 +242,10 @@ Naïve Bayes assumes independence of all features. We need to train a 1D empiric
 $
   hat(p)(bold(x)^j | theta_(j|y)) = h(bold(x)^j) / Z(theta_(j|y)) dot e^(theta_(j|y) dot T(bold(x)^j)), quad T(x) equiv x
 $
+
+#margin[
+  The training process for Naïve Bayes is computationally efficient - we only need to calculate sufficient statistics for each feature within each class. For categorical features, we simply count frequencies; for continuous features, we estimate distribution parameters like mean and variance.
+]
 
 The empirical risk for all objects, features, and classes can be split per class and per feature, resulting in $|Y| dot k$ separate 1D optimization problems:
 
@@ -259,6 +288,10 @@ $
   &= arg max_(y in Y) { hat(bold(theta))_(|y) dot bold(x) + ln lambda_y hat(p)(y) - sum_(j=1)^k ln Z(theta_(j|y))}
 $
 
+#margin[
+  The linearity or non-linearity of Naïve Bayes depends on the choice of probability distribution for features. With Bernoulli or multinomial distributions (for binary or categorical features), the classifier is linear. With Gaussian distributions (for continuous features), the classifier becomes quadratic if variance differs between classes.
+]
+
 For other distributions, the algorithm is non-linear. For example, with the commonly used Gaussian distribution, the non-linear term is quadratic. Also, a dispersion parameter $phi$ can occur.
 
 The Naïve Bayes classifier becomes a linear model when:
@@ -275,7 +308,7 @@ $a(bold(x)) = arg max_(y in Y) { hat(bold(theta))_(|y) dot bold(x) + ln lambda_y
 
 - For most distributions from the exponential family, $phi equiv 1$, so the classifier is linear.
 - For non-standard Gaussian distributions described by a generalized exponential family, if the data is normalized, again $phi equiv 1$ and $h(x)$ can be canceled. If the data is not normalized, but $sigma$ does not depend on class $y$, $h(x)$ can still be eliminated and the classifier remains linear.
-- **For Gaussian distributions with heteroscedasticity** (variance depends on class), the Naïve Bayes classifier is **non-linear**. It will have a quadratic term $x^2 / sigma_y$.
+- *For Gaussian distributions with heteroscedasticity* (variance depends on class), the Naïve Bayes classifier is *non-linear*. It will have a quadratic term $x^2 / sigma_y$.
 
 Different features may be described by different distributions (e.g., feature #1 by Poisson, feature #2 by Gaussian, feature #3 by Bernoulli), and the classifier can still be linear.
 
@@ -288,6 +321,10 @@ $
   &= e^(-nu) dot nu^k / k! \
   &= 1 / k! dot exp { k dot ln nu - nu }
 $
+
+#margin[
+  The Naïve Bayes approach to text classification treats documents as "bags of words" where word order doesn't matter. This simplification, while naive, works surprisingly well for many text classification tasks like spam detection or topic classification.
+]
 
 The Naïve Bayes classifier depends on the average document length:
 
@@ -324,6 +361,10 @@ $
   a(bold(x)) = arg max_(y in Y) { hat(bold(theta))_(|y) dot bold(x) + ln lambda_y Pr[y] - sum_(j=1)^k A(theta_(j|y))}
 $
 
+#margin[
+  The adjustment for document length ($macron(N)_y$) is an important feature of the Naïve Bayes text classifier. Without it, the classifier would have a bias toward assigning longer documents to classes with higher average word frequencies.
+]
+
 The more words in a document, the more non-zero elements in $bold(x)$ and the larger the linear part $theta dot bold(x)$. This is compensated by subtracting the average document length $N_y$. Long documents with many words don't have priority over short ones.
 
 If the average occurrence of a word $f_(j|y)$ doesn't depend on class $y$, it's part of the common vocabulary and doesn't affect classification. This means Naïve Bayes has a built-in feature selection mechanism.
@@ -341,6 +382,10 @@ From the optimal Bayes classifier, we can derive the multinomial Bayes classifie
 $
   a(bold(x)) = arg max_(y in Y) { ln hat(p)(bold(x)|y) + ln lambda_y hat(p)(y) }
 $
+
+#margin[
+  The multinomial variant of Naïve Bayes is especially popular for text classification. Instead of modeling the occurrence of each word with Poisson, it models the probability of seeing each word given a class. This works well when words follow a multinomial distribution (e.g., when drawing words from documents with replacement).
+]
 
 A word $w$ is represented by its index in a dictionary of size $W$. Each word in a document is represented as number $w$, and the document is represented by a sequence (order not important) of all its words. Objects may have different dimensions and are not represented as a matrix $X$.
 
@@ -394,6 +439,10 @@ Naïve Bayes has several advantages:
 - It has built-in feature selection through equal posterior probabilities $p(y|f_j(x)) approx p(y'|f_j(x))$ — if a feature equally affects the probability of all classes, it's uninformative, allowing for filtering of stop words and common vocabulary in text classification
 - It can be used as a strong baseline model, but the independence assumption of features is too strong for more complex applications
 
+#margin[
+  Despite its simplicity and "naïve" assumptions, Naïve Bayes often performs surprisingly well in practice, especially for text classification tasks. It serves as an excellent baseline model and can provide reasonable performance with minimal computational resources, even when training data is limited.
+]
+
 = Discriminant Analysis
 
 == Connection Between Metric and Bayesian Classifiers
@@ -410,7 +459,11 @@ $
   hat(p)(bold(x)|y) = 1 / (\# X_y dot V_h) sum_(bold(x)' in X_y) K( rho(bold(x), bold(x)') / h )
 $
 
-Substituting the density estimate into the Bayesian classifier, assuming **the same window width is used for all classes**:
+#margin[
+  The connection between metric-based methods like kNN and probabilistic methods like Bayesian classification reveals the theoretical foundations underlying many machine learning algorithms. What seems like different approaches are often just different views of the same fundamental principles.
+]
+
+Substituting the density estimate into the Bayesian classifier, assuming *the same window width is used for all classes*:
 
 $
   a(bold(x)) = arg max_(y in Y) { (lambda_y dot p_y) / (\# X_y) dot sum_(bold(x)' in X_y) K( rho(bold(x), bold(x)') / h ) }
@@ -432,6 +485,10 @@ $
 Where:
 $mu_y, Sigma_y$ are distribution parameters for class $y$ \
 $Q(x^1, ..., x^k) = sum_i sum_j a_(i,j) x^i x^j = bold(x)^Tr A bold(x)$ is a quadratic form of features
+
+#margin[
+  Quadratic Discriminant Analysis (QDA) makes more flexible assumptions than Linear Discriminant Analysis (LDA) by allowing each class to have its own covariance matrix. This results in quadratic decision boundaries rather than linear ones, allowing the model to capture more complex class relationships.
+]
 
 Substituting parametric density estimates for each class into the optimal Bayesian classifier:
 
@@ -469,6 +526,13 @@ $
 
 LDA is a supervised learning method for classification and dimensionality reduction. It works by finding a linear combination of features that best separates two or more classes.
 
+#margin[
+  LDA can be viewed from multiple perspectives:
+  - As a special case of QDA with equal covariance matrices
+  - As a dimensionality reduction technique that maximizes class separability
+  - As a generative model with Gaussian class-conditional distributions
+]
+
 LDA assumes different classes generate data based on Gaussian distributions with the same covariance matrix but different means. The method maximizes the ratio of between-class variance to within-class variance to ensure maximum class separability. The resulting decision boundary is linear, and LDA can also reduce feature space dimension by projecting data onto a lower-dimensional subspace that preserves class separability.
 
 == Fisher's Linear Discriminant
@@ -487,8 +551,8 @@ $
   + 1 / ell sum_(y in Y) ell_y (macron(bold(x))_y - macron(bold(x)))(macron(bold(x))_y - macron(bold(x)))^Tr
 $
 
-- **Within-class scatter matrix** is estimated as the mean covariance matrix of all classes.
-- **Between-class scatter matrix** is estimated as the covariance matrix of the classes themselves.
+- *Within-class scatter matrix* is estimated as the mean covariance matrix of all classes.
+- *Between-class scatter matrix* is estimated as the covariance matrix of the classes themselves.
 
 2. The idea is to find a projection of a data vector onto a 1D line:
 $z = P(bold(x)) = bold(x)^Tr bold(beta)$
@@ -517,6 +581,10 @@ $
   a(bold(x)) = arg min_(y in Y) abs(delta_y (bold(x)))
 $
 
+#margin[
+  Fisher's approach offers a geometric interpretation: it finds the direction in feature space along which the classes are most separated relative to their within-class spread. This makes it both a classification method and a dimensionality reduction technique.
+]
+
 == Linear Discriminant Function
 
 A linear discriminant function is defined as:
@@ -525,7 +593,7 @@ $ delta_y (bold(x)) = bold(beta)_y^Tr bold(x) + const_y $
 
 This is a mapping from the feature space $RR^k$ to a set of categories $Y = {1, dots, N}$, defined by partitioning $RR^p$ into disjoint regions $cal(R)_1, dots, cal(R)_N$, where each region corresponds to a different category in $Y$.
 
-This is achieved by maximizing **discriminant functions** $delta_y(bold(x))$ **for each category**, so $bold(x)$ is classified into $y$ when $delta_y(bold(x))$ exceeds the discriminant values for all other categories:
+This is achieved by maximizing *discriminant functions* $delta_y(bold(x))$ *for each category*, so $bold(x)$ is classified into $y$ when $delta_y(bold(x))$ exceeds the discriminant values for all other categories:
 $hat y(bold(x)) = arg max_(y in Y) delta_y(bold(x))$,
 where $y$ maps from $RR^k$ to $Y = {1, dots, N}$.
 
@@ -533,14 +601,18 @@ where $y$ maps from $RR^k$ to $Y = {1, dots, N}$.
 
 For multiclass problems, LDA can be applied in two different settings:
 
-1. **One-vs-one**: Train $C_K^2$ pairwise models
+1. *One-vs-one*: Train $C_K^2$ pairwise models
 $delta_(y,y') (bold(x)) = bold(beta)_(y,y')^Tr bold(x) + const_(y,y')$
 And aggregate them using some kind of voting, e.g.,
 $ delta_y (bold(x)) = sum_(y') delta_(y,y') $
 
+#margin[
+  Different strategies for handling multiclass problems lead to different decision boundaries. One-vs-one approaches tend to be more robust but require training more models, while one-vs-all approaches are more efficient but may suffer when classes are imbalanced.
+]
+
 The result is a decision boundary combined of multiple one-vs-one lines, which may be smooth depending on the voting approach used.
 
-2. **One-vs-all**: Train exactly $K$ models and determine which class maximizes:
+2. *One-vs-all*: Train exactly $K$ models and determine which class maximizes:
 $hat(y) (bold(x)) = arg max_(y in Y) delta_y (bold(x))$
 
 This effectively selects the hyperplane with the maximum distance to $x$. The final decision boundary is defined by distance; blue lines lie between hyperplanes at equal distances, and the decision is based on which side of the blue line the object $x$ lies.
@@ -555,6 +627,10 @@ $
   f(bold(x)|y, Theta) := sum_(n=1)^N_y w_(n|y) dot f_n (bold(x) | bold(mu)_(n|y), Sigma_(n|y))
 $
 
+#margin[
+  GMMs provide a way to model complex data distributions by combining multiple Gaussian components. This makes them more flexible than single-distribution models, allowing them to capture multimodal class distributions and complex cluster shapes.
+]
+
 All features are assumed independent, so all covariance matrices are diagonal. Multivariate Gaussian densities can be represented as products of one-dimensional densities:
 
 $
@@ -567,19 +643,27 @@ Each class is described by a mixture of multivariate Gaussians, each of which de
 
 The Expectation-Maximization (EM) algorithm is used to find the parameters $w_(n|y)$, $bold(mu)_(n|y)$, $Sigma_(n|y)$ for $n=1..N$, $y in Y$:
 
-1. **Initialization**: Set $w_(n|y) <- 1/N_y$, $bold(mu)_(n|y) <- ...$, $Sigma_(n|y) <- ...$
+1. *Initialization*: Set $w_(n|y) <- 1/N_y$, $bold(mu)_(n|y) <- ...$, $Sigma_(n|y) <- ...$
 
-2. **Repeat** iteration $t$ to optimize distribution parameters $w_(n|y) = w_(n|y)^{(t)}$, $bold(mu)_(n|y) = bold(mu)_(n|y)^{(t)}$, $Sigma_(n|y) = Sigma_(n|y)^{(t)}$:
+2. *Repeat* iteration $t$ to optimize distribution parameters $w_(n|y) = w_(n|y)^{(t)}$, $bold(mu)_(n|y) = bold(mu)_(n|y)^{(t)}$, $Sigma_(n|y) = Sigma_(n|y)^{(t)}$:
 
-3. **Expectation**: For all $bold(x) in X^l$, estimate _a posteriori_ probability (weights) to come from $f_(n|y)$:
+#margin[
+  The EM algorithm alternates between two steps:
+  1. *E-step*: Calculate the probability that each data point belongs to each Gaussian component
+  2. *M-step*: Update the parameters of each Gaussian component based on these probabilities
+
+  This process continues until convergence, maximizing the likelihood of the observed data.
+]
+
+3. *Expectation*: For all $bold(x) in X^l$, estimate _a posteriori_ probability (weights) to come from $f_(n|y)$:
   $acute(w)'_(n|y) (bold(x)) <- ( w_(n|y) dot f_(n|y) (bold(x)) ) / (sum_(m=1)^N w_(m|y) dot f_(m|y)(bold(x)))$
 
-4. **Maximization**: For all mixture components $n=1..N$ and classes $y in Y$, reestimate parameters:
+4. *Maximization*: For all mixture components $n=1..N$ and classes $y in Y$, reestimate parameters:
   $w_(n|y) <- 1 / ell_y sum_(bold(x) in X^{ell}) acute(w)'_(n|y)(bold(x))$
   $bold(mu)_(n|y) <- 1 / (ell_y dot w_(n|y)) dot sum_(bold(x) in X_y) acute(w)'_(n|y)(bold(x)) dot bold(x)$
   $(Sigma_(n|y))_(j,j) <- 1 / (ell_y dot w_(n|y)) dot sum_(bold(x) in X_y) acute(w)'_(n|y)(bold(x)) dot (bold(x)^j - bold(mu)_(n|y)^j)^2$
 
-5. **Stop** if $w_n$, $bold(theta)_n$, or $w'_n$ do not change significantly
+5. *Stop* if $w_n$, $bold(theta)_n$, or $w'_n$ do not change significantly
 
 == Connection to Metric Classifiers
 
@@ -589,6 +673,10 @@ $
   f(bold(x)) = sum_(n=1)^n f_n (bold(x) | bold(mu)_n, Sigma_n) \
   f_n (bold(x) | bold(mu)_n, Sigma_n) = product_(j=1)^k 1 / sqrt(2 pi sigma_(n,j)^2) exp { - (bold(x)^j - bold(mu)^j)^2 / (2 sigma_(n,j)^2) }
 $
+
+#margin[
+  The connection between GMMs and metric-based methods reveals that many classification approaches are related. GMMs can be viewed as a generalization of kernel density estimation with tunable parameters, combining aspects of both generative and discriminative methods.
+]
 
 Dependency between features is already accounted for in the sense that a mixture of simple Gaussians is a universal approximator; any density can be described by a sum of "orthogonal" Gaussians, though more might be needed than with "non-orthogonal" ones.
 
@@ -621,6 +709,15 @@ Effectively, the algorithm is a metric algorithm that evaluates the metric proxi
 $
   rho^2(bold(x), bold(mu)) = sum_(j=1)^k 1 / (sigma^2_j) { bold(x)^j - bold(mu)^j }^2
 $
+
+#margin[
+  The dual nature of GMMs - both generative and metric-based - makes them versatile tools. They can be used for:
+  - Classification
+  - Density estimation
+  - Clustering
+  - Anomaly detection
+  - Data generation
+]
 
 Key insights:
 - The generative Gaussian Mixture Model, when substituted into a Bayesian classifier, also functions as a discriminative (metric) classification method

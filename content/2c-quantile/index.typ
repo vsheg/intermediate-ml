@@ -707,6 +707,11 @@ noises: $3 epsilon$, $epsilon^3$, and $epsilon_+ + 4 epsilon_-$.
   )
 }) <fig-quantile-non-normality>
 
+== Heteroscedasticity
+Quantile regression does not assume homoscedasticity (constant variance). Instead, it models
+different parts of the conditional distribution independently, allowing for varying spread (e.g.,
+wider or narrower intervals) across predictors. OLS assumes homoscedasticity (or equal weight of all
+observations).
 
 #{
   let data = lq.load-txt(read("distributions/out.csv"), header: true)
@@ -737,12 +742,6 @@ noises: $3 epsilon$, $epsilon^3$, and $epsilon_+ + 4 epsilon_-$.
     ..data.keys().map(col => plot(col, residual: true)), // TODO: switch to KDE or histogram
   )
 }
-
-== Heteroscedasticity
-Quantile regression does not assume homoscedasticity (constant variance). Instead, it models
-different parts of the conditional distribution independently, allowing for varying spread (e.g.,
-wider or narrower intervals) across predictors. OLS assumes homoscedasticity (or equal weight of all
-observations).
 
 == Robustness to outliers and noise
 By focusing on quantiles rather than the mean, quantile regression reduces sensitivity to random
