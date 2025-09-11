@@ -56,7 +56,7 @@
 #let bra = sym.angle.l
 #let ket = sym.angle.r
 
-#let dmat(a, b, c) = $mat(#a, thin, thin;thin, #b, thin;thin, thin, #c)$
+#let dmat(a, b, c) = $mat(#a, thin, thin; thin, #b, thin; thin, thin, #c)$
 #let frame(body) = rect(stroke: 0.3pt, inset: 7pt, body)
 
 // SHORTHANDS
@@ -67,7 +67,14 @@
 #import "@preview/cetz-plot:0.1.0"
 #import "@preview/subpar:0.1.1"
 
-#let discrete-plot(ys: (), x-label: $x$, y-label: $y$, width: 2cm, x-ticks: (), y-ticks: ()) = {
+#let discrete-plot(
+  ys: (),
+  x-label: $x$,
+  y-label: $y$,
+  width: 2cm,
+  x-ticks: (),
+  y-ticks: (),
+) = {
   let n = ys.len()
 
   cetz.canvas(
@@ -97,7 +104,12 @@
                 x-ticks.at(i, default: []),
               ),
             )
-            plot.add(((x, ys.at(i)),), mark: "o", mark-size: 0.1, hypograph: true)
+            plot.add(
+              ((x, ys.at(i)),),
+              mark: "o",
+              mark-size: 0.1,
+              hypograph: true,
+            )
           }
         },
       )

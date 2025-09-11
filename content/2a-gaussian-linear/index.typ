@@ -86,7 +86,7 @@ let's introduce the weight matrix:
 
 $
   W :&= diag(w(bold(x)_1), ..., w(bold(x)_ell))
-     &= dmat(w(bold(x)_1), dots.down, w(bold(x)_ell))
+  &= dmat(w(bold(x)_1), dots.down, w(bold(x)_ell))
 $
 
 == Matrix form
@@ -137,9 +137,8 @@ $
 Expanding the expressions:
 
 $
-  bold(beta)^*
-    &= ((W^(1/2) X)^T W^(1/2) X)^(-1) (W^(1/2) X)^Tr W^(1/2) bold(y) \
-    &= (X^Tr W X)^(-1) X^Tr W bold(y)
+  bold(beta)^* & = ((W^(1/2) X)^T W^(1/2) X)^(-1) (W^(1/2) X)^Tr W^(1/2) bold(y) \
+               & = (X^Tr W X)^(-1) X^Tr W bold(y)
 $
 
 Therefore, the solution is:

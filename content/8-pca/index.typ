@@ -13,11 +13,15 @@
   Each data point is represented by three coordinates $x, y, z$, but $z$ is always $0$.
   Therefore, the data can be represented by just two coordinates:
 
-  $ bold(f) = vec(x, y, 0) quad ->^A quad bold(p) = vec(x, y) quad ->^B quad hat(bold(f)) = vec(x, y, 0). $
+  $
+    bold(f) = vec(x, y, 0) quad ->^A quad bold(p) = vec(x, y) quad ->^B quad hat(bold(f)) = vec(x, y, 0).
+  $
 
   It is straightforward to find the linear transformations $A$ and $B$:
 
-  $ ub(mat(1, 0, ?;0, 1, ?), A) vec(x, y, 0) = vec(x, y), quad ub(mat(1, 0;0, 1;0, 0), B) vec(x, y) = vec(x, y, 0) $
+  $
+    ub(mat(1, 0, ?; 0, 1, ?), A) vec(x, y, 0) = vec(x, y), quad ub(mat(1, 0; 0, 1; 0, 0), B) vec(x, y) = vec(x, y, 0)
+  $
 ]
 #margin(
   title: [NB],
@@ -33,7 +37,7 @@
   original features $bold(f)$ into a new set of transformed features $bold(p)$, ensuring
   their linear independence:
   $
-    bold(f) = vec(f_1, dots.v, f_k) quad &-> quad bold(p) = vec(p_1, dots.v, p_m),
+    bold(f) = vec(f_1, dots.v, f_k) quad & -> quad bold(p) = vec(p_1, dots.v, p_m),
   $
 
   If the original features are linearly dependent, the data resides in a lower-dimensional
@@ -76,7 +80,9 @@
 
   Formally, if $B$ exists, we could write the system of equations:
 
-  $ mat(beta_(1,1), beta_(1,2);beta_(2,1), beta_(2,2);beta_(3,1), beta_(3,2)) vec(x, y) = vec(x, y, 1) => cases(1 x + 0 y = x, 0 x + 1 y = y, beta_(3,1) x + beta_(3,2) y = 1). $
+  $
+    mat(beta_(1,1), beta_(1,2); beta_(2,1), beta_(2,2); beta_(3,1), beta_(3,2)) vec(x, y) = vec(x, y, 1) => cases(1 x + 0 y = x, 0 x + 1 y = y, beta_(3,1) x + beta_(3,2) y = 1).
+  $
 
   - The coefficients in the first two equations are determined by the identities $x = x$ and $y = y$.
   - The third equation cannot yield $1$ for all $x, y$ since it lacks a bias term.
@@ -159,26 +165,33 @@ $ A B approx I. $
   the new one $cal(N): bold(nu)_1, ..., bold(nu)_n$, the vectors of the new basis can be
   represented as linear combinations of the old basis vectors:
 
-  $ cases(
-    bold(nu)_1 = focus(alpha_(1,1)) bold(omega)_1 + ... + focus(alpha_(1,n)) bold(omega)_n,
-    dots.v,
-    bold(nu)_n = alpha_(n,1) bold(omega)_1 + ... + alpha_(n,n) bold(omega)_n,
-
-  ) $
+  $
+    cases(
+      bold(nu)_1 = focus(alpha_(1,1)) bold(omega)_1 + ... + focus(alpha_(1,n)) bold(omega)_n,
+      dots.v,
+      bold(nu)_n = alpha_(n,1) bold(omega)_1 + ... + alpha_(n,n) bold(omega)_n,
+    )
+  $
 
   The coefficients $alpha_(s,j)$ are the coordinates of the new basis vectors in the
   coordinate system of the old basis. These coefficients form the basis transition matrix
   (by columns!):
 
-  $ A = mat(
-    focus(alpha_(1,1)), ..., alpha_(n,1);dots.v, dots.down, dots.v;focus(alpha_(1,n)), ..., alpha_(n,n)
-  ) $
+  $
+    A = mat(
+      focus(alpha_(1,1)), ..., alpha_(n,1); dots.v, dots.down, dots.v; focus(alpha_(1,n)), ..., alpha_(n,n)
+    )
+  $
 
   This matrix transforms coordinates between bases:
 
-  $ {bold(nu)_1}_cal(O) = vec(focus(alpha_(1,1)), dots.v, focus(alpha_(1,n)))_cal(O) = A vec(1, 0, dots.v)_cal(N) = A{bold(nu)_1}_cal(N) $
+  $
+    {bold(nu)_1}_cal(O) = vec(focus(alpha_(1,1)), dots.v, focus(alpha_(1,n)))_cal(O) = A vec(1, 0, dots.v)_cal(N) = A{bold(nu)_1}_cal(N)
+  $
 
-  $ {bold(v)}_cal(O) = A {bold(v)}_cal(N), quad {bold(v)}_cal(N) = A^(-1) {bold(v)}_cal(O) $
+  $
+    {bold(v)}_cal(O) = A {bold(v)}_cal(N), quad {bold(v)}_cal(N) = A^(-1) {bold(v)}_cal(O)
+  $
 ]
 Matrices $A$ and $B$ resemble transition matrices between bases:
 
@@ -205,7 +218,7 @@ orthogonal basis of principal axes in the coordinates of the original space.
   The choice of matrix $B$ is flexible, allowing us to impose additional constraints. For
   example, we can require that $B^T B$ be diagonal or even the identity matrix:
 
-  $ B^T B = mat(1, 0, 0;0, 1, 0) mat(1, 0;0, 1;0, 0) = mat(1, 0;0, 1) $
+  $ B^T B = mat(1, 0, 0; 0, 1, 0) mat(1, 0; 0, 1; 0, 0) = mat(1, 0; 0, 1) $
 ]
 
 Any basis consists of linearly independent, or orthogonal, vectors, meaning that $B$ stores
@@ -224,8 +237,8 @@ The objective of PCA is to minimize the restoration error. In this notation, the
 risk depends on $A$ and $B$:
 
 $
-  R :&= norm(hat(F) - F)^2 \
-     &= norm(F A^Tr B^Tr - F)^2 -> min_(A, B).
+  R : & = norm(hat(F) - F)^2 \
+      & = norm(F A^Tr B^Tr - F)^2 -> min_(A, B).
 $
 
 We can reformulate the objective in terms of the new coordinates $P$ and the transition
@@ -240,21 +253,24 @@ the extremum:
 
 #columns(2)[
 
-  $ pdv(R, P) = 2 (P B^Tr - F) B = 0 \
-  arrow.b.double \
-  P = F B (B^Tr B)^(-1) $
+  $
+    pdv(R, P) = 2 (P B^Tr - F) B = 0 \
+    arrow.b.double \
+    P = F B (B^Tr B)^(-1)
+  $
 
   #colbreak()
 
-  $ pdv(R, B) = 2 P^Tr (P B^Tr - F) = 0 \
-  arrow.b.double \
-  B^Tr = (P^Tr P)^(-1)P^Tr F $
+  $
+    pdv(R, B) = 2 P^Tr (P B^Tr - F) = 0 \
+    arrow.b.double \
+    B^Tr = (P^Tr P)^(-1)P^Tr F
+  $
 
   $
-    B
-      &= F^Tr P ((P^Tr P)^(-1))^Tr \
-      &= F^Tr P ((P^Tr P)^Tr)^(-1) \
-      &= F^Tr P (P^Tr P)^(-1)
+    B & = F^Tr P ((P^Tr P)^(-1))^Tr \
+      & = F^Tr P ((P^Tr P)^Tr)^(-1) \
+      & = F^Tr P (P^Tr P)^(-1)
   $
 
 ]

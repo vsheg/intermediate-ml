@@ -34,7 +34,9 @@ a function called _sufficient statistics_ $T(xi)$ is introduced to make the rela
 linear:
 #margin[Technically, $T(xi)$ is a new random variable $xi'$ for which @eq-exp-family-1d holds.]
 
-$ f(xi|theta) := 1/Z(theta) dot h(xi) dot e^(theta dot T(xi)), $<eq-sufficient-statistics-1d>
+$
+  f(xi|theta) := 1/Z(theta) dot h(xi) dot e^(theta dot T(xi)),
+$<eq-sufficient-statistics-1d>
 
 == Canonical form 2
 Equivalently to @eq-sufficient-statistics-1d, the exponential family can be rewritten as a
@@ -53,8 +55,8 @@ by maximizing the likelihood function:
 
 $
   theta^* = arg max_theta ell(theta) &= arg max_theta { log product_(x^* in X^ell) Pr[x = x^*|theta] } \
-                                     &= arg max_theta sum_(x^* in X^ell) log { 1/Z(theta) dot h(x^*) dot e^(theta dot T(x^*)) }\
-                                     &= arg max_theta sum_(x^* in X^ell) {-log Z(theta) + log h(x^*) + theta dot T(x^*)} -> max_theta.
+  &= arg max_theta sum_(x^* in X^ell) log { 1/Z(theta) dot h(x^*) dot e^(theta dot T(x^*)) }\
+  &= arg max_theta sum_(x^* in X^ell) {-log Z(theta) + log h(x^*) + theta dot T(x^*)} -> max_theta.
 $
 the terms $log h(x^*)$ are constant and can be ignored.
 
@@ -73,7 +75,7 @@ family distribution $y ~ Exp(theta)$, and joint distribution is in the form of $
 
 $
   f_(X,Y)(x, y|theta) &= (f_(X,Y,Theta)(x, y, theta)) / (f_Theta (theta)) = (f_Y (y|x, theta) dot f_(X, Theta)(x, theta)) / (f_Theta (theta)) \
-                      &= (f_Y (y|x, theta) dot f_X (x) dot cancel(f_Theta (theta))) / cancel(f_Theta (theta)) = f_Y (y|x, theta).
+  &= (f_Y (y|x, theta) dot f_X (x) dot cancel(f_Theta (theta))) / cancel(f_Theta (theta)) = f_Y (y|x, theta).
 $<eq-exp-family-modeling-1d>
 
 If $f_Y (y|x, theta)$ can be expressed as $f_Y (y|theta(x))$, then $y ~ Exp(theta(x))$.
@@ -115,14 +117,16 @@ $bold(theta) in RR^m$ when its pdf takes the form:
 
 $
   f(bold(xi)|bold(theta))
-    &:= 1/Z(bold(theta)) dot h(bold(xi)) dot e^(bra bold(theta), T(bold(xi)) ket) \
-    &:= exp lr({ bra bold(theta), T(bold(xi)) ket - A(bold(theta)) + C(bold(xi)) }, size: #200%).
+  &:= 1/Z(bold(theta)) dot h(bold(xi)) dot e^(bra bold(theta), T(bold(xi)) ket) \
+  &:= exp lr({ bra bold(theta), T(bold(xi)) ket - A(bold(theta)) + C(bold(xi)) }, size: #200%).
 $<eq-exp-family>
 
 The remaining terms generalize naturally:
 
 - Partition function:
-  $ Z(bold(theta)) := integral_supp(bold(x)) h(bold(xi)) dot e^(bra bold(theta), T(bold(xi)) ket) dd(bold(xi)), $
+  $
+    Z(bold(theta)) := integral_supp(bold(x)) h(bold(xi)) dot e^(bra bold(theta), T(bold(xi)) ket) dd(bold(xi)),
+  $
   where $dd(bold(xi)) = dd(xi_1) ... dd(xi_k)$ represents the differential volume element.
 
 - Log partition function:
@@ -183,8 +187,10 @@ defined by a parameter $p in (0..1)$.
 
 In short, $xi ~ cal(B)(p)$ means that $xi$ follows the Bernoulli distribution with
 parameter $p$. The probability mass function (pmf) is:
-$ p(xi) &= cases(p &"if" xi = 1, 1-p &"if" xi = 0) \
-      &= p^xi (1-p)^(1-xi). $
+$
+  p(xi) & = cases(p &"if" xi = 1, 1-p &"if" xi = 0) \
+        & = p^xi (1-p)^(1-xi).
+$
 
 The Bernoulli distribution is perhaps the simplest member of the exponential family.
 
@@ -197,9 +203,9 @@ partition function $Z(theta)$, and scaling function $h(xi)$.
 Starting by taking the logarithm of the classical definition:
 
 $
-  log p(xi) &= log p^xi (1-p)^(1-xi) \
-            &= xi dot log p + (1-xi) dot log(1-p) \
-            &= xi dot log p/(1-p) + log(1-p).
+  log p(xi) & = log p^xi (1-p)^(1-xi) \
+            & = xi dot log p + (1-xi) dot log(1-p) \
+            & = xi dot log p/(1-p) + log(1-p).
 $
 
 Undoing the logarithm, we get:
@@ -210,7 +216,7 @@ Undoing the logarithm, we get:
 
 $
   p(xi) &= exp{ xi dot log p/(1-p) + log(1-p) } \
-        &= e^(xi dot log p/(1-p)) dot e^(log(1-p)) = e^(xi dot log p/(1-p)) dot (1-p).
+  &= e^(xi dot log p/(1-p)) dot e^(log(1-p)) = e^(xi dot log p/(1-p)) dot (1-p).
 $
 
 By comparing this with the canonical pmf @eq-exp-family, we can easily identify:
@@ -252,7 +258,9 @@ logit function.
 )[
   The inverse of the logit function is the sigmoid function:
   $ theta = ln p/(1-p) $
-  $ e^theta (1-p) = p $ $ p = e^theta/(1+e^theta) = 1/(1+e^(-theta)) =: sigma(theta) $
+  $ e^theta (1-p) = p $ $
+    p = e^theta/(1+e^theta) = 1/(1+e^(-theta)) =: sigma(theta)
+  $
 ]
 
 == Partition function
@@ -287,16 +295,17 @@ fitted into the exponential family. The pdf of the non-standard normal distribut
 
 $
   f(xi|mu, sigma) &= 1 / (sigma sqrt(2 pi)) exp {-(xi - mu)^2 / (2 sigma^2)} \
-                  &= 1 / (sigma sqrt(2 pi)) exp {-1/(2 sigma^2) dot xi^2 + mu / sigma^2 dot xi - mu^2 / (2 sigma^2)} \
-                  &= ub(1 / (sigma sqrt(2 pi)) exp {- mu^2 / (2 sigma^2)}, h(xi)\/Z(bold(theta))) dot ub(
+  &= 1 / (sigma sqrt(2 pi)) exp {-1/(2 sigma^2) dot xi^2 + mu / sigma^2 dot xi - mu^2 / (2 sigma^2)} \
+  &= ub(1 / (sigma sqrt(2 pi)) exp {- mu^2 / (2 sigma^2)}, h(xi)\/Z(bold(theta))) dot ub(
     exp {-1/(2 sigma^2) dot xi^2 + mu / sigma^2 dot xi},
     bra bold(theta) \, T(xi) ket,
-
   ).
 $
 
 - The sufficient statistics and canonical parameter are both 2D vectors:
-  $ T(xi) = vec(xi, xi^2), wide bold(theta) equiv vec(theta_1, theta_2) = vec(mu\/sigma^2, -1\/(2 sigma^2)) $
+  $
+    T(xi) = vec(xi, xi^2), wide bold(theta) equiv vec(theta_1, theta_2) = vec(mu\/sigma^2, -1\/(2 sigma^2))
+  $
 
 #margin(
   title: [Note],
@@ -306,7 +315,9 @@ $
 ]
 
 - The parameters of the original distribution $mu$ and $sigma$ can be expressed as:
-  $ sigma = sqrt(-1/(2 theta_2)) = 1 / sqrt(-2 theta_2) > 0, wide mu = theta_1 dot sigma^2 = -theta_1 / (2 theta_2). $
+  $
+    sigma = sqrt(-1/(2 theta_2)) = 1 / sqrt(-2 theta_2) > 0, wide mu = theta_1 dot sigma^2 = -theta_1 / (2 theta_2).
+  $
 
 #margin[
   - $-log Z$ comes from $log 1/Z$, also $h(xi) = 1$
@@ -319,8 +330,8 @@ $
 
   $
     - ln Z(theta_1, theta_2) &= -ln sigma - ln sqrt(2 pi) - mu^2 / (2 sigma^2) \
-                             &= ln sqrt(-2 theta_2) - ln sqrt(2 pi) + theta_1^2 / (4 theta_2) \
-                             &= theta_1^2 / (4 theta_2) + ln sqrt((-theta_2) / pi).
+    &= ln sqrt(-2 theta_2) - ln sqrt(2 pi) + theta_1^2 / (4 theta_2) \
+    &= theta_1^2 / (4 theta_2) + ln sqrt((-theta_2) / pi).
   $
 
 Finally, the canonical form of the non-standard normal distribution is:
@@ -333,13 +344,17 @@ $
 Further generalization is relatively straightforward; the pdf of the multivariate normal
 distribution $cal(N)(bold(mu), bold(Sigma))$ is:
 
-$ f(bold(xi)|bold(mu), bold(Sigma)) = 1 / (sqrt((2 pi)^k det bold(Sigma))) exp {-1/2 (bold(xi) - bold(mu))^T bold(Sigma)^(-1) (bold(xi) - bold(mu))}, $
+$
+  f(bold(xi)|bold(mu), bold(Sigma)) = 1 / (sqrt((2 pi)^k det bold(Sigma))) exp {-1/2 (bold(xi) - bold(mu))^T bold(Sigma)^(-1) (bold(xi) - bold(mu))},
+$
 
 where $bold(xi) in RR^k$ is a random vector, $bold(mu) in RR^k$ is the mean vector, and $bold(Sigma) in RR^(k times k)$ is
 the covariance matrix, the sufficient statistics, canonical parameters and pre-exponential
 term are:
 
-$ T(bold(xi)) = vec(bold(xi), bold(xi) bold(xi)^T), quad bold(theta)_1 = Sigma^(-1) bold(mu), quad bold(theta)_2 = -1/2 Sigma^(-1), quad Z(bold(theta)) = sqrt((2 pi)^k det Sigma) exp {1/2 bold(mu)^T Sigma^(-1) bold(mu)}. $
+$
+  T(bold(xi)) = vec(bold(xi), bold(xi) bold(xi)^T), quad bold(theta)_1 = Sigma^(-1) bold(mu), quad bold(theta)_2 = -1/2 Sigma^(-1), quad Z(bold(theta)) = sqrt((2 pi)^k det Sigma) exp {1/2 bold(mu)^T Sigma^(-1) bold(mu)}.
+$
 
 = Laplace distribution
 
@@ -364,7 +379,7 @@ When $mu = 0$, the Laplace distribution can be expressed in exponential family f
 
 $
   f(y|b) &= 1/(2b) dot e^(-|y|\/b) \
-         &= ub(1/(2b), 1\/Z(theta)) dot e^(ob((1\/b) dot (-|y|), theta dot T(y))) \
+  &= ub(1/(2b), 1\/Z(theta)) dot e^(ob((1\/b) dot (-|y|), theta dot T(y))) \
 $
 
 The canonical parameter becomes $theta = 1\/b$, the sufficient statistics $T(y) = -|y|$,
@@ -372,7 +387,7 @@ and the partition function $Z(theta) = 2\/theta$.
 
 == General case
 For $mu != 0$, the Laplace distribution cannot be written as an exponential family
-distribution because $fn(y, mu;|y - mu|)$ cannot be represented as sufficient statistics $T(y)$,
+distribution because $fn(y, mu; |y - mu|)$ cannot be represented as sufficient statistics $T(y)$,
 which by definition must be independent of distribution parameters.
 
 The classical Laplace distribution parameters behave differently. The parameter $b$ directly
@@ -403,7 +418,9 @@ $ f(y|theta) = theta/2 dot e^(T(y) dot theta), quad T(y) := -|y - mu|. $
 == Expectation of sufficient statistic $T(y)$
 Consider an exponential family distribution:
 
-$ Y tilde f(y | bold(theta)) = exp{ bold(theta) dot T(y) - A(bold(theta)) + C(y) } $
+$
+  Y tilde f(y | bold(theta)) = exp{ bold(theta) dot T(y) - A(bold(theta)) + C(y) }
+$
 
 Starting with the probability normalization condition:
 
@@ -419,11 +436,15 @@ $ integral grad exp{ bold(theta) dot T(y) - A(bold(theta)) + C(y) } dd(y) = 0 $
 
 Computing the gradient of the exponential function:
 
-$ integral ub(exp[bold(theta) dot T(y) - A(bold(theta)) + C(y)], f(y | bold(theta))) dot [T(y) - grad A(bold(theta))] dd(y) = 0 $
+$
+  integral ub(exp[bold(theta) dot T(y) - A(bold(theta)) + C(y)], f(y | bold(theta))) dot [T(y) - grad A(bold(theta))] dd(y) = 0
+$
 
 Rearranging terms:
 
-$ ub(integral f(y | bold(theta)) dot T(y) dd(y), Ex[T(Y)]) = grad A(bold(theta)) dot ub(integral f(y | bold(theta)) dd(y), 1) $
+$
+  ub(integral f(y | bold(theta)) dot T(y) dd(y), Ex[T(Y)]) = grad A(bold(theta)) dot ub(integral f(y | bold(theta)) dd(y), 1)
+$
 
 Therefore, the expectation of the sufficient statistic $T(y)$ is:
 
@@ -432,7 +453,9 @@ $ Ex[T(Y)] = integral f(y | bold(theta)) dot T(y) dd(y) = grad A(bold(theta)) $
 == Expectation of Bernoulli distribution
 The pmf of a Bernoulli random variable $xi ~ cal(B)(p)$ is:
 
-$ p(xi|theta) = p^xi (1-p)^(1-xi) = (1 - sigma(theta)) dot e^(theta dot xi) ~ Exp(theta) $
+$
+  p(xi|theta) = p^xi (1-p)^(1-xi) = (1 - sigma(theta)) dot e^(theta dot xi) ~ Exp(theta)
+$
 
 The corresponding expectation can be calculated via differentiation:
 
@@ -445,20 +468,20 @@ The corresponding expectation can be calculated via differentiation:
 
     $
       sigma'(theta) &= (1 / (1 + e^(-theta)))' \
-                    &= - (1 + e^(-theta))^(-2) dot (1 + e^(-theta))' \
-                    &= + (e^(-theta)) / (1 + e^(-theta))^(2) \
-                    &= (e^(-theta) + 1 - 1) / (1 + e^(-theta))^(2) \
-                    &= (1 + e^(-theta)) / (1 + e^(-theta))^(2) - 1 / (1 + e^(-theta))^(2) \
-                    &= 1 / (1 + e^(-theta)) (1 - 1 / (1 + e^(-theta))) \
-                    &= sigma(theta) dot (1 - sigma(theta)).
+      &= - (1 + e^(-theta))^(-2) dot (1 + e^(-theta))' \
+      &= + (e^(-theta)) / (1 + e^(-theta))^(2) \
+      &= (e^(-theta) + 1 - 1) / (1 + e^(-theta))^(2) \
+      &= (1 + e^(-theta)) / (1 + e^(-theta))^(2) - 1 / (1 + e^(-theta))^(2) \
+      &= 1 / (1 + e^(-theta)) (1 - 1 / (1 + e^(-theta))) \
+      &= sigma(theta) dot (1 - sigma(theta)).
     $
   ],
 )
 
 $
   Ex[xi] &= grad A(theta) = grad {ln 1/Z(theta)} = - pdv(, theta) ln Z(theta) \
-         &= -pdv(, theta) ln (1 - sigma(theta)) = - 1/(1 - sigma(theta)) dot pdv(, theta) {1 - sigma(theta)} \
-         &= - 1/(1 - sigma(theta)) dot {0 - sigma(theta) dot (1 - sigma(theta))} = sigma(theta).
+  &= -pdv(, theta) ln (1 - sigma(theta)) = - 1/(1 - sigma(theta)) dot pdv(, theta) {1 - sigma(theta)} \
+  &= - 1/(1 - sigma(theta)) dot {0 - sigma(theta) dot (1 - sigma(theta))} = sigma(theta).
 $
 
 As shown in @sec-exp-family-bernoulli, the classical parameter $p equiv sigma(theta)$.
@@ -492,9 +515,9 @@ To express @eq-poisson-classical as a one-dimensional exponential family distrib
 h(k) dot exp(theta dot k - A(theta)), $
 we combine all parameter-dependent terms ($lambda^k$ and $e^(-lambda)$) from
 @eq-poisson-classical into a single exponent, and gather all parameter-independent terms ($k!$)
-into the pre-exponential term: $ f(k|lambda) &= e^(-lambda) dot lambda^k / k!\
-            &= 1 / k! dot exp { -lambda + ln lambda^k }\
-            &= 1 / k! dot exp { k dot ln lambda - lambda }. $<eq-poisson-to-exp>
+into the pre-exponential term: $ f(k|lambda) & = e^(-lambda) dot lambda^k / k! \
+            & = 1 / k! dot exp { -lambda + ln lambda^k } \
+            & = 1 / k! dot exp { k dot ln lambda - lambda }. $<eq-poisson-to-exp>
 
 #margin[
   The relationship between classical parameter $lambda$ and canonical parameter $theta$ is
@@ -530,10 +553,10 @@ The same result emerges by directly calculating the expectation using the classi
 ]
 $
   Ex[K|lambda] :&= sum_(k = 0)^oo k dot f(k|lambda)\
-                &= sum_(k = 0)^oo k dot e^(-lambda) dot lambda^k / k!\
-                &= e^(-lambda) dot lambda dot sum_(k = 1)^oo lambda^(k-1) / (k-1)!\
-                &= e^(-lambda) dot lambda dot sum_(t = 0)^oo lambda^(t) / t!\
-                &= e^(-lambda) dot lambda dot e^lambda = lambda.
+  &= sum_(k = 0)^oo k dot e^(-lambda) dot lambda^k / k!\
+  &= e^(-lambda) dot lambda dot sum_(k = 1)^oo lambda^(k-1) / (k-1)!\
+  &= e^(-lambda) dot lambda dot sum_(t = 0)^oo lambda^(t) / t!\
+  &= e^(-lambda) dot lambda dot e^lambda = lambda.
 $
 As shown, since
 $lambda = e^theta$, the mean parameter $mu = e^theta = lambda$. This demonstrates that the

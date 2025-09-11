@@ -20,9 +20,8 @@ $y in supp eta$
 The joint probability of an object $bold(x)$ and its class $y$ can be decomposed in two equivalent ways:
 
 $
-  p(bold(x), y)
-  &= p(bold(x)) dot p(y|bold(x)) \
-  &= p(y) dot p(bold(x)|y)
+  p(bold(x), y) & = p(bold(x)) dot p(y|bold(x)) \
+                & = p(y) dot p(bold(x)|y)
 $
 
 Where:
@@ -72,9 +71,8 @@ by selecting the hypothesis that maximizes the posterior probability $p(y | x)$ 
 In practice, empirical probability densities $hat(p)$ are used, so the classifier is not truly optimal. The $p(x)$ term from the Bayes formula can be eliminated from argmax over $y in Y$ as it depends only on $x$:
 
 $
-  a(bold(x))
-  &= arg max_(y in Y) p(y|bold(x)) \
-  &= arg max_(y in Y) (p(y) dot p(bold(x) | y)) / cancel(p(bold(x)))
+  a(bold(x)) & = arg max_(y in Y) p(y|bold(x)) \
+             & = arg max_(y in Y) (p(y) dot p(bold(x) | y)) / cancel(p(bold(x)))
 $
 
 If the probabilities of all classes are equal $p(y_i) = p(y_j), forall i,j$, then $p(y)$ can also be eliminated from argmax:
@@ -104,8 +102,14 @@ However, it's optimal only if we know the true distributions $p(y | x)$ or $p(y)
 #table(
   columns: (auto, 1fr, 1fr),
   [*Aspect*], [*Discriminative Models*], [*Generative Models*],
-  [*Goal*], [Learn the decision boundary between classes], [Model the joint probability $P(x, y)$],
-  [*Probability Modeled*], [$P(y | x)$ (conditional probability)], [$P(x, y)$ (joint probability)],
+  [*Goal*],
+  [Learn the decision boundary between classes],
+  [Model the joint probability $P(x, y)$],
+
+  [*Probability Modeled*],
+  [$P(y | x)$ (conditional probability)],
+  [$P(x, y)$ (joint probability)],
+
   [*Example Algorithms*],
   [Logistic regression, GLM, SVMs, neural networks],
   [Naive Bayes, GMMs, Fisher's Linear Discriminant, HMMs],
@@ -167,9 +171,8 @@ The integral exactly equals the total probability of error: the probability $f(x
 The form of the Bayesian classification algorithm (maximum likelihood classifier) follows from minimizing this empirical risk:
 
 $
-  a^*(bold(x))
-  &= arg max_(y in Y) lambda_y dot p(y|bold(x)) \
-  &= arg max_(y in Y) lambda_y dot p(y) dot p(bold(x)|y)
+  a^*(bold(x)) & = arg max_(y in Y) lambda_y dot p(y|bold(x)) \
+               & = arg max_(y in Y) lambda_y dot p(y) dot p(bold(x)|y)
 $
 
 The Bayesian classifier $a(x)$ is optimal in the sense that it minimizes the error $R(a) -> min$. This optimality is proven when the density distributions $p(y|x)$ or $p(y), p(x|y)$ are exactly known, but in reality, they are unknown. Overfitting occurs when empirical estimates of distributions $hat(p)(y|x)$ or $hat(p)(y), hat(p)(x|y)$ are used to build the classifier.
@@ -206,7 +209,9 @@ In the original formulation, the posterior probability of class $y$ is *maximize
 
 The Naïve Bayes classifier is expressed as:
 
-$ a(bold(x)) = arg max_(y in Y) { ln lambda_y hat(p)(y) + sum_(j=1)^k ln hat(p)_j (bold(x)^j|y) } $
+$
+  a(bold(x)) = arg max_(y in Y) { ln lambda_y hat(p)(y) + sum_(j=1)^k ln hat(p)_j (bold(x)^j|y) }
+$
 
 Where:
 $p(bold(x)|y) := p_1 (f_1 (bold(x)) | y) ... p_k (f_k (bold(x)) | y)$, meaning features are independent \
@@ -264,7 +269,7 @@ $
 Finding the extremum of the empirical risk:
 
 $
-  pdv(Q_(j|y), theta_(j|y)) = sum_(bold(x) in X_y) { bold(x)^j - pdv(,theta_(j|y)) A(theta_(j|y)) } = 0
+  pdv(Q_(j|y), theta_(j|y)) = sum_(bold(x) in X_y) { bold(x)^j - pdv(, theta_(j|y)) A(theta_(j|y)) } = 0
 $
 
 Thus, the mean parameter equals the average feature value per class:
@@ -317,9 +322,8 @@ Different features may be described by different distributions (e.g., feature #1
 In text classification, Poisson distribution models word $w_j$ occurrence in a document:
 
 $
-  Pr(K_j = k|nu)
-  &= e^(-nu) dot nu^k / k! \
-  &= 1 / k! dot exp { k dot ln nu - nu }
+  Pr(K_j = k|nu) & = e^(-nu) dot nu^k / k! \
+                 & = 1 / k! dot exp { k dot ln nu - nu }
 $
 
 #margin[
@@ -338,14 +342,16 @@ Poisson distribution models the probability of an event occurring exactly $k$ ti
 
 Poisson distribution is used in text classification models. Any document is represented as an object with occurrences of specific words from an ordered dictionary of words $w_1, ..., w_W$:
 
-$ bold(x) = vec(k_1, dots.v, k_W) = vec(\# "fat", dots.v, \# "cat") = vec(10, dots.v, 15) $
+$
+  bold(x) = vec(k_1, dots.v, k_W) = vec(\# "fat", dots.v, \# "cat") = vec(10, dots.v, 15)
+$
 
 The parameter $nu_(j|y) = e^(theta_(j|y))$ represents the average occurrence of the word $w_j$ in class $y$.
 
 The expected occurrence of word $w_j$ in documents of class $y$:
 
 $
-  nu_(j|y) equiv bra K_(j) ket_y equiv Ex [K_j (bold(x)) | bold(x) in X_y] = pdv(,theta_(j|y)) A(theta_(j|y)) equiv e^(theta_(j|y)) = A(theta_(j|y))
+  nu_(j|y) equiv bra K_(j) ket_y equiv Ex [K_j (bold(x)) | bold(x) in X_y] = pdv(, theta_(j|y)) A(theta_(j|y)) equiv e^(theta_(j|y)) = A(theta_(j|y))
 $
 
 The average length of documents in class $y$ is:
@@ -410,9 +416,8 @@ $
 Write the logarithm of empirical probability $ln hat p (x|y)$ using multinomial distribution:
 
 $
-  ln hat(p)(bold(x)|y)
-  &= ln product_(w in bold(x)) (pi_(w|y))^(nu_w (bold(x))) \
-  &= sum_(w in bold(x)) nu_w (bold(x)) dot ln pi_(w|y) = *
+  ln hat(p)(bold(x)|y) & = ln product_(w in bold(x)) (pi_(w|y))^(nu_w (bold(x))) \
+                       & = sum_(w in bold(x)) nu_w (bold(x)) dot ln pi_(w|y) = *
 $
 
 $
@@ -493,9 +498,8 @@ $Q(x^1, ..., x^k) = sum_i sum_j a_(i,j) x^i x^j = bold(x)^Tr A bold(x)$ is a qua
 Substituting parametric density estimates for each class into the optimal Bayesian classifier:
 
 $
-  a^*(bold(x))
-  &= arg max_(y in Y) ln {lambda_y dot p(y|bold(x))} \
-  &= arg max_(y in Y) ln {lambda_y dot p(y) dot p(bold(x)|y)}
+  a^*(bold(x)) & = arg max_(y in Y) ln {lambda_y dot p(y|bold(x))} \
+               & = arg max_(y in Y) ln {lambda_y dot p(y) dot p(bold(x)|y)}
 $
 
 $
@@ -559,21 +563,21 @@ $z = P(bold(x)) = bold(x)^Tr bold(beta)$
 
 3. The variance of this projection is decomposed into 2 terms:
 $
-  var z
-  &= bold(beta)^Tr Sigma bold(beta) \
-  &= bold(beta)^Tr Sigma_w bold(beta) + bold(beta)^Tr Sigma_b bold(beta)
+  var z & = bold(beta)^Tr Sigma bold(beta) \
+        & = bold(beta)^Tr Sigma_w bold(beta) + bold(beta)^Tr Sigma_b bold(beta)
 $
 
 4. That projection must maximize the ratio of the between-class variance to within-class variance:
 
-$ (bold(beta)^Tr Sigma_b bold(beta)) / (bold(beta)^Tr Sigma_w bold(beta)) -> max_bold(beta) $
+$
+  (bold(beta)^Tr Sigma_b bold(beta)) / (bold(beta)^Tr Sigma_w bold(beta)) -> max_bold(beta)
+$
 
 5. Linear discriminant function represents the distance from $x$ to a class center in the new projected space:
 
 $
-  delta_y (bold(x))
-  &= bold(x)^Tr bold(beta) - bold(beta)^Tr macron(bold(x))_y \
-  &= bold(x)^Tr bold(beta) - const_y
+  delta_y (bold(x)) & = bold(x)^Tr bold(beta) - bold(beta)^Tr macron(bold(x))_y \
+                    & = bold(x)^Tr bold(beta) - const_y
 $
 
 6. Finally, we use this distance (discriminant function) in the discriminant rule to choose the closest class:

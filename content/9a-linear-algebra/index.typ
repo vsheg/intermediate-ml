@@ -4,7 +4,7 @@
 = Diagonal matrices
 Matrix $Lambda$ is diagonal if all its off-diagonal elements are zero:
 
-#let Lambda-full = $mat(lambda_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, lambda_k)$
+#let Lambda-full = $mat(lambda_1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, lambda_k)$
 #let Lambda-short = $dmat(lambda_1, dots.down, lambda_k)$
 
 $ Lambda = diag(lambda_1, ..., lambda_k) = #Lambda-full equiv #Lambda-short $
@@ -14,32 +14,42 @@ off-diagonal elements are often omitted.
 
 #margin[
   / Zero matrix $O$: A diagonal matrix where all diagonal elements are zero:
-    $ O = diag(0, dots, 0) = mat(0, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, 0) $
+    $
+      O = diag(0, dots, 0) = mat(0, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, 0)
+    $
 
   / Identity matrix $I$: A diagonal matrix where all diagonal elements are one:
-    $ I = diag(1, dots, 1) = mat(1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, 1) $
+    $
+      I = diag(1, dots, 1) = mat(1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, 1)
+    $
 
   / Scalar matrix: A diagonal matrix with constant diagonal elements:
-    $ lambda I = diag(lambda, dots, lambda) = mat(lambda, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, lambda) $
+    $
+      lambda I = diag(lambda, dots, lambda) = mat(lambda, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, lambda)
+    $
 ]
 Diagonal matrices have several important properties:
 
 == Linear independence
-The fundamental property of diagonal matrices is linear independence of their columns, which 
-holds if and only if all diagonal elements are non-zero. This directly follows from the fact 
+The fundamental property of diagonal matrices is linear independence of their columns, which
+holds if and only if all diagonal elements are non-zero. This directly follows from the fact
 that any linear combination of columns equaling zero requires all coefficients to be zero.
 #note[
   For any two distinct columns $i != j$ of a diagonal matrix $Lambda$, their dot product is
   zero since they have non-overlapping non-zero elements:
 
-  $ vec(dots.v, focus(lambda_i), 0, dots.v)^Tr dot vec(dots.v, 0, focus(lambda_j), dots.v) = 0 $
+  $
+    vec(dots.v, focus(lambda_i), 0, dots.v)^Tr dot vec(dots.v, 0, focus(lambda_j), dots.v) = 0
+  $
 ]
 
 == Basis set
-For a diagonal matrix with non-zero diagonal elements, the columns form an orthogonal basis. 
+For a diagonal matrix with non-zero diagonal elements, the columns form an orthogonal basis.
 Each column $bold(b)_i$ contains exactly one non-zero element $lambda_i$:
 
-$ cal(B): wide bold(b)_1 = vec(lambda_1, 0, dots.v, 0), quad bold(b)_2 = vec(0, lambda_2, dots.v, 0), quad ... , quad bold(b)_k = vec(0, 0, dots.v, lambda_k) $
+$
+  cal(B): wide bold(b)_1 = vec(lambda_1, 0, dots.v, 0), quad bold(b)_2 = vec(0, lambda_2, dots.v, 0), quad ... , quad bold(b)_k = vec(0, 0, dots.v, lambda_k)
+$
 
 #margin[
   Diagonal matrices are well suited for storing bases. If all diagonal elements are equal to
@@ -47,12 +57,14 @@ $ cal(B): wide bold(b)_1 = vec(lambda_1, 0, dots.v, 0), quad bold(b)_2 = vec(0, 
   standard basis.
 
   In 3D space, the identity matrix $I$ stores the standard basis vectors:
-  $ bold(i) = vec(1, 0, 0), quad bold(j) = vec(0, 1, 0), quad bold(k) = vec(0, 0, 1) $
+  $
+    bold(i) = vec(1, 0, 0), quad bold(j) = vec(0, 1, 0), quad bold(k) = vec(0, 0, 1)
+  $
 
 ]
 
-This orthogonal basis has a clear geometric interpretation --- each basis vector aligns with 
-a coordinate axis and has magnitude $|lambda_i|$. When all $|lambda_i| = 1$, the basis 
+This orthogonal basis has a clear geometric interpretation --- each basis vector aligns with
+a coordinate axis and has magnitude $|lambda_i|$. When all $|lambda_i| = 1$, the basis
 becomes orthonormal.
 
 == Scaling
@@ -78,10 +90,8 @@ $ diag(lambda_1, ..., lambda_k)^(-1) = diag(1/lambda_1, dots, 1/lambda_k) $
   Assuming, that the inverse of a diagonal matrix $Lambda = diag(lambda_1, ..., lambda_k)$ is $Lambda^(-1) = diag(1/lambda_1, ..., 1/lambda_k)$,
   then:
   $
-    #Lambda-full mat(1/lambda_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, 1/lambda_k) = mat(
-      lambda_1 dot 1/lambda_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, lambda_k dot 1/lambda_k
-
-
+    #Lambda-full mat(1/lambda_1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, 1/lambda_k) = mat(
+      lambda_1 dot 1/lambda_1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, lambda_k dot 1/lambda_k
     ) = I
   $
 ]
@@ -96,8 +106,8 @@ $ Lambda_1 Lambda_2 = Lambda_2 Lambda_1 $
 #note[
   For two diagonal matrices $Lambda$ and $Mu$:
   $
-    Lambda Mu = #Lambda-full mat(mu_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, mu_k) &= mat(lambda_1 mu_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, lambda_k mu_k) \
-                                                                                            &= mat(mu_1 lambda_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, mu_k lambda_k) = mat(mu_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, mu_k) mat(lambda_1, dots.c, 0;dots.v, dots.down, dots.v;0, dots.c, lambda_k) = Mu Lambda
+    Lambda Mu = #Lambda-full mat(mu_1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, mu_k) &= mat(lambda_1 mu_1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, lambda_k mu_k) \
+    &= mat(mu_1 lambda_1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, mu_k lambda_k) = mat(mu_1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, mu_k) mat(lambda_1, dots.c, 0; dots.v, dots.down, dots.v; 0, dots.c, lambda_k) = Mu Lambda
   $
 ]
 
@@ -126,6 +136,8 @@ eigenvectors are the standard basis vectors of the space.
 #note[
   For a standard basis vector $bold(e)_i$:
 
-  $ Lambda bold(e)_i = #Lambda-full dot bold(e)_i = vec(0, dots.v, lambda_i, dots.v, 0) = lambda_i vec(0, dots.v, 1, dots.v, 0) = lambda_i bold(e)_i $
+  $
+    Lambda bold(e)_i = #Lambda-full dot bold(e)_i = vec(0, dots.v, lambda_i, dots.v, 0) = lambda_i vec(0, dots.v, 1, dots.v, 0) = lambda_i bold(e)_i
+  $
   so, $bold(e)_i$ is an eigenvector of $Lambda$ with eigenvalue $lambda_i$.
 ]

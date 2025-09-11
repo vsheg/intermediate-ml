@@ -34,8 +34,7 @@ $
   y^((q)) := cases(
     y^((ceil(q dot ell))) & quad q dot ell "is not integer",
     1/2 (y^((q dot ell)) + y^((q dot ell + 1))) & quad q dot ell "is integer"
-  ,
-
+    ,
   )
 $
 
@@ -54,7 +53,8 @@ value $y$ for which the probability $Pr[Y <= y]$ is at least $q$.
     For a uniform distribution on interval $[a,b]$, the CDF is:
 
     $
-      cdf_Y (y^*) = cases((y^* - a)/(b - a)\, & y^* in [a..b], 0\, & y^* < a, 1\, & y^* > b
+      cdf_Y (y^*) = cases(
+        (y^* - a)/(b - a)\, & y^* in [a..b], 0\, & y^* < a, 1\, & y^* > b
       )
     $
 
@@ -156,10 +156,11 @@ Consider an asymmetric loss function parameterized by $q in (0, 1)$:
 
 $
   cal(L)_q (epsilon)
-  :&= cases(q dot epsilon & quad epsilon >= 0, -(1-q) dot epsilon & quad epsilon < 0
-  ) \
-  &= epsilon dot q dot Ind(epsilon >=0) - epsilon dot (1-q) dot Ind(epsilon<=0)
-  ,
+  : & = cases(
+        q dot epsilon & quad epsilon >= 0, -(1-q) dot epsilon & quad epsilon < 0
+      ) \
+    & = epsilon dot q dot Ind(epsilon >=0) - epsilon dot (1-q) dot Ind(epsilon<=0)
+      ,
 $ <eq-check-loss>
 
 #margin[
@@ -183,7 +184,9 @@ regression model.
       lq.plot(
         mark: none,
         x,
-        x.map(epsilon => if (epsilon >= 0) { q * epsilon } else { -(1 - q) * epsilon }),
+        x.map(epsilon => if (epsilon >= 0) { q * epsilon } else {
+          -(1 - q) * epsilon
+        }),
       ),
     ),
   )
@@ -210,11 +213,9 @@ The empirical risk (expected check-loss) can be expressed as:
 
 $
   cal(R)(a) &= integral cal(L)_q (focus(epsilon = y - a)) dd(cdf(bold(x), y)) comment(a(bold(x)) -> a = const) \
-            &= integral cal(L)_q (epsilon = y - a) focus(dd(cdf(y))) comment("as" a "is not a function of" bold(x)) \
-
-            &= limits(integral)_focus(y - a >= 0) cal(L)_q (y - a) dd(cdf(y)) + limits(integral)_focus(y - a < 0) cal(L)_q (y - a) dd(cdf(y)) #comment[nonoverlapping regions: $epsilon >= 0$ and $epsilon < 0$] \
-
-            &= limits(integral)_(y >= a) focus((y - a) dot q) dd(cdf(y)) - limits(integral)_(y < a) focus((y - a) dot (1-q)) dd(cdf(y)) -> min_a #comment[expand $cal(L)_q (epsilon)$ according to @eq-check-loss] \
+  &= integral cal(L)_q (epsilon = y - a) focus(dd(cdf(y))) comment("as" a "is not a function of" bold(x)) \
+  &= limits(integral)_focus(y - a >= 0) cal(L)_q (y - a) dd(cdf(y)) + limits(integral)_focus(y - a < 0) cal(L)_q (y - a) dd(cdf(y)) #comment[nonoverlapping regions: $epsilon >= 0$ and $epsilon < 0$] \
+  &= limits(integral)_(y >= a) focus((y - a) dot q) dd(cdf(y)) - limits(integral)_(y < a) focus((y - a) dot (1-q)) dd(cdf(y)) -> min_a #comment[expand $cal(L)_q (epsilon)$ according to @eq-check-loss] \
 $
 
 == Risk minimization
@@ -223,8 +224,8 @@ By differentiating both integrals with respect to $a$, we can find $a^*$:
 
 $
   pdv(, a) cal(R)(a) &= focus(q) dot integral_(y>=a) pdv(, a) (y - a) dd(cdf(y)) - focus((1-q)) dot integral_(y < a) pdv(, a) (y - a) dd(cdf(y)) #comment[constants] \
-                     &= -q dot focus(integral_(y = a^*)^(+oo) dd(cdf(y))) + (1-q) dot focus(integral_(y=-oo)^(a^*) dd(cdf(y))) comment(dd(cdf(y)) = pdf(y) dd(y)) \
-                     &= -q dot (1 - cdf_Y (a)) + (1-q) dot cdf_Y (a) = -q + cdf_Y (a) comment(cdf_Y (a) equiv cdf(Y = a)) \
+  &= -q dot focus(integral_(y = a^*)^(+oo) dd(cdf(y))) + (1-q) dot focus(integral_(y=-oo)^(a^*) dd(cdf(y))) comment(dd(cdf(y)) = pdf(y) dd(y)) \
+  &= -q dot (1 - cdf_Y (a)) + (1-q) dot cdf_Y (a) = -q + cdf_Y (a) comment(cdf_Y (a) equiv cdf(Y = a)) \
 $
 
 At the extreme point $a = a^*$, the derivative of the risk is zero:
@@ -264,7 +265,7 @@ $ hat(y)_q (bold(x)) = QQ_q [Y|X=bold(x)], $
 
 where $hat(y)_q$ *depends both on hyperparameter $q$* and on the input $bold(x)$. This means that
 *predictions $hat(y)_q
-(bold(x))$ are different for different values of $q$*.
+  (bold(x))$ are different for different values of $q$*.
 
 Likewise, the error term (residual) depends on $q$:
 
@@ -281,17 +282,19 @@ quadratic loss (MSE):
 #margin[
   Differentiating the quadratic loss with respect to $a$ gives:
   $
-    pdv(,a) & Ex[(Y - a(X))^2 | X=bold(x)^*] \
-    &= pdv(,a) Ex[Y^2 - 2 Y a(X) + a(X)^2 | X=bold(x)^*] \
-    &= Ex[-2 Y + 2 a(X) | X=bold(x)^*] \
-    &= -2 Ex[Y | X=bold(x)^*] + 2 a(bold(x)^*) = 0
+    pdv(, a) & Ex[(Y - a(X))^2 | X=bold(x)^*] \
+             & = pdv(, a) Ex[Y^2 - 2 Y a(X) + a(X)^2 | X=bold(x)^*] \
+             & = Ex[-2 Y + 2 a(X) | X=bold(x)^*] \
+             & = -2 Ex[Y | X=bold(x)^*] + 2 a(bold(x)^*) = 0
   $
 
   Rearranging gives:
   $ a(bold(x)^*) = Ex[Y|X=bold(x)^*] $
 ]
 
-$ Ex[Y|X = bold(x)^*] = arg min_a Ex[ (Y - a(X))^2 | X=bold(x)^* ], $ <eq-min-mse-estimator>
+$
+  Ex[Y|X = bold(x)^*] = arg min_a Ex[ (Y - a(X))^2 | X=bold(x)^* ],
+$ <eq-min-mse-estimator>
 
 which holds for both conditional $Ex[Y|X]$ and unconditional $Ex[Y]$ expectations.
 
@@ -370,7 +373,9 @@ Quadratic loss is derived from assuming a Gaussian distribution of $Y$. Formally
   - In the worst case an *extreme* outlier $y' << y_1$ or $y' >> y_ell$ can only
     shift the median to the adjacent element:
 
-    $ y^((ell\/2 - 1)) - y^((ell\/2)) <= Delta QQ_(1\/2) [Y] <= y^((ell\/2 + 1)) - y^((ell\/2)). $
+    $
+      y^((ell\/2 - 1)) - y^((ell\/2)) <= Delta QQ_(1\/2) [Y] <= y^((ell\/2 + 1)) - y^((ell\/2)).
+    $
 ]
 
 
@@ -478,7 +483,9 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
     height: 3cm,
     legend: (position: right + bottom),
     lq.scatter(x, y, size: 3pt, stroke: none, color: ghost-color),
-    ..data.keys().map(col => lq.plot(mark: none, x, data.at(col), label: label-fn(col))),
+    ..data
+      .keys()
+      .map(col => lq.plot(mark: none, x, data.at(col), label: label-fn(col))),
   )
   // TODO: add link to code
   // FIX: legend overlaps with the plot
@@ -547,7 +554,8 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
     ]
 
     $
-      pdv(, epsilon) cal(L)_q (epsilon) = cases(q & quad epsilon > 0, -(1-q) & quad epsilon < 0
+      pdv(, epsilon) cal(L)_q (epsilon) = cases(
+        q & quad epsilon > 0, -(1-q) & quad epsilon < 0
       ) med ,
     $
 
@@ -582,7 +590,9 @@ $ hat(bold(beta))(q) -> bold(beta)(q), $
 i.e., theoretically the estimator $hat(bold(beta))(q)$ converges to the expected value of the
 parameter $bold(beta)(q)$ as the sample size $ell$ approaches infinity:
 
-$ hat(bold(beta))(q) -> Ex[bold(beta)(q)]). $ <eq-quantile-linear-parameter-expectation>
+$
+  hat(bold(beta))(q) -> Ex[bold(beta)(q)]).
+$ <eq-quantile-linear-parameter-expectation>
 
 == Parameter variance
 The estimator $hat(bold(beta))(q)$ is asymptotically normally distributed with variance#margin[and mean $bold(beta)(q) = Ex[bold(beta)(q)]$ according to @eq-quantile-linear-parameter-expectation]
@@ -627,7 +637,7 @@ The variance in @eq-quantile-linear-parameter-variance depends on three terms:
     $
 
     $
-      hat(Omega) = 1 / ell dot sum_(bold(x) in X^ell) (q - Ind(y(bold(x)) <= hat(y)_q (bold(x)) )) dot bold(x) bold(x)^Tr
+      hat(Omega) = 1 / ell dot sum_(bold(x) in X^ell) (q - Ind(y(bold(x)) <= hat(y)_q (bold(x)))) dot bold(x) bold(x)^Tr
     $
 
 #margin[While $q dot (1-q)$ decreases near the tails, the sandwich term $D^(-1) Omega D^(-1)$ becomes poorly
@@ -635,7 +645,7 @@ The variance in @eq-quantile-linear-parameter-variance depends on three terms:
 ]
 
 Consequently, the *variance of estimated parameters $hat(bold(beta))(q)$ increases as $q$
-approaches 0 or 1*. In practice, predictions near the median are typically more precise, while
+  approaches 0 or 1*. In practice, predictions near the median are typically more precise, while
 predictions for extreme quantiles (e.g., 0.01 or 0.99) are less reliable.
 
 == Bad statistical guarantee
@@ -691,8 +701,20 @@ noises: $3 epsilon$, $epsilon^3$, and $epsilon_+ + 4 epsilon_-$.
     xlim: (-10, 10),
     legend: (position: bottom + right),
     lq.scatter(x, data.at(y-name), size: 2pt),
-    lq.plot(x, data.at(y-name + "_pred_ls"), stroke: 2pt, mark: none, label: $EE$),
-    lq.plot(x, data.at(y-name + "_pred_qr"), stroke: 2pt, mark: none, label: $QQ_(1\/2)$),
+    lq.plot(
+      x,
+      data.at(y-name + "_pred_ls"),
+      stroke: 2pt,
+      mark: none,
+      label: $EE$,
+    ),
+    lq.plot(
+      x,
+      data.at(y-name + "_pred_qr"),
+      stroke: 2pt,
+      mark: none,
+      label: $QQ_(1\/2)$,
+    ),
     lq.line((-10, -10), (10, 10)),
   )
 
@@ -722,7 +744,9 @@ observations).
     width: 3cm,
     height: 3cm,
     xlabel: $x$,
-    ylabel: if not residual { $y = f(x) + epsilon_#col-name.split("_").at(1)$ } else {
+    ylabel: if not residual {
+      $y = f(x) + epsilon_#col-name.split("_").at(1)$
+    } else {
       $epsilon_#col-name.split("_").at(1)$
     },
     ylim: (-4, 4),
@@ -746,7 +770,7 @@ observations).
 == Robustness to outliers and noise
 By focusing on quantiles rather than the mean, quantile regression reduces sensitivity to random
 noise and outliers, emphasizing specific distributional trends. Quantile regression also *does not
-assume any specific noise distribution*. In OLS, a few outliers can have a pronounced effect on
+  assume any specific noise distribution*. In OLS, a few outliers can have a pronounced effect on
 parameter estimates.
 
 == Censoring
@@ -846,7 +870,9 @@ treatment for HIV patients.
       event (end of study or death).],
 
     [`age`], [Age of the patient at the time of enrollment (in years).],
-    [`cd4_cell_count`], [Baseline CD4 T-cell count (cells/mL), a key indicator of immune function.],
+    [`cd4_cell_count`],
+    [Baseline CD4 T-cell count (cells/mL), a key indicator of immune function.],
+
     [`race_*`], [Indicator variables representing the patient's race.],
     [`group_*`], [Indicator variables representing the treatment group.],
   ),

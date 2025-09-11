@@ -1,5 +1,7 @@
 #import "@preview/physica:0.9.5": *
-#import "@preview/drafting:0.2.2": margin-note, set-page-properties, set-margin-note-defaults
+#import "@preview/drafting:0.2.2": (
+  margin-note, set-margin-note-defaults, set-page-properties,
+)
 #import "@preview/quick-maths:0.2.1": shorthands
 #import "@preview/lilaq:0.2.0" as lq
 #import "@preview/shadowed:0.2.0": shadowed
@@ -35,7 +37,12 @@
 
   // font
   let font-size = 9pt
-  set text(size: font-size, hyphenate: true, font: "New Computer Modern", costs: (hyphenation: 10%))
+  set text(
+    size: font-size,
+    hyphenate: true,
+    font: "New Computer Modern",
+    costs: (hyphenation: 10%),
+  )
   show raw: set text(font: "Menlo", size: 0.9em)
 
   // math equations
@@ -46,7 +53,10 @@
     let el = it.element
     if el != none and el.func() == eq {
       // Override equation references.
-      link(el.location(), numbering(el.numbering, ..counter(eq).at(el.location())))
+      link(el.location(), numbering(
+        el.numbering,
+        ..counter(eq).at(el.location()),
+      ))
     } else {
       // Other references as usual.
       it
@@ -64,7 +74,13 @@
   // lists
   set list(
     marker: (
-      text(font: "Menlo", size: 1.5em, baseline: -0.2em, "✴", fill: accent-color),
+      text(
+        font: "Menlo",
+        size: 1.5em,
+        baseline: -0.2em,
+        "✴",
+        fill: accent-color,
+      ),
       text(size: 0.6em, baseline: +0.2em, "➤", fill: ghost-color),
     ),
   )
@@ -111,7 +127,7 @@
   // begin document
   doc
 
-  bibliography(title: [References], style: "apa", "assets/citations.bib")
+  bibliography(title: [References], style: "apa", "../assets/citations.bib")
 }
 
 ///////////////////////
@@ -182,7 +198,11 @@
 }
 
 #let divider = {
-  line(length: 100%, stroke: (paint: ghost-color, thickness: 0.5pt, dash: "loosely-dashed"))
+  line(length: 100%, stroke: (
+    paint: ghost-color,
+    thickness: 0.5pt,
+    dash: "loosely-dashed",
+  ))
 }
 
 // MATH ANNOTATION
@@ -196,7 +216,13 @@
 // Default color palette
 #import "@preview/typpuccino:0.1.0": latte
 #let palette = latte
-#let colors = (palette.teal, palette.pink, palette.flamingo, palette.mauve, palette.green)
+#let colors = (
+  palette.teal,
+  palette.pink,
+  palette.flamingo,
+  palette.mauve,
+  palette.green,
+)
 
 // Multifigure
 #import "@preview/subpar:0.2.1": grid as multi-figure

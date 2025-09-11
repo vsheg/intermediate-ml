@@ -79,12 +79,18 @@ be used to eliminate half of the remaining possibilities.
 
 $ Omega = \{ omega_1, omega_2, omega_3, omega_4 \} $
 
-$ 0 = [omega^* "is in the first half of" Omega], quad 1 = [omega^* "is in the second half of" Omega]. $
+$
+  0 = [omega^* "is in the first half of" Omega], quad 1 = [omega^* "is in the second half of" Omega].
+$
 
 - The first bit divides the set into two halves:
-$ Omega = \{ wide ob(omega_1\, omega_2, 0), wide ob(omega_3\, omega_4, 1) wide \} $
+$
+  Omega = \{ wide ob(omega_1\, omega_2, 0), wide ob(omega_3\, omega_4, 1) wide \}
+$
 - The second bit further divides the set:
-$ Omega = \{ wide ob(ub(omega_1, 00)\, ub(omega_2, 01), 0), wide ob(ub(omega_3, 10)\, ub(omega_4, 11), 1) wide \} $
+$
+  Omega = \{ wide ob(ub(omega_1, 00)\, ub(omega_2, 01), 0), wide ob(ub(omega_3, 10)\, ub(omega_4, 11), 1) wide \}
+$
 
 == Information
 The amount of bits required to identify a specific message $omega$ is called the _information content_ $I(omega)$.
@@ -127,7 +133,7 @@ probability provides a small amount of information. For instance, the probabilit
 sunrise is nearly one, so the information that there will be a sunrise tomorrow carries
 little value. In contrast, the information that there will be no sunrise tomorrow conveys
 a significant amount of information. Thus, *the lower the probability, the more
-information is conveyed*:
+  information is conveyed*:
 
 $ I(A) = I(Pr[A]) wide "and" wide p arrow.t <=> I arrow.b. $
 
@@ -158,8 +164,10 @@ to distinguish between $2^n$ possibilities is $n$ bits.
 If there are $N$ outcomes, each time you assign a bit value to an outcome, you divide all
 outcomes into 2 sets corresponding to the bit values:
 
-$ Omega = ub({ omega in Omega | omega"'s bit value" = 0 }, Omega_0)
-union ub({ omega in Omega | omega"'s bit value" = 1 }, Omega_1) $
+$
+  Omega = ub({ omega in Omega | omega"'s bit value" = 0 }, Omega_0)
+  union ub({ omega in Omega | omega"'s bit value" = 1 }, Omega_1)
+$
 
 Now, for any $omega$, knowing the corresponding bit value allows you to determine whether $omega in Omega_0$ or $omega in Omega_1$,
 thereby halving the uncertainty.
@@ -205,8 +213,8 @@ The *odds* of an event $A$ is defined as the difference in self-information (als
 surprisal) between the event $A$ and its complement $macron(A)$:
 
 $
-  "Odds" A :&= I(A) - I(macron(A)) \
-            &= log Pr[A] / (1 - Pr[A]).
+  "Odds" A : & = I(A) - I(macron(A)) \
+             & = log Pr[A] / (1 - Pr[A]).
 $
 
 = Shannon entropy
@@ -222,10 +230,12 @@ $
 
   $ p_i := e^(-beta E_i) / Z, quad Z := sum_i e^(-beta E_i), $
 
-  $ H &= sum_i p_i dot ln p_i \
-    &= sum_i e^(-beta E_i) / Z dot (-beta E_i - ln Z) \
-    &= - beta sum_i ub(e^(-beta E_i) / Z, p_i) dot E_i - ln Z dot ub(sum_i e^(-beta E_i)/Z, =1) \
-    &= - beta bra E ket - ln Z $
+  $
+    H & = sum_i p_i dot ln p_i \
+    & = sum_i e^(-beta E_i) / Z dot (-beta E_i - ln Z) \
+    & = - beta sum_i ub(e^(-beta E_i) / Z, p_i) dot E_i - ln Z dot ub(sum_i e^(-beta E_i)/Z, =1) \
+    & = - beta bra E ket - ln Z
+  $
 
   As a result, we get statistical entropy expressed via the partition function:
 
@@ -246,8 +256,8 @@ the probability distribution ${ Pr[omega] | omega in Omega }$. Let it be the exp
 value of the self-information:
 
 $
-  H[Pr, Omega] :&= sum_(omega in Omega) Pr[omega] dot I(omega) \
-                &= sum_(omega in Omega) Pr[omega] dot log_2 1 / Pr[omega].
+  H[Pr, Omega] : & = sum_(omega in Omega) Pr[omega] dot I(omega) \
+                 & = sum_(omega in Omega) Pr[omega] dot log_2 1 / Pr[omega].
 $
 
 This quantity is known as the Shannon entropy, it can be interpreted as the average amount
@@ -257,8 +267,8 @@ As a random variable $X$ induces its own probability distribution ${ Pr[X = x] |
 the entropy can be defined specifically for the random variable:
 
 $
-  H(X) :&= sum_(x in supp(X)) Pr[X = x] dot I(X = x) \
-        &= sum_(x in supp(X)) Pr[X = x] dot log_2 1 / Pr[X = x],
+  H(X) : & = sum_(x in supp(X)) Pr[X = x] dot I(X = x) \
+         & = sum_(x in supp(X)) Pr[X = x] dot log_2 1 / Pr[X = x],
 $
 
 which is equivalent to the distribution of the events ${ [X = x] | x in supp(X)}$.
@@ -288,7 +298,7 @@ can be trivially defined by replacing the probability $Pr[X = x]$ with the condi
 probability $Pr[X = x|Y = y]$:
 
 $
-  H(X|Y = y) :&= sum_(x in supp X) Pr[X = x|Y = y] dot log 1 / Pr[X = x|Y = y].
+  H(X|Y = y) : & = sum_(x in supp X) Pr[X = x|Y = y] dot log 1 / Pr[X = x|Y = y].
 $
 
 == Conditional entropy
@@ -296,7 +306,7 @@ $
 over all possible values of $y in supp Y$:
 
 $
-  H(X|Y) :&= Ex_Y [H(X|Y = y)] \
-          &= sum_(y in supp Y) Pr[Y = y] dot H(X|Y = y)
+  H(X|Y) : & = Ex_Y [H(X|Y = y)] \
+           & = sum_(y in supp Y) Pr[Y = y] dot H(X|Y = y)
 $
 

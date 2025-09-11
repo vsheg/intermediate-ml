@@ -96,14 +96,18 @@ general form of the multivariate normal distribution.
   To characterize _co_-variance of multiple samples
   $
     X_1 & = {x_(1,1), ..., x_(1,ell)}, quad
-    ..., quad
-    X_k & = {x_(k,1), ..., x_(k,ell)}
+          ..., quad
+          X_k & = {x_(k,1), ..., x_(k,ell)}
   $
   all together, we combine them into one sample of $k$-dimensional data:
-  $ V = {bold(v)_1, ..., bold(v)_ell}, quad bold(v)_i = vec(x_(1,i), dots.v, x_(k,i)). $
+  $
+    V = {bold(v)_1, ..., bold(v)_ell}, quad bold(v)_i = vec(x_(1,i), dots.v, x_(k,i)).
+  $
 
   The covariance between any two samples $X_t$ and $X_q$ is
-  $ Cov[X_t, X_q] := 1 / ell sum_(i=1)^ell (x_(t,i) - macron(x)_t) dot (x_(q,i) - macron(x)_q). $
+  $
+    Cov[X_t, X_q] := 1 / ell sum_(i=1)^ell (x_(t,i) - macron(x)_t) dot (x_(q,i) - macron(x)_q).
+  $
 
   Generally, for a sample of vectors $bold(v)_1, ..., bold(v)_ell in RR^k$:
   $
@@ -142,8 +146,8 @@ correlations between the components of $bold(xi)$.
 
 We can define a quadratic form
 $
-  Q(bold(x)) :&= (bold(x) - bold(mu))^Tr Sigma^(-1) (bold(x) - bold(mu)) \
-  &= sum_(i,j) (x_i - mu_i) (Sigma^(-1))_(i,j) (x_j - mu_j).
+  Q(bold(x)) : & = (bold(x) - bold(mu))^Tr Sigma^(-1) (bold(x) - bold(mu)) \
+               & = sum_(i,j) (x_i - mu_i) (Sigma^(-1))_(i,j) (x_j - mu_j).
 $
 
 The square root of this quadratic form $sqrt(Q(bold(x)))$ is the Mahalanobis distance between a point $bold(x)$ and the distribution $cal(N)(bold(mu), Sigma)$.
@@ -211,14 +215,14 @@ $bold(x)' := V^Tr bold(x)$
 
 4. The transformed parameters are:
 $
-  bold(mu)' &= V^Tr bold(mu) \
-  Sigma' &= S
+  bold(mu)' & = V^Tr bold(mu) \
+     Sigma' & = S
 $
 
 5. To transform parameters back to the original space:
 $
-  bold(mu) &= V bold(mu)' \
-  Sigma &= V S V^Tr
+  bold(mu) & = V bold(mu)' \
+     Sigma & = V S V^Tr
 $
 
 #margin[

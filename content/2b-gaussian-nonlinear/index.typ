@@ -31,18 +31,19 @@ parameters:
 1. The gradient components are
 
   $
-    Q'_j
-      &= pdv(Q, theta_j) \
-      &= 2 sum_(xb in X^ell) (a(xb, tb) - y(xb)) dot pdv(a(xb, tb), theta_j)
+    Q'_j & = pdv(Q, theta_j) \
+         & = 2 sum_(xb in X^ell) (a(xb, tb) - y(xb)) dot pdv(a(xb, tb), theta_j)
   $
 
 2. The Hessian components are
 
   $
-    Q''_(i,j) &= pdv(Q, theta_i, theta_j) \
-              &= 2 sum_(xb in X^ell) pdv(a(xb, tb), theta_i) pdv(a(xb, tb), theta_j) - 2
-    sum_(xb in X^ell) (a(xb, tb) - y(xb)) dot pdv(a(xb,
-    tb), theta_i, theta_j).
+    Q''_(i,j) & = pdv(Q, theta_i, theta_j) \
+              & = 2 sum_(xb in X^ell) pdv(a(xb, tb), theta_i) pdv(a(xb, tb), theta_j) - 2
+                sum_(xb in X^ell) (a(xb, tb) - y(xb)) dot pdv(
+                  a(xb,
+                    tb), theta_i, theta_j
+                ).
   $
 
 == Linear Approximation of the Algorithm
@@ -63,8 +64,8 @@ Differentiate the linear approximation of the algorithm:
 
 $
   pdv(, theta_j) a(xb, tb)
-    &approx 0 + ub(pdv(a(xb, hat(tb)), theta_j), const_k) dot 1 + cancel(O(norm(tb - hat(tb))^2)) \
-    &= const_j
+  &approx 0 + ub(pdv(a(xb, hat(tb)), theta_j), const_k) dot 1 + cancel(O(norm(tb - hat(tb))^2)) \
+  &= const_j
 $
 
 The components of the sum depending on $theta_(j!=k)$ was zeroed out in the
@@ -73,10 +74,11 @@ differentiation over $theta_k$.
 Substitute the obtained derivative into the expression for the Hessian:
 
 $
-  Q''_(i,j)
-    & approx 2 sum_(xb in X^ell) ub(pdv(a(xb, hat(tb)), theta_i), const_i)
-  ub(pdv(a(xb, hat(tb)), theta_j), const_j) - cancel(2 sum_(xb in
-  X^ell) (a(xb, tb) - y(xb)) dot 0)
+  Q''_(i,j) & approx 2 sum_(xb in X^ell) ub(pdv(a(xb, hat(tb)), theta_i), const_i)
+              ub(pdv(a(xb, hat(tb)), theta_j), const_j) - cancel(
+                2 sum_(xb in
+                X^ell) (a(xb, tb) - y(xb)) dot 0
+              )
 $
 
 The linear term will be zeroed out in the second differentiation and will not enter the
@@ -109,8 +111,10 @@ The optimization step of the Newton --- Rafson method is also expressed in terms
 matrix $D$:
 
 $
-  tb<- tb - gamma dot overbrace(ub((D^Tr D)^(-1) D^Tr, D^+)
-  ub((bold(a) - bold(y)), bold(epsilon)), delta tb)
+  tb<- tb - gamma dot overbrace(
+    ub((D^Tr D)^(-1) D^Tr, D^+)
+    ub((bold(a) - bold(y)), bold(epsilon)), delta tb
+  )
 $
 
 #margin[The nonlinear optimization problem is reduced to a sequence of linear problems: at each
@@ -122,8 +126,10 @@ any of these formulations:
 
 $
   ub(bold(epsilon), bold(y)) = D dot ub(delta tb, bold(beta))
-  quad <=> quad delta tb = D^+ bold(epsilon) quad <=> quad norm(D dot delta
-  tb - bold(epsilon))^2 -> min_bold(beta)
+  quad <=> quad delta tb = D^+ bold(epsilon) quad <=> quad norm(
+    D dot delta
+    tb - bold(epsilon)
+  )^2 -> min_bold(beta)
 $
 
 #margin[The method is a second-order approximation method, providing fast convergence and slightly
