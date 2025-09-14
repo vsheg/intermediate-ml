@@ -1,4 +1,4 @@
-#import "../template.typ": *
+#import "../_template.typ": *
 #show: template
 
 = Quantile $QQ_q$ of a random variable

@@ -1,4 +1,4 @@
-#import "../template.typ": *
+#import "../_template.typ": *
 #show: template
 
 = GLM: Logistic regression
