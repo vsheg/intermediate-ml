@@ -1,4 +1,4 @@
-#import "../defs.typ": *
+#import "../_defs.typ": *
 
 #let dist-plot(bins, x-label: $x$, y-label: $p(x)$) = discrete-plot(
   x-label: x-label,
