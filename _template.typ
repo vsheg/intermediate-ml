@@ -1,7 +1,5 @@
 #import "@preview/physica:0.9.5": *
-#import "@preview/drafting:0.2.2": (
-  margin-note, set-margin-note-defaults, set-page-properties,
-)
+#import "@preview/drafting:0.2.2": margin-note, set-margin-note-defaults, set-page-properties
 #import "@preview/quick-maths:0.2.1": shorthands
 #import "@preview/lilaq:0.2.0" as lq
 #import "@preview/shadowed:0.2.0": shadowed
@@ -127,7 +125,7 @@
   // begin document
   doc
 
-  bibliography(title: [References], style: "apa", "../assets/citations.bib")
+  bibliography(title: [References], style: "apa", "assets/citations.bib")
 }
 
 ///////////////////////
