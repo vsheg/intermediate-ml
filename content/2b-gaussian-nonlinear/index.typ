@@ -1,8 +1,6 @@
-#import "@preview/physica:0.9.3": *
-#import "../../_defs.typ": *
 #import "../../_template.typ": *
 
-#show: template
+#show: template.with(title: "Gaussian nonlinear regression · Intermediate ML")
 
 = Non-linear Optimization: Newton --- Gauss Method
 

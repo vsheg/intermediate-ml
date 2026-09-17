@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Linear algebra · Intermediate ML")
 
 = Diagonal matrices
 Matrix $Lambda$ is diagonal if all its off-diagonal elements are zero:

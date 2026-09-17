@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Density estimation · Intermediate ML")
 
 = Normal distribution
 

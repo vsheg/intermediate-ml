@@ -17,7 +17,7 @@
 
 #let row(..args) = $(#args.pos().join("  "))$
 
-#import "@preview/quick-maths:0.2.0": shorthands
+#import "@preview/quick-maths:0.2.1": shorthands
 
 #let RSS = "RSS"
 #let ESS = "ESS"
@@ -62,57 +62,17 @@
 // SHORTHANDS
 #let replacements = (($+-$, $plus.minus$), ($:>$, $#h(0.5em) ⧴ #h(0.5em)$))
 
-// PLOTS
-#import "@preview/cetz:0.3.1"
-#import "@preview/cetz-plot:0.1.0"
-#import "@preview/subpar:0.1.1"
-
-#let discrete-plot(
-  ys: (),
-  x-label: $x$,
-  y-label: $y$,
-  width: 2cm,
-  x-ticks: (),
-  y-ticks: (),
-) = {
-  let n = ys.len()
-
-  cetz.canvas(
-    length: width,
-    {
-      import cetz.draw: *
-      import cetz-plot: *
-
-      let x = 0
-      plot.plot(
-        size: (1, 1),
-        y-max: 1,
-        x-max: 1 + 1 / n,
-        x-tick-step: none,
-        y-tick-step: 1,
-        x-label: x-label,
-        y-label: y-label,
-        {
-          for i in range(n) {
-            x += 1 / n
-            plot.annotate(line((x, 0), (x, ys.at(i)), stroke: accent-color))
-            plot.annotate(
-              content(
-                (x + 0.2, ys.at(i) + 0.1),
-                angle: 60deg,
-                anchor: "mid-east",
-                x-ticks.at(i, default: []),
-              ),
-            )
-            plot.add(
-              ((x, ys.at(i)),),
-              mark: "o",
-              mark-size: 0.1,
-              hypograph: true,
-            )
-          }
-        },
-      )
-    },
+// Discrete probability plots share the same renderer as the other lessons.
+#import "@preview/lilaq:0.6.0" as lq
+#let discrete-plot(ys: (), x-label: $x$, y-label: $y$, width: 2cm, x-ticks: (), y-ticks: ()) = {
+  let x = range(1, ys.len() + 1)
+  lq.diagram(
+    width: width,
+    height: width,
+    xlabel: x-label,
+    ylabel: y-label,
+    ylim: (0, 1.1),
+    xlim: (0, ys.len() + 1),
+    lq.stem(x, ys, color: accent-color),
   )
 }

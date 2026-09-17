@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Quantile regression · Intermediate ML")
 
 = Quantile $QQ_q$ of a random variable
 
@@ -177,7 +177,7 @@ regression model.
 
   let sub-figure(q) = figure(
     caption: [Check loss $cal(L)_#q (epsilon)$],
-    lq.diagram(
+    diagram(
       width: 3cm,
       height: 3cm / 2,
       xlabel: $epsilon$,
@@ -349,7 +349,7 @@ median ($Q_(1\/2)$) of a random variable $Y$ is.
       let y-norm = x.map(x => 1 / calc.sqrt(2 * calc.pi) * calc.exp(-x * x / 2))
       let y-laplace = x.map(x => 1 / 2 * calc.exp(-calc.abs(x)))
 
-      lq.diagram(
+      diagram(
         width: 4cm,
         height: 3cm,
         xlabel: $x$,
@@ -478,7 +478,7 @@ supporting custom loss functions or the quantile loss $cal(L)_q$ specifically.
 
   let label-fn(col) = if (col == "mean") { $Ex$ } else { $QQ_#col$ }
 
-  lq.diagram(
+  diagram(
     width: 4cm,
     height: 3cm,
     legend: (position: right + bottom),
@@ -617,7 +617,7 @@ The variance in @eq-quantile-linear-parameter-variance depends on three terms:
       ],
       {
         let x = lq.linspace(0, 1)
-        lq.diagram(
+        diagram(
           width: 4cm,
           height: 2cm,
           xlabel: $q$,
@@ -692,7 +692,7 @@ noises: $3 epsilon$, $epsilon^3$, and $epsilon_+ + 4 epsilon_-$.
   let data = lq.load-txt(read("robustness/out.csv"), header: true)
   let x = data.remove("x")
 
-  let plot(y-name, y-label: $y$) = lq.diagram(
+  let plot(y-name, y-label: $y$) = diagram(
     width: 3cm,
     height: 3cm,
     xlabel: $x$,
@@ -740,7 +740,7 @@ observations).
   let x = data.remove("x")
   let y = data.remove("y")
 
-  let plot(col-name, residual: false) = lq.diagram(
+  let plot(col-name, residual: false) = diagram(
     width: 3cm,
     height: 3cm,
     xlabel: $x$,
@@ -783,7 +783,7 @@ Censoring arises when the response variable $y$ is not fully observed. For insta
       Time-to-death plot from the start of a clinical trial. Circles represent patients whose exact time-to-death is known,
       while crosses represent patients who withdrew from the study.
     ],
-    lq.diagram(
+    diagram(
       xlabel: [time $y$, years],
       yaxis: (ticks: none),
       width: 3cm,
@@ -828,7 +828,7 @@ root. In OLS this is not the case, although transformations are sometimes used t
         let y = data.at(col)
         let lim = calc.max(..y.map(calc.abs))
 
-        let diagram = lq.diagram(
+        let diagram = diagram(
           ylim: if (col == "intercept") { auto } else { (-lim, lim) },
           xlim: (0, 1),
           ylabel: $hat(beta)_#raw(col)$,

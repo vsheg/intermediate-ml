@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Information theory · Intermediate ML")
 
 = Communication as an engineering problem
 

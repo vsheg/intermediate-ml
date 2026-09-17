@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Maximum likelihood and MAP · Intermediate ML")
 
 = Semi-probabilistic model
 

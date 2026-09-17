@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Exponential family · Intermediate ML")
 
 = Canonical form (1D)
 

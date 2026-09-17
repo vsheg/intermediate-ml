@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Generalized linear models · Intermediate ML")
 
 = GLM: Logistic regression
 

@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Regularization · Intermediate ML")
 
 = General concept of regularization
 #margin[

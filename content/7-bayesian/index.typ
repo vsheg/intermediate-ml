@@ -1,5 +1,5 @@
 #import "../../_template.typ": *
-#show: template
+#show: template.with(title: "Bayesian models · Intermediate ML")
 
 = Bayesian approach
 

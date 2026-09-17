@@ -1,0 +1,15 @@
+/* Course additions to tufted 0.1.1 (MIT-0 template). */
+.note { margin: 1.5rem 0; padding: 1rem; border-left: 3px solid #668f80; background: #f0f0e8; }
+.note p, .note ul, .note ol { width: 100%; }
+figure[role="math"] { overflow-x: auto; }
+img, svg { max-width: 100%; height: auto; }
+pre { overflow-x: auto; }
+
+.note { box-sizing: border-box; width: 55%; }
+.note .marginnote { margin-right: -90%; width: 80%; }
+.marginnote .marginnote { float: none; display: block; width: 100%; margin: .5rem 0; }
+.column-break { margin-block: 1rem; }
+@media (max-width: 760px) {
+  .note { width: 100%; }
+  .note .marginnote { margin: 1rem 0; width: 100%; }
+}
