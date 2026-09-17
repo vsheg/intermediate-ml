@@ -53,8 +53,8 @@
   }
 }
 
-#let bra = sym.angle.l
-#let ket = sym.angle.r
+#let bra = sym.chevron.l
+#let ket = sym.chevron.r
 
 #let dmat(a, b, c) = $mat(#a, thin, thin; thin, #b, thin; thin, thin, #c)$
 #let frame(body) = rect(stroke: 0.3pt, inset: 7pt, body)

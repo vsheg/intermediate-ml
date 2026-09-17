@@ -296,7 +296,7 @@ where:
 A more practical approach divides the feature space into bins:
 
 $
-  hat(f)(bold(x)) := 1 / ell dot \# (B(bold(x)) sect X^ell),
+  hat(f)(bold(x)) := 1 / ell dot \# (B(bold(x)) inter X^ell),
 $
 
 and for the CDF:
@@ -327,13 +327,13 @@ $
 and for the CDF:
 
 $
-  hat(F)(bold(x)):= 1 / ell sum_(bold(x)' in X^ell) Ind(bold(x)' <= bold(x) plus.circle h)
+  hat(F)(bold(x)):= 1 / ell sum_(bold(x)' in X^ell) Ind(bold(x)' <= bold(x) plus.o h)
 $
 
 where:
 - $h$ is the window width (radius)
 - $bold(x)' <= bold(x)$ means all components are less or equal
-- $plus.circle$ means componentwise addition
+- $plus.o$ means componentwise addition
 - $K(r) = 1 / 2 Ind(|r| < 1)$ is a kernel function
 
 = Kernel Density Estimation
