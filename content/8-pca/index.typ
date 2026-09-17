@@ -1,6 +1,6 @@
 #import "@preview/physica:0.9.3": *
-#import "../defs.typ": *
-#import "../_template.typ": *
+#import "../../_defs.typ": *
+#import "../../_template.typ": *
 
 #show: template
 
